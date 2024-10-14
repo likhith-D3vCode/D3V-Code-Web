@@ -1,0 +1,600 @@
+
+.imgcard{
+  border-radius: 10px;
+  margin-top: 120px;
+  margin-left: 60px;
+  box-shadow: 2px 2px 2px 2px hsla(0, 12%, 5%, 0.384);
+}
+
+.wellcomeText{
+   margin-top: 50px;
+   margin-left: 40px;
+   padding: 0;
+}
+.Playbtn{
+  display: flex;
+  align-items: center;
+  gap: 59px;
+
+}
+.Playbtn button{
+  border-radius: 5px;
+  border: none;
+  width: 3rem;
+}
+.Playbtn button i{
+  width: 100%;
+}
+
+.category{
+  display: flex;
+  margin: 90px;
+  gap: 40px;
+} 
+
+.number{
+  padding: 6px;
+  text-align: center;
+  background-color: rgb(227, 232, 238);
+  border-radius: 20%;
+  font-size: 0.6rem;
+  color: rgb(62, 60, 60);
+}
+
+.TopContainer{
+   margin-top: 50px;
+   display: flex;
+
+}
+
+.Topcls{
+   display: flex;
+   width: 100%;
+   gap: 70px;
+
+}
+.Topcls p button{
+  margin: 10px;
+  border: none;
+  border-radius: 40%;
+}
+
+.Topcls p {
+  font-weight: bold;
+}
+
+.discription{
+  max-width: 100%;
+  background-color: rgb(255, 255, 255);
+  width: 45%;
+  height: 88%;
+  margin-left: 4rem;
+}
+
+/* Scrollable description section */
+.discription {
+  max-height: 800px; /* Set a fixed height for the description */
+  overflow-y: scroll; /* Enable vertical scrolling */
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: #ffffff;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
+.TotalContainer{
+  display: flex;
+  justify-content: space-between;
+}
+
+.rightSideE{
+  width: 53%;
+  margin-top: 20px;
+  max-height: 800px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.SubTest {
+  display: flex;
+  justify-content: flex-end; /* Align items to the right */
+  align-items: center; /* Vertically center the elements */
+  gap: 600px; /* Space between the heading and button */
+  padding-right: 20px; /* Optional: additional padding on the right side */
+}
+
+/* Optional: Customize the button spacing, if needed */
+.SubTest button {
+  margin-left: 10px;
+}
+
+.Facts-mainContainer{
+  display: flex;
+  /* background-color: blueviolet; */
+}
+.Facts-container{
+  min-height: 800px;
+  margin-left: 90px;
+  margin-right: 20%;
+  margin-top: 6%;
+  /* background-color: #007bff; */
+}
+
+.facts-card{
+
+  margin-left: 7%;
+  
+}
+
+.course-suggested-card{
+
+  margin-top: 120px;
+
+}
+
+.Facts-container1{
+  display: flex;
+  min-width: 100%;
+  gap: 22px;
+  /* background-color: #007bff; */
+ 
+  min-height: 900px;
+}
+
+.Facts-leftSide{
+  width: 50%;
+  margin-left: 60px;
+  /* background-color: aqua; */
+}
+
+.Facts-rightSide{
+  width: 40%;
+  margin-right: 40px;
+  /* background-color: aquamarine; */
+}
+
+/* App.css */
+
+/* Navbar Brand Customization */
+.navbar-brand {
+  text-decoration: none; /* Remove underline */
+  color: white; /* Set the color for the brand name */
+  font-weight: bold;
+}
+
+.navbar-brand:hover {
+  text-decoration: none; /* Ensure no underline on hover */
+  color: #ffdd57; /* Optional: Change color on hover */
+  
+}
+.navlinks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navlinks li {
+  margin: 0 20px;
+}
+
+.navlinks li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  transition: all 0.3s linear 0s;
+  border-bottom: 2px solid transparent; /* Reserve space for the border */
+}
+
+.navlinks li a:hover {
+  color: #7ebcb9;
+  border-bottom: 2px solid #7ebcb9; /* Change the color of the existing border on hover */
+}
+
+@media (max-width: 992px) {
+  .navlinks {
+    float: none;
+    padding-left: 0;
+  }
+
+  .navlinks li {
+    display: block;
+    text-align: left;
+    margin: 10px 0;
+  }
+}
+
+
+/* Spacing below the navbar */
+header {
+  margin-bottom: 20px;
+}
+
+/* Media Queries for Additional Custom Styles (if needed) */
+@media (max-width: 768px) {
+  .navbar {/* NavBar.css */
+    .navbar {
+      transition: background-color 0.3s; /* Smooth transition for background */
+    }
+    
+    .navbar-toggler {
+      border: none; /* Remove border from the toggler */
+    }
+    
+  
+    
+    text-align: left; /* Center text on mobile */
+  }
+}
+
+.btn {
+  border-radius: 20px; /* Rounded buttons for a modern look */
+}
+
+.btn-warning {
+  background-color: #ffc107; /* Bootstrap warning color */
+  border-color: #ffc107; /* Ensure border matches background */
+  
+}
+
+.btn-warning:hover {
+  background-color: #e0a800; /* Darker shade on hover */
+}
+
+.nav-item {
+  margin-right: 30px; /* Adjust spacing as needed */
+}
+
+@media (max-width: 768px) {
+  .navbar-nav {
+    margin-top: 10px; /* Space above nav items on mobile */
+  }
+
+  .nav-item {
+    margin-right: 0; /* Reset margin for mobile */
+  }
+}
+/* CSS for hover effect on like button */
+/* CSS for hover effect on like button */
+.like-icon {
+  transition: transform 0.2s ease;
+}
+
+.like-icon:hover {
+  transform: scale(1.2); /* Zoom effect */
+}
+
+/* Liked state color */
+.liked {
+  color: gold;
+}
+
+/* CSS for comment and view comments */
+.comment-icon {
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.comment-icon:hover {
+  color: #007bff; /* Change color on hover */
+}
+
+.comment-icon span {
+  transition: color 0.2s ease;
+}
+
+.comment-icon:hover span {
+  color: #007bff; /* Change text color on hover */
+}
+
+.view-comments {
+  cursor: pointer;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.view-comments:hover {
+  text-decoration: underline;
+}
+
+/* Submit icon styling */
+.submit-icon {
+  cursor: pointer;
+  color: #007bff;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+
+.submit-icon:hover {
+  color: #0056b3; /* Darker blue on hover */
+}
+
+/* Comment input container */
+.comment-input-container {
+  position: relative;
+}
+
+/* Comment textarea styling */
+.comment-textarea {
+  padding-right: 35px; /* Add padding to make space for the submit icon */
+  resize: none; /* Disable resizing */
+}
+
+/* Comment styling */
+.comment {
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.right-card {
+  position: relative;
+  overflow: hidden;
+  height: 220px; /* Adjust height as needed */
+}
+
+.card-btn {
+  position: relative;
+  z-index: 2; /* Ensure button is on top */
+  background-color: #007bff; /* Bootstrap primary color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  text-decoration: none; /* Prevent underline */
+}
+
+.card-btn:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+  text-decoration: none; /* Prevent underline on hover */
+}
+
+/* Mirrored effect for the card button */
+.card-btn::after {
+  content: "";
+  position: absolute;
+  top: 100%; /* Position it below the button */
+  left: 0;
+  right: 0;
+  height: 100%; /* Match the height */
+  background-color: rgba(0, 123, 255, 0.2); /* Semi-transparent background to simulate reflection */
+  transform: scaleY(-1); /* Flip vertically */
+  z-index: 1; /* Place behind the button */
+  opacity: 0.5; /* Optional: Make it semi-transparent */
+  transition: opacity 0.3s; /* Transition for opacity */
+}
+
+.card-btn:hover::after {
+  opacity: 0.8; /* Increase opacity on hover */
+}
+
+.contest-container {
+  margin-bottom: 15px; /* Space between contest text and cards */
+}
+.card-fact {
+  border-left: none;
+  border-right: none;
+}
+
+.contest-container {
+  padding: 5px 0;
+}
+
+.contest-item {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.contest-icon {
+  font-size: 1.5rem;
+}
+
+.contest-text {
+  font-size: 1rem;
+  line-height: 1.2;
+  font-weight: bold;
+}
+
+.right-card {
+  background-size: cover;
+  min-height: 230px;
+  position: relative;
+}
+
+.card-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.comment-input-container {
+  position: relative;
+}
+
+.submit-icon {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.view-comments {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.like-icon {
+  cursor: pointer;
+}
+
+
+
+
+
+.contest-item {
+  cursor: pointer; /* Pointer cursor for clickable items */
+  color: #007bff; /* Color for the text */
+  font-size: 1.2rem; /* Slightly larger font size */
+  transition: color 0.3s; /* Smooth color transition */
+}
+
+.contest-item:hover {
+  color: #0056b3; /* Darker color on hover */
+}
+
+.contest-icon {
+  color: #f39c12; /* Color for the trophy and medal icons */
+  font-size: 1.5rem; /* Increase the size of icons */
+}
+footer {
+  background-color: #343a40; /* Dark background */
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+}
+
+.social-icon {
+  margin: 0 15px;
+  color: white; /* Icon color */
+  transition: color 0.3s;
+}
+
+.social-icon:hover {
+  color: #ffdd57; /* Change to a colorful shade on hover */
+}
+
+h5 {
+  color: #ffdd57; /* Header color */
+}
+
+a {
+  color: #ffdd57; /* Link color */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* for compiler css */
+
+.playground-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-container{
+  min-height: 60vh;
+  display: flex;
+}
+
+li{
+  list-style: none;
+  line-height: 18px;
+}
+
+.file-node{
+  cursor: pointer;
+
+}
+
+
+
+
+
+
+
+
+/* Css code for Web Compiler html css js */
+
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.language-selector {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+}
+
+.run-button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.run-button:hover {
+  background-color: #218838;
+}
+
+.editor-container {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.preview-container {
+  margin-top: 20px;
+}
+
+.live-preview {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+
+

@@ -1,0 +1,77 @@
+/* FileTree.css */
+
+.file-tree-container {
+    width: 250px; /* Set a fixed width for the file tree */
+    background-color: #f7f7f7; /* Light gray background */
+    border: 1px solid #ccc; /* Border around the file tree */
+    border-radius: 5px; /* Rounded corners */
+    overflow-y: auto; /* Enable scrolling for overflow */
+    max-height: 600px; /* Limit max height */
+    padding: 10px; /* Padding around the container */
+  }
+  
+  .file-node {
+    cursor: pointer; /* Pointer cursor for files */
+    padding: 1px; /* Spacing around file names */
+    margin: 1px 0; /* Margin for separation */
+    color: #333; /* Dark gray text */
+    transition: background-color 0.2s ease; /* Smooth transition */
+  }
+  
+  .file-node:hover {
+    background-color: #eaeaea; /* Light background on hover */
+  }
+  
+  .directory-node {
+    font-weight: bold; /* Bold text for directories */
+    color: #007bff; /* Blue color for directories */
+  }
+  
+  ul {
+    list-style-type: none; /* Remove default list style */
+    padding-left: 20px; /* Indentation for children */
+    margin: 0; /* Reset margin */
+  }
+  
+
+
+  /* FileTree.css */
+
+/* Add existing styles here... */
+
+.file-icon {
+    margin-right: 5px; /* Space between icon and text */
+  }
+  
+  .file-node {
+    cursor: pointer; /* Pointer cursor for files */
+    padding: 5px; /* Spacing around file names */
+    margin: 2px 0; /* Margin for separation */
+    color: #333; /* Dark gray text */
+    transition: background-color 0.2s ease; /* Smooth transition */
+  }
+  
+  .file-node:hover {
+    background-color: #eaeaea; /* Light background on hover */
+  }
+  
+  .directory-node {
+    font-weight: bold; /* Bold text for directories */
+    color: #007bff; /* Blue color for directories */
+  }
+  
+  ul {
+    list-style-type: none; /* Remove default list style */
+    padding-left: 20px; /* Indentation for children */
+    margin: 0; /* Reset margin */
+  }
+  
+  /* Folder and file icons */
+  .folder-icon {
+    content: '📁'; /* Unicode folder emoji */
+  }
+  
+  .file-icon {
+    content: '📄'; /* Unicode file emoji */
+  }
+  
