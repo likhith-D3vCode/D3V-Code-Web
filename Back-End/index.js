@@ -7,6 +7,11 @@ const chokidar = require('chokidar');
 const { Server: SocketServer } = require('socket.io');
 var os = require('os');
 const pty = require('node-pty');
+const {connectToThemongodb}=require("./connection/connect")
+
+
+
+const router=require("./routers/questionRouter")
 
 // Use a default shell
 var shell = os.platform() === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'bash';
@@ -42,7 +47,6 @@ ptyProcess.onData(data => {
 });
 
 io.on('connection', (socket) => {
-  console.log(`Socket connected`, socket.id);
   socket.emit('file:refresh');
 
   socket.on('file:change', async ({ path: relativePath, content }) => {
@@ -60,27 +64,7 @@ io.on('connection', (socket) => {
   });
 });
 
-app.get('/files', async (req, res) => {
-  try {
-    const fileTree = await generateFileTree('./user');
-    return res.json({ tree: fileTree });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to generate file tree.' });
-  }
-});
 
-app.get('/files/content', async (req, res) => {
-  const relativePath = req.query.path;
-  const fullPath = path.join(__dirname, 'user', relativePath); // Correct path join
-  try {
-    const content = await fs.readFile(fullPath, 'utf-8');
-    return res.json({ content });
-  } catch (error) {
-    res.status(500).json({ error: `Failed to read file: ${error.message}` });
-  }
-});
-
-server.listen(9000, () => console.log(`Server running at port: 9000`));
 
 async function generateFileTree(directory) {
   const tree = {};
@@ -104,3 +88,61 @@ async function generateFileTree(directory) {
   await buildTree(directory, tree);
   return tree;
 }
+
+
+
+app.use(express.json());
+
+
+
+app.use("/questions",router);
+
+
+app.get('/files', async (req, res) => {
+  try {
+    const fileTree = await generateFileTree('./user');
+    return res.json({ tree: fileTree });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to generate file tree.' });
+  }
+});
+
+app.get('/files/content', async (req, res) => {
+  const relativePath = req.query.path;
+  const fullPath = path.join(__dirname, 'user', relativePath); // Correct path join
+  try {
+    const content = await fs.readFile(fullPath, 'utf-8');
+    return res.json({ content });
+  } catch (error) {
+    res.status(500).json({ error: `Failed to read file: ${error.message}` });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+//connection to the mongodb
+connectToThemongodb("mongodb://127.0.0.1:27017/QuestionAndTestCase")
+.then(()=>console.log("mongodb is connected"))
+.catch((err)=>console.log("not connected",err));
+
+
+
+server.listen(9000, () => console.log(`Server running at port: 9000`));
+
+
+
+
+
+
+
+
+
+
+
