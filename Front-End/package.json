@@ -20,6 +20,7 @@
     "@uiw/react-codemirror": "^4.23.3",
     "@xterm/xterm": "^5.5.0",
     "ace-builds": "^1.36.2",
+    "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "codemirror": "^5.65.18",
