@@ -9,7 +9,7 @@ var os = require('os');
 const pty = require('node-pty');
 const {connectToThemongodb}=require("./connection/connect")
 
-
+const validator=require("./HtmlCssjsValidator/ValidatorRouter")
 
 const router=require("./routers/questionRouter")
 
@@ -96,6 +96,10 @@ app.use(express.json());
 
 
 app.use("/questions",router);
+app.use("/display",router)
+
+
+app.use("/api", validator); 
 
 
 app.get('/files', async (req, res) => {
