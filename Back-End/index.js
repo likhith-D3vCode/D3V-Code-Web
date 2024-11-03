@@ -4,14 +4,17 @@ const fs = require('fs/promises');
 const path = require('path');
 const cors = require('cors');
 const chokidar = require('chokidar');
+const cookieParser = require("cookie-parser");
+
 const { Server: SocketServer } = require('socket.io');
 var os = require('os');
 const pty = require('node-pty');
 const {connectToThemongodb}=require("./connection/connect")
-
+const loginrouter=require("./routers/loginrouter")
 const validator=require("./HtmlCssjsValidator/ValidatorRouter")
-
+const {authenticationCheck}=require("./middleware/middlewareAuth")
 const router=require("./routers/questionRouter")
+const SignupRouter=require("./routers/signupRouter")
 
 // Use a default shell
 var shell = os.platform() === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'bash';
@@ -26,18 +29,26 @@ const ptyProcess = pty.spawn(shell, [], {
 });
 
 const app = express();
+app.use(cors({
+  origin: "http://localhost:5173",         // Allow the specific frontend origin
+  methods: ["GET", "POST", "PUT", "DELETE"], // Specify HTTP methods if needed
+  allowedHeaders: ["Content-Type"],         // Include Content-Type in allowed headers
+  credentials: true                         // Allow credentials (cookies, authorization headers)
+}));
+
 const server = http.createServer(app);
 const io = new SocketServer(server, {
   cors: {
-    origin: '*',
+    origin: "*", // Update this to match your frontend URL
     methods: ["GET", "POST"],
     allowedHeaders: ["Access-Control-Allow-Origin"],
-    credentials: true
+    credentials: true,
+    
   }
-});
+}); 
 
-app.use(cors());
 
+app.use(cookieParser()); // add cookie-parser middleware
 chokidar.watch('./user').on('all', (event, filePath) => {
   io.emit('file:refresh', filePath);
 });
@@ -92,14 +103,21 @@ async function generateFileTree(directory) {
 
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-
+app.use("/signup",SignupRouter);
+app.use("/login",loginrouter)
 
 app.use("/questions",router);
 app.use("/display",router)
 
 
 app.use("/api", validator); 
+
+
+app.get('/auth/validate-token', authenticationCheck, (req, res) => {
+  res.json({ isAuthenticated: true, user: req.user });
+});
 
 
 app.get('/files', async (req, res) => {
