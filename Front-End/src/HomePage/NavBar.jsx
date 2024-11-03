@@ -1,9 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useNavigate } from "react-router-dom";
-import FactsPage from "./FactsPage";
 
 function NavBar() {
-  const navigate=useNavigate();
   return (
     <>
       <header className="p-3 text-bg-dark">
@@ -28,7 +25,7 @@ function NavBar() {
                   <a className="nav-link" href="#">Study</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="/questions">Labs</a>
+                  <a className="nav-link" href="#">Labs</a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="#">Events</a>
@@ -43,24 +40,19 @@ function NavBar() {
 
               {/* Align buttons to the right in a collapsible section */}
               <div className="ms-auto d-lg-none"> {/* Show buttons only on smaller screens */}
-                <button type="button" className="btn btn-outline-light me-2"  >Login</button>
-                <button type="button" className="btn btn-warning" href="/signUp">Sign Up</button>
+                <button type="button" className="btn btn-outline-light me-2">Login</button>
+                <button type="button" className="btn btn-warning">Sign Up</button>
               </div>
             </div>
 
             {/* Always show buttons on larger screens */}
             <div className="d-none d-lg-flex ms-auto"> {/* Show buttons only on larger screens */}
-              <button type="button" className="btn btn-outline-light me-2" 
-              onClick={()=>navigate("/StaticLogin")}
-              >Login</button>
-              <button type="button" className="btn btn-warning" href="/signUp" 
-              onClick={()=>navigate("/signUp")}
-              >Sign Up</button>
+              <button type="button" className="btn btn-outline-light me-2">Login</button>
+              <button type="button" className="btn btn-warning">Sign Up</button>
             </div>
           </nav>
         </div>
       </header>
-      <FactsPage/>
     </>
   );
 }
