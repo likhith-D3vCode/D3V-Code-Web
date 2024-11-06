@@ -7,13 +7,13 @@ router.post("/validate",(req, res) => {
    const dynamicTestCases=TestCases.map((testcase)=>{
       let testFunction;
 
-    
-      if(testcase.includetype==='html'){
+       
+      if(testcase.includestype==='html'){
         testFunction=()=>html.includes(testcase.includes);
 
-      }else if(testcase.includetype==='css'){
+      }else if(testcase.includestype==='css'){
         testFunction=()=>css.includes(testcase.includes);
-      }else if(testcase.includetype==='js'){
+      }else if(testcase.includestype==='js'){
         testFunction=()=>js.includes(testcase.includes);
       }else {
         // Assign a default function to avoid undefined test functions

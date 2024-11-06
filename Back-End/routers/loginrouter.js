@@ -14,7 +14,12 @@ loginRouter.post("/api",async(req,res)=>{
         console.log("user not found");
     } 
     
-    res.cookie('token', token, { httpOnly: true, maxAge: 3600000 });
+    res.cookie('token', token, {
+        httpOnly: true,       // Prevents JavaScript access to the cookie
+        secure: false,        // Set `true` in production to use HTTPS
+        sameSite: "lax",      // Ensures cookies are sent on the same domain (adjust as needed)
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
+      });
 
 
     // Send a success response so the frontend can handle the redirect

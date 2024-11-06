@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import "./LoginPage.css"; // Add this CSS file for styling
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
     const [form, setForm] = useState({
@@ -9,7 +10,7 @@ const LoginPage = () => {
     });
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-
+    const navigate=useNavigate();
     const handleChange = (e) => {
         setForm({
             ...form,
@@ -26,6 +27,8 @@ const LoginPage = () => {
             const response = await axios.post("http://localhost:9000/login/api", form, { withCredentials: true });
             console.log("Login success",response.data);
             
+                     navigate("/");
+           
         } catch (err) {
             setError("Login failed. Please check your email and password.",err);
         } finally {

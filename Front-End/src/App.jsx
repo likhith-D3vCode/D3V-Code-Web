@@ -12,7 +12,8 @@ import SignUpPage from "./SignUpAndLogin/SignUpPage";
 import LoginPage from "./SignUpAndLogin/loginPage";
 // import PracticePage from "./Labs/PracticePage"
 import ProtectedRoute from "./Components/ProtectedRouter";
-
+import Course1 from "./CoursesCards/Course1"
+import PostQuestionsAndTestCases from "./AdminPage/PostQuestionsAndTestCases"
 function App() {
  
 
@@ -32,7 +33,9 @@ function App() {
     <Routes>
       <Route path="/" element={<NavBar/>}/>
       <Route path="/SignUp" element={<SignUpPage/>}/>
+      <Route path="/Admin" element={<PostQuestionsAndTestCases/>}/>
       <Route path="/StaticLogin" element={<LoginPage/>}/>
+      <Route path="/Study" element={<Course1/>}/>
       <Route path="/questions" element={<ProtectedRoute element={<Questions />} />} />
       <Route path="/question/:id" element={<ProtectedRoute element={<PracticePage />} />} />
     </Routes>

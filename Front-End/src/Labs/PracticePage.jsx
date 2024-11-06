@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import CompilerFrame from '../Frame-Work-Compiler/CompilerFrameWork';
 import WebCompiler from '../Web_compiler/WebCompiler';
-
+import "./PracticePage.css"
 function PracticePage() {
   const location = useLocation();  // Get the state passed from the Link
   const { title, description,Requirements,AcceptanceCriteria ,TestCases} = location.state || {};  // Destructure title and description
@@ -11,16 +11,20 @@ function PracticePage() {
   return (
     <>
       <div className="container TopContainer">
-        <div className="Topcls">
-          <h4>{title}</h4> {/* Display the question title */}
+        
+      </div>
+      <div className="TotalContainer">
+        <div className="discription">
+          <div>
+            
+            <div className="Topcls">
+          {/* <h4>{title}</h4> Display the question title */}
           <p>Submissions<button className="number">200</button></p>
           <p>Likes<button className="number">161</button></p>
           <p><i className="bi bi-chat-text-fill"></i><button className="number">1k</button></p>
         </div>
-      </div>
-      <div className="TotalContainer">
-        <div className="discription">
-          <h5>{title}</h5>  {/* Use the title from the Link */}
+            <h5>{title}</h5>
+          </div>
           <p>Description</p>
           <p>{description}</p>  {/* Use the description from the Link */}
           <h6>Requirements</h6>

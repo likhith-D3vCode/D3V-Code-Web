@@ -4,7 +4,7 @@ function authenticationCheck(req,res,next){
     const token=req.cookies.token;
    
     try{
-          const user=validateToken(req.cookies.token);
+          const user=validateToken(token);
         if(user){
             req.user=user;
             return next();
