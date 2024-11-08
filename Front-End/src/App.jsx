@@ -9,6 +9,11 @@ import PracticePage from "./Labs/PracticePage";
 // import Category from "./Labs/Category"
  import Questions from "./Labs/Questions"
 // import PracticePage from "./Labs/PracticePage"
+import ProtectedRoute from "./Components/ProtectedRouter";
+import Course1 from "./CoursesCards/Course1"
+import PostQuestionsAndTestCases from "./AdminPage/PostQuestionsAndTestCases"
+import SignupPage from "./SignUpAndLogin/SignUpPage"
+import LoginPage from "./SignUpAndLogin/SignUpPage"
 
 function App() {
  
@@ -27,8 +32,13 @@ function App() {
 
     <Router>
     <Routes>
-      <Route path="/" element={<Questions />} />
-      <Route path="/question/:id" element={<PracticePage />} />
+      <Route path="/" element={<NavBar/>}/>
+      <Route path="/SignUp" element={<SignupPage/>}/>
+      <Route path="/Admin" element={<PostQuestionsAndTestCases/>}/>
+      <Route path="/StaticLogin" element={<LoginPage/>}/>
+      <Route path="/Study" element={<Course1/>}/>
+      <Route path="/questions" element={<ProtectedRoute element={<Questions />} />} />
+      <Route path="/question/:id" element={<ProtectedRoute element={<PracticePage />} />} />
     </Routes>
   </Router>
 

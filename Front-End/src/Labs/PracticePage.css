@@ -1,0 +1,115 @@
+/* Style for the main description container */
+.discription {
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    /* margin: auto; */
+    color: #333;
+  }
+  
+  /* Header styling */
+  .Topcls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .Topcls p {
+    font-size: 1rem;
+    margin: 0;
+    color: #555;
+  }
+  
+  .Topcls .number {
+    background-color: #0073e6;
+    color: white;
+    border: none;
+    padding: 4px 12px;
+    font-size: 0.9rem;
+    margin-left: 5px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .Topcls .number:hover {
+    background-color: #005bb5;
+  }
+  
+  /* Title and subtitles */
+  .discription h5 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #222;
+    margin-top: 0;
+  }
+  
+  .discription h6 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 20px;
+  }
+  
+  /* Paragraph and section styling */
+  .discription p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 10px 0;
+    color: #444;
+  }
+  
+  /* Styling for Requirements and Acceptance Criteria sections */
+  .discription div h6 {
+    color: #0073e6;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+  }
+  
+  .discription div p {
+    margin-left: 15px;
+    color: #555;
+    font-size: 1rem;
+  }
+  
+  /* Button styles */
+  .bi-chat-text-fill {
+    color: #0073e6;
+    margin-right: 5px;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .discription {
+      padding: 15px;
+    }
+  
+    .Topcls {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .Topcls p {
+      margin-bottom: 10px;
+    }
+  
+    .discription h5 {
+      font-size: 1.3rem;
+    }
+  
+    .discription h6 {
+      font-size: 1rem;
+    }
+  
+    .discription p {
+      font-size: 0.95rem;
+    }
+  }
+  
+
+
+  

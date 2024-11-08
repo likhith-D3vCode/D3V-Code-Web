@@ -22,7 +22,7 @@ function NavBar() {
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav me-auto navlinks"> {/* Align the links to the left */}
                 <li className="nav-item">
-                  <a className="nav-link" href="#">Study</a>
+                  <a className="nav-link"  onClick={()=>navigate("/Study")}>Study</a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="#">Labs</a>

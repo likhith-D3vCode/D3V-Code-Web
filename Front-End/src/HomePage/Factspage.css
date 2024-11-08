@@ -1,0 +1,8 @@
+.comment-container {
+    max-height: 200px; /* Set maximum height for the comments section */
+    overflow-y: auto; /* Enable vertical scrolling when comments exceed the max height */
+    padding: 10px;
+    border: 1px solid #ddd; /* Optional: Adds a border to separate comments */
+    border-radius: 5px; /* Optional: Rounds the corners */
+  }
+  

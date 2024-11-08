@@ -5,6 +5,7 @@ import "ace-builds/src-noconflict/mode-css";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-github";
 import "../App.css";
+import "./WebCompiler.css"
 import PropTypes from "prop-types";
 import ace from 'ace-builds/src-noconflict/ace';
 ace.config.set('basePath', '/node_modules/ace-builds/src-noconflict');
@@ -97,15 +98,22 @@ const WebCompiler = ({ TestCases }) => {
 
       {/* Test Results Section */}
       <div className="test-results">
-        <h3>Test Results:</h3>
-        <ul>
-          {testResults.map((result, index) => (
-            <li key={index} style={{ color: result.success ? 'green' : 'red' }}>
-              {result.description}: {result.success ? 'Passed' : 'Failed'}
-            </li>
-          ))}
-        </ul>
-      </div>
+  <h3>
+    Test Results: 
+    <span className="passed-count">
+      {testResults.filter(result => result.success).length} Passed
+    </span>
+  </h3>
+  <ul>
+    {testResults
+      .filter(result => !result.success) // Show only failed test cases
+      .map((result, index) => (
+        <li key={index} className="test-result failed">
+          {result.description}: Failed
+        </li>
+      ))}
+  </ul>
+</div>
     </div>
   );
 };

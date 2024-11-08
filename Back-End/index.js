@@ -4,6 +4,9 @@ const fs = require('fs/promises');
 const path = require('path');
 const cors = require('cors');
 const chokidar = require('chokidar');
+const cookieParser = require("cookie-parser");
+const Comment=require("./models/commentsSchema");
+const authRouter=require("./routers/authenticationRouter")
 const { Server: SocketServer } = require('socket.io');
 var os = require('os');
 const pty = require('node-pty');
@@ -12,7 +15,9 @@ const {connectToThemongodb}=require("./connection/connect")
 const validator=require("./HtmlCssjsValidator/ValidatorRouter")
 
 const router=require("./routers/questionRouter")
-
+const SignupRouter=require("./routers/signupRouter");
+const factsRouter = require("./routers/factsrouter");
+const commenetsRouter=require('./routers/commentsRouter')
 // Use a default shell
 var shell = os.platform() === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'bash';
 
@@ -92,14 +97,49 @@ async function generateFileTree(directory) {
 
 
 app.use(express.json());
+<<<<<<< HEAD
+
+app.use(express.urlencoded({ extended: false }));
+=======
+>>>>>>> main
 
 
 
 app.use("/questions",router);
 app.use("/display",router)
-
-
+app.use("/facts",factsRouter)
+app.use("/getFacts",factsRouter)
 app.use("/api", validator); 
+// app.use("/comments",commenetsRouter);
+app.use("/check",authRouter);
+
+app.post("/comments/api/:factsId",authenticationCheck,async(req,res)=>{
+  try {
+    // Check if `req.user` exists
+    console.log("user:",req.cookies.token)
+    if (!req.user || !req.user._id) {
+       return res.status(401).json({ msg: "Unauthorized" });
+    }
+
+    // Creating the comment with corrected req.body usage
+  const data=  await Comment.create({
+       content: req.body.content,
+       likes: req.body.likes , // Optional: Default to 0 if likes is not provided
+       factsId: req.params.factsId, // Use `factsId` to match schema field name
+       createdBy: req.user._id,
+    });
+
+    return res.status(200).json({ msg: "success",data });
+ } catch (error) {
+    console.error(error);
+    return res.status(500).json({ msg: "Internal Server Error" });
+ }
+});
+
+
+app.use("/getComments",commenetsRouter)
+
+
 
 
 app.get('/files', async (req, res) => {
