@@ -97,11 +97,8 @@ async function generateFileTree(directory) {
 
 
 app.use(express.json());
-<<<<<<< HEAD
 
 app.use(express.urlencoded({ extended: false }));
-=======
->>>>>>> main
 
 
 
