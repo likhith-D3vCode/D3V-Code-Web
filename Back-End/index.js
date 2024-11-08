@@ -4,12 +4,9 @@ const fs = require('fs/promises');
 const path = require('path');
 const cors = require('cors');
 const chokidar = require('chokidar');
-<<<<<<< HEAD
 const cookieParser = require("cookie-parser");
 const Comment=require("./models/commentsSchema");
 const authRouter=require("./routers/authenticationRouter")
-=======
->>>>>>> main
 const { Server: SocketServer } = require('socket.io');
 var os = require('os');
 const pty = require('node-pty');
@@ -18,13 +15,9 @@ const {connectToThemongodb}=require("./connection/connect")
 const validator=require("./HtmlCssjsValidator/ValidatorRouter")
 
 const router=require("./routers/questionRouter")
-<<<<<<< HEAD
 const SignupRouter=require("./routers/signupRouter");
 const factsRouter = require("./routers/factsrouter");
 const commenetsRouter=require('./routers/commentsRouter')
-=======
-
->>>>>>> main
 // Use a default shell
 var shell = os.platform() === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'bash';
 
