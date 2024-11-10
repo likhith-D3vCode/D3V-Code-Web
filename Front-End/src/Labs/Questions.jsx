@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 
 function Questions() {
   const [questions, setQuestions] = useState([
-    {
+    { 
+      _id:2386,
       id: 1,
       title: "Create a Basic Calculator",
       difficulty: "Beginner",
@@ -102,6 +103,7 @@ function Questions() {
                   Requirements: question.Requirements,
                   AcceptanceCriteria: question.AcceptanceCriteria,
                   TestCases: question.TestCases,
+                  _id:question._id
                 }}
                 style={{ textDecoration: 'none', color: 'inherit' }}
               >
