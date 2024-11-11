@@ -14,7 +14,7 @@ import Course1 from "./CoursesCards/Course1"
 import PostQuestionsAndTestCases from "./AdminPage/PostQuestionsAndTestCases"
 import SignupPage from "./SignUpAndLogin/SignUpPage"
 import LoginPage from "./SignUpAndLogin/SignUpPage"
-
+import HtmlCourse from "./StudyPage/HtmlCourse"
 function App() {
  
 
@@ -37,6 +37,7 @@ function App() {
       <Route path="/Admin" element={<PostQuestionsAndTestCases/>}/>
       <Route path="/StaticLogin" element={<LoginPage/>}/>
       <Route path="/Study" element={<Course1/>}/>
+      <Route path="/CourseIndex" element={<HtmlCourse/>}/>
       <Route path="/questions" element={<ProtectedRoute element={<Questions />} />} />
       <Route path="/question/:id" element={<ProtectedRoute element={<PracticePage />} />} />
     </Routes>

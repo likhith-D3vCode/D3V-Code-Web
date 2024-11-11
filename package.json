@@ -1,0 +1,12 @@
+{
+  "name": "d3v-code-web",
+  "version": "1.0.0",
+  "description": "Welcome to your ultimate web development hub!\r Discover a curated selection of the best YouTube videos, tailored to enhance your learning experience.\r Explore personalized recommendations to find the right content for your skill level.\r Practice your coding skills with a diverse range of questions, similar to LeetCode.\r Challenge yourself with interactive quizzes focused on various web technologies and frameworks.\r Utilize our dedicated compiler to run and execute code directly from your browser.\r Build, test, and refine projects effortlessly in a user-friendly environment.\r Stay up-to-date with the latest web trends and technologies.\r Join our community of aspiring developers and elevate your skills.\r Transform your web development journey with us today!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
