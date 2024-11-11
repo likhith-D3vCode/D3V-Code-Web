@@ -1,0 +1,98 @@
+/* HtmlCourse.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* ChatGPT-like sidebar */
+.menu {
+    width: 250px;
+    background-color: #202123;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 10;
+}
+
+.menu h2 {
+    margin: 0;
+    padding: 10px 0;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    flex-grow: 1;
+}
+
+.menu ul li {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1rem;
+    color: white;
+}
+
+.menu ul li i {
+    margin-right: 10px;
+}
+
+.menu ul li:hover {
+    background-color: #343541;
+}
+
+/* Active state for a topic */
+.menu ul li.active {
+    background-color: green;
+}
+
+/* Video section styling */
+.video-section {
+    margin-left: 250px;
+    flex-grow: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+iframe {
+    width: 80%;
+    height: 500px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Button styling */
+.lab-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #0073e6;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.lab-button[disabled] {
+    background-color: gray;
+    cursor: not-allowed;
+}

@@ -1,5 +1,7 @@
 import 'bootstrap-icons/font/bootstrap-icons.css'
+import { useNavigate } from 'react-router-dom'
 function CourseCard(){
+  const navigate=useNavigate();
    return <>
    
    <div className="card imgcard" style={{width: "18rem"}}>
@@ -9,7 +11,7 @@ function CourseCard(){
       <p>Web-Development(Front end)</p>
       <div className='Playbtn'>
       <p>0%</p>
-      <button><i className="bi bi-play-circle"></i></button>
+      <button onClick={()=>navigate("/CourseIndex")}><i className="bi bi-play-circle"> </i> </button>
       </div>
       
     </div>
