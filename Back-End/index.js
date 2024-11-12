@@ -19,6 +19,7 @@ const SignupRouter=require("./routers/signupRouter");
 const factsRouter = require("./routers/factsrouter");
 const commenetsRouter=require('./routers/commentsRouter')
 const QuestionCommentsRouter=require('./routers/QnCommentsRouter')
+const solvedqnByuser=require("./routers/solvedQuestionsRouter")
 // Use a default shell
 var shell = os.platform() === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'bash';
 
@@ -175,14 +176,9 @@ app.get('/files/content', async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-
+app.use("/solvedquestionsByuser",authenticationCheck,solvedqnByuser);
+app.use("/getsolvedquestionsByuser",authenticationCheck,solvedqnByuser);
+app.use("/getOneSolvedQn",authenticationCheck,solvedqnByuser)
 
 //connection to the mongodb
 connectToThemongodb("mongodb://127.0.0.1:27017/QuestionAndTestCase")
