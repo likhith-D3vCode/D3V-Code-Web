@@ -81,7 +81,7 @@ function PracticePage() {
   useEffect(() => {
       getusercomments();
     
-  });
+  },[]);
 
   
  
@@ -156,7 +156,7 @@ function PracticePage() {
 
           {/* Conditionally render the components based on activeComponent */}
           {activeComponent === "framework" && <CompilerFrame />}
-          {activeComponent === "html/css/js" && <WebCompiler TestCases={TestCases} />}
+          {activeComponent === "html/css/js" && <WebCompiler TestCases={TestCases} questionId={_id} />}
         </div>
       </div>
       {/* <div className="SubTest"><h5>Test Cases</h5><button className="btn btn-primary">Submit</button></div> */}

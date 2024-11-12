@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-html";
 import "ace-builds/src-noconflict/mode-css";
@@ -8,9 +8,10 @@ import "../App.css";
 import "./WebCompiler.css"
 import PropTypes from "prop-types";
 import ace from 'ace-builds/src-noconflict/ace';
+import axios from "axios"
 ace.config.set('basePath', '/node_modules/ace-builds/src-noconflict');
 
-const WebCompiler = ({ TestCases }) => {
+const WebCompiler = ({ TestCases ,questionId}) => {
   const [language, setLanguage] = useState("html");
   const [htmlCode, setHtmlCode] = useState("<h1>Hello World</h1>");
   const [cssCode, setCssCode] = useState("h1 { color: red; }");
@@ -18,6 +19,19 @@ const WebCompiler = ({ TestCases }) => {
   const [output, setOutput] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [testResults, setTestResults] = useState([]); // New state for test results
+  const [isSolved, setIsSolved] = useState(false); // New state for solved status
+
+  useEffect(() => {
+    const checkIfSolved = async () => {
+      try {
+        const response = await axios.get(`http://localhost:9000/getOneSolvedQn/getOneQnapi?questionId=${questionId}`, { withCredentials: true });
+        setIsSolved(response.data.solved); // Assume API response has 'solved' as a boolean
+      } catch (error) {
+        console.error("Error fetching solved status:", error);
+      }
+    };
+    checkIfSolved();
+  }, [questionId]);
 
   const runCode = () => {
     const completeCode = `
@@ -46,6 +60,14 @@ const WebCompiler = ({ TestCases }) => {
       setIsValid(result.success);
       setTestResults(result.results);// Set test results here
       // alert(result.message); // Show overall message
+    
+      const allPassed = result.results.every(test => test.success);
+      if (allPassed) {
+        // Submit solved question
+        await markQuestionAsSolved();
+      }
+   
+
     } catch (error) {
       console.error("Validation error:", error);
     }
@@ -55,6 +77,23 @@ const WebCompiler = ({ TestCases }) => {
     validateCode(htmlCode, cssCode, jsCode);
   };
 
+
+  
+
+  const markQuestionAsSolved = async () => {
+    try {
+      const response = await axios.post('http://localhost:9000/solvedquestionsByuser/api',{Question:questionId},{ withCredentials: true });
+    
+      console.log(response); // Log message for feedback
+      setIsSolved(true); // Update solved status
+
+    } catch (error) {
+      console.error("Error marking question as solved:", error);
+    }
+  };
+
+
+
   return (
     <div className="container">
       <div className="editor-header">
@@ -63,6 +102,10 @@ const WebCompiler = ({ TestCases }) => {
           <option value="css">CSS</option>
           <option value="javascript">JavaScript</option>
         </select>
+
+        {isSolved && <span className="solved-symbol">✔️</span>} {/* Solved symbol */}
+
+
         <button onClick={runCode}>Run</button>
         <button onClick={handleSubmit}>Submit</button>
       </div>
@@ -90,7 +133,7 @@ const WebCompiler = ({ TestCases }) => {
           title="Live Preview"
           srcDoc={output}
           sandbox="allow-scripts"
-          frameBorder="0"
+          style={{ border: "none" }}
           width="100%"
           height="300px"
         ></iframe>
@@ -120,7 +163,8 @@ const WebCompiler = ({ TestCases }) => {
 
 WebCompiler.propTypes = {
   
-  TestCases:PropTypes.array.isRequired
+  TestCases:PropTypes.array.isRequired,
+  questionId:PropTypes.string.isRequired
 };
 
 export default WebCompiler;
