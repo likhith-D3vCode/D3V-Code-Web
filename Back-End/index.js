@@ -20,6 +20,7 @@ const factsRouter = require("./routers/factsrouter");
 const commenetsRouter=require('./routers/commentsRouter')
 const QuestionCommentsRouter=require('./routers/QnCommentsRouter')
 const solvedqnByuser=require("./routers/solvedQuestionsRouter")
+const UserLikesrouter=require("./routers/UserlikesRouter")
 // Use a default shell
 var shell = os.platform() === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'bash';
 
@@ -149,8 +150,8 @@ app.use("/getComments",commenetsRouter)
 
 app.use("/QuestionsComments",authenticationCheck,QuestionCommentsRouter)
 app.use("/getQuestionsComments",QuestionCommentsRouter)
-
-
+app.use("/Userlikes",authenticationCheck,UserLikesrouter)
+app.use("/likesget",authenticationCheck,UserLikesrouter)
 app.get('/auth/validate-token', authenticationCheck, (req, res) => {
   res.json({ isAuthenticated: true, user: req.user });
 });
@@ -177,7 +178,7 @@ app.get('/files/content', async (req, res) => {
 });
 
 app.use("/solvedquestionsByuser",authenticationCheck,solvedqnByuser);
-app.use("/getsolvedquestionsByuser",authenticationCheck,solvedqnByuser);
+app.use("/getsolvedquestionsByuser",solvedqnByuser);
 app.use("/getOneSolvedQn",authenticationCheck,solvedqnByuser)
 
 //connection to the mongodb

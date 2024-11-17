@@ -109,6 +109,43 @@
       font-size: 0.95rem;
     }
   }
+
+
+  /* LikeComponent.css */
+
+.like-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: Arial, sans-serif;
+}
+
+.like-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.like-button:hover {
+  transform: scale(1.1);
+}
+
+.heart-icon {
+  color: gray;
+  font-size: 24px;
+  transition: color 0.2s ease;
+}
+
+.heart-icon.liked {
+  color: red;
+}
+
+.likes-count {
+  font-size: 16px;
+  color: #333;
+}
+
   
 
 
