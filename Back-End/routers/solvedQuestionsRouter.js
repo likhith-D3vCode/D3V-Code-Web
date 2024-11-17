@@ -29,13 +29,11 @@ solvedquestionsByUser.post("/api", async (req, res) => {
 
 
 solvedquestionsByUser.get("/getapi",async(req,res)=>{
-        if(!req.user._id){
-            return res.status(400).json({msg:"user is not authenticated"})
-        }
+       
 
     try{
 
-        const data=await solved.find({createdBy:req.user._id})
+        const data=await solved.find({})
         return res.status(200).json({msg:"user solved questions data",data})
 
 
