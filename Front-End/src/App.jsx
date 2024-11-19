@@ -38,8 +38,8 @@ function App() {
       <Route path="/StaticLogin" element={<LoginPage/>}/>
       <Route path="/Study" element={<Course1/>}/>
       <Route path="/CourseIndex" element={<HtmlCourse/>}/>
-      <Route path="/questions" element={ <Questions />} />
-      <Route path="/question/:id" element={<PracticePage  />} />
+      <Route path="/questions" element={<ProtectedRoute element={<Questions />} />} />
+      <Route path="/question/:id" element={<ProtectedRoute element={<PracticePage />} />} />
     </Routes>
   </Router>
 
