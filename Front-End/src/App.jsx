@@ -14,7 +14,7 @@ import Course1 from "./CoursesCards/Course1"
 import PostQuestionsAndTestCases from "./AdminPage/PostQuestionsAndTestCases"
 import SignupPage from "./SignUpAndLogin/SignUpPage"
 import LoginPage from "./SignUpAndLogin/loginPage"
-
+import HtmlCourse from "./StudyPage/HtmlCourse"
 function App() {
  
 
