@@ -13,8 +13,8 @@ import ProtectedRoute from "./Components/ProtectedRouter";
 import Course1 from "./CoursesCards/Course1"
 import PostQuestionsAndTestCases from "./AdminPage/PostQuestionsAndTestCases"
 import SignupPage from "./SignUpAndLogin/SignUpPage"
-import LoginPage from "./SignUpAndLogin/SignUpPage"
-import HtmlCourse from "./StudyPage/HtmlCourse"
+import LoginPage from "./SignUpAndLogin/loginPage"
+
 function App() {
  
 
