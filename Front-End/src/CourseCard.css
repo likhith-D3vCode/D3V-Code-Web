@@ -1,0 +1,125 @@
+/* Card styling */
+.imgcard {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  position: relative;
+  height: 350px; /* Increased height for the card */
+}
+
+/* Hover effect for the card */
+.imgcard:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Image container */
+/* Image container */
+.card-img-top {
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: filter 1s;
+  height: 70%; /* Image takes up 70% of the height */
+}
+/* Card body styling */
+.card-body {
+  padding: 1rem;
+  height: 30%; /* Card body takes up the remaining 30% of the height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+/* Course title styling */
+.course-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+  text-transform: capitalize;
+  text-align: center;
+}
+
+/* Progress Bar container */
+.progress-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  font-size: 0.875rem; /* smaller font size for progress */
+  color: #555;
+}
+
+.progress-bar-wrapper {
+  flex-grow: 1;
+  margin: 0 1rem;
+}
+
+/* Progress percentage */
+.progress-percentage {
+  font-weight: bold;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
+
+/* Progress bar styling */
+.progress {
+  background-color: #e9ecef; /* Light background for the progress bar */
+  border-radius: 10px;
+}
+
+.progress-bar {
+  background-color: #007bff; /* Blue color for progress */
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease; /* Smooth transition */
+}
+
+/* Play button styling (centered in the middle of the image) */
+.play-button-wrapper {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  color: #fff;
+  z-index: 10;
+  cursor: pointer;
+  display: none; /* Initially hidden */
+}
+
+.imgcard:hover .play-button-wrapper {
+  display: block; /* Show play button on hover */
+}
+
+
+.play-button-wrapper .play-button {
+  font-size: 80px;
+  color: white;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+/* Change color on hover */
+.play-button-wrapper .play-button:hover {
+  color: #007bff; /* Change to blue on hover */
+}
+
+/* Show play button when hovering over the card */
+.imgcard:hover .play-button-wrapper {
+  visibility: visible;
+}
