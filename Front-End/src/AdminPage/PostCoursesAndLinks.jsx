@@ -1,0 +1,103 @@
+import { useState } from 'react';
+import axios from 'axios';
+
+function CourseManager() {
+  const [courses, setCourses] = useState([]);
+  const [newCourse, setNewCourse] = useState({
+    title: '',
+    description: '',
+    indexes: [{ title: '', youtubeLink: '' }],
+  });
+  const [image, setImage] = useState(null);
+
+  const handleAddCourse = (e) => {
+    e.preventDefault();
+
+    // Prepare FormData for the request
+    const formData = new FormData();
+    formData.append('title', newCourse.title);
+    formData.append('description', newCourse.description);
+    formData.append('indexes', JSON.stringify(newCourse.indexes)); // Convert indexes to string
+    if (image) {
+      formData.append('image', image); // Add the image file
+    }
+
+    axios
+      .post('http://localhost:9000/post-course/add-course', formData,{  withCredentials: true })
+      .then((response) => {
+        alert('Course added successfully!');
+        setCourses([...courses, response.data.course]);
+        setNewCourse({ title: '', description: '', indexes: [{ title: '', youtubeLink: '' }] });
+        setImage(null);
+      })
+      .catch((error) => console.error('Error adding course:', error));
+  };
+
+  const handleIndexChange = (index, field, value) => {
+    const updatedIndexes = [...newCourse.indexes];
+    updatedIndexes[index][field] = value;
+    setNewCourse({ ...newCourse, indexes: updatedIndexes });
+  };
+
+  const addNewIndex = () => {
+    setNewCourse({ ...newCourse, indexes: [...newCourse.indexes, { title: '', youtubeLink: '' }] });
+  };
+
+  return (
+    <div>
+      <h1>Course Manager</h1>
+
+      {/* Add New Course */}
+      <form onSubmit={handleAddCourse} encType="multipart/form-data">
+        <h2>Add Course</h2>
+        <input
+          type="text"
+          placeholder="Title"
+          value={newCourse.title}
+          onChange={(e) => setNewCourse({ ...newCourse, title: e.target.value })}
+          required
+        />
+        <textarea
+          placeholder="Description"
+          value={newCourse.description}
+          onChange={(e) => setNewCourse({ ...newCourse, description: e.target.value })}
+          required
+        />
+        <h3>Indexes</h3>
+        {newCourse.indexes.map((index, i) => (
+          <div key={i}>
+            <input
+              type="text"
+              placeholder="Index Title"
+              value={index.title}
+              onChange={(e) => handleIndexChange(i, 'title', e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="YouTube Link"
+              value={index.youtubeLink}
+              onChange={(e) => handleIndexChange(i, 'youtubeLink', e.target.value)}
+              required
+            />
+          </div>
+        ))}
+        <button type="button" onClick={addNewIndex}>
+          Add New Index
+        </button>
+        <div>
+          <label>Image:</label>
+          <input
+            type="file"
+            onChange={(e) => setImage(e.target.files[0])}
+            accept="image/*"
+            required
+          />
+        </div>
+        <button type="submit">Add Course</button>
+      </form>
+    </div>
+  );
+}
+
+export default CourseManager;
