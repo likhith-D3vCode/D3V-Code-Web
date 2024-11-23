@@ -1,13 +1,69 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import "../Html.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const HtmlCourse = () => {
+    const location = useLocation();
+    const { index, title, id } = location.state || {};
+    const navigate=useNavigate();
     const [videoUrl, setVideoUrl] = useState('https://www.youtube.com/embed/UB1O30fR-EE');
     const [activeTopic, setActiveTopic] = useState('');
     const [showVideo, setShowVideo] = useState(false);
     const [labLink, setLabLink] = useState('');
     const [dropdownOpen, setDropdownOpen] = useState(null); // Track which dropdown is open
     const [showBlogs, setShowBlogs] = useState(true); // State to toggle between video and blog cards
+    const[timerper,setTimerper]=useState(0);
+
+
+    const [isExitModalOpen, setIsExitModalOpen] = useState(false);
+
+   
+
+    const [timer, setTimer] = useState(0); // Timer state in seconds
+    const [isTimerRunning, setIsTimerRunning] = useState(false); // Timer status
+
+   
+    useEffect(() => {
+        const fetchProgress = async () => {
+            try {
+                const response = await axios.get(`http://localhost:9000/get-progress-api/progress/${id}`, { withCredentials: true });
+                const { progress } = response.data;
+
+                // Convert progress percentage to time (assuming 10,000 seconds as 100%)
+                const resumedTime = Math.round((progress / 100) * 10000);
+                setTimer(resumedTime);
+                setIsTimerRunning(true); // Start the timer
+            } catch (error) {
+                console.error('Error fetching progress:', error);
+            }
+        };
+
+        if (id) {
+            fetchProgress();
+        }
+    }, [id]);
+
+
+
+
+    useEffect(() => {
+        const savedTimer = localStorage.getItem("htmlCourseTimer");
+        if (savedTimer) {
+            setTimer(parseInt(savedTimer)); // Set the timer to the saved value
+            setIsTimerRunning(true); // Start the timer if it was previously running
+        }
+    }, []);
+
+    // Save the timer state to localStorage whenever it changes
+    useEffect(() => {
+        if (isTimerRunning) {
+            localStorage.setItem("htmlCourseTimer", timer); // Save the current timer state
+        }
+    }, [timer, isTimerRunning]);
+
+
+
 
     const playVideo = (url, topicId, labUrl) => {
         setVideoUrl(url);
@@ -15,6 +71,7 @@ const HtmlCourse = () => {
         setLabLink(labUrl);
         setShowVideo(true); // Show video when a topic is clicked
         setShowBlogs(false); // Hide blog cards when video is shown
+        toggleTimer();
     };
 
     const toggleDropdown = (topicId) => {
@@ -41,10 +98,11 @@ const HtmlCourse = () => {
         };
     }, []);
 
+
+
     const goToLab = () => {
-        if (labLink) {
-            window.location.href = labLink;
-        }
+       
+        navigate("/questions")
     };
 
     const handleCourseClick = () => {
@@ -52,33 +110,143 @@ const HtmlCourse = () => {
         setShowVideo(false); // Hide video section
     };
 
+    // Timer effect
+    useEffect(() => {
+        let timerInterval;
+        if (isTimerRunning) {
+            timerInterval = setInterval(() => {
+                setTimer((prev) => prev + 1);
+            }, 1000);
+        } else {
+            clearInterval(timerInterval);
+        }
+        return () => clearInterval(timerInterval);
+    }, [isTimerRunning]);
+
+    const toggleTimer = () => {
+        setIsTimerRunning(true);
+    };
+
+    const formatTime = (time) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    };
+
+
+         // Calculate timer as a percentage of 1000
+    const calculatePercentage = (timer) => {
+        return(Math.min((timer / 10000) * 100, 100).toFixed(2)); // Return percentage formatted to 2 decimal places
+    };
+
+
+    
+    const handleExit = () => {
+        setIsExitModalOpen(true); // Show exit confirmation modal
+        setTimerper(calculatePercentage(timer))
+
+
+    };
+
+    const confirmExit = async() => {
+
+        try {
+            // Prepare the data to send to the API
+            const data = {
+                id: id, // The id from location.state
+                progress: timerper, // Timer percentage
+            };
+
+            console.log(timerper)
+    
+            // Make an API call to update the progress
+            const response = await axios.post('http://localhost:9000/progressUp/update-progress',  data,{  withCredentials: true });
+    
+            if (response.ok) {
+                // Handle successful response
+                console.log('Progress updated successfully');
+            } else {
+                // Handle errors
+                console.error('Failed to update progress');
+            }
+        } catch (error) {
+            console.error('An error occurred while updating progress:', error);
+        }
+    
+    
+        setTimerper(calculatePercentage(timer))
+
+
+        setIsTimerRunning(false); // Stop the timer when exiting
+        setTimer(0)
+        navigate("/study"); // Navigate to the study page
+ 
+    };
+
+    const cancelExit = () => {
+        setIsExitModalOpen(false); // Close the exit confirmation modal
+        setTimerper(calculatePercentage(timer))
+
+    };
+
+
+    useEffect(() => {
+        let timerInterval;
+        if (isTimerRunning) {
+            timerInterval = setInterval(() => {
+                setTimer((prev) => prev + 1);
+            }, 1000);
+        } else {
+            clearInterval(timerInterval);
+        }
+        return () => clearInterval(timerInterval);
+    }, [isTimerRunning]);
+
+   
+
     return (
         <div id="viewport">
             {/* Sidebar Section */}
             <div id="sidebar">
                 <header>
-                    <a href="#" onClick={handleCourseClick}>HTML Course</a>
+                    <a href="#" onClick={handleCourseClick}>{title}</a>
                 </header>
                 <ul className="nav">
-                    {/* Topic 1 */}
-                    <li onMouseLeave={handleMouseLeave}>
-                        <div className="topic-name" onClick={() => playVideo('https://www.youtube.com/embed/ZUx1t5Tf2hA', 'topic1', 'https://example.com/lab1')}>
-                            <i className="zmdi zmdi-view-dashboard"></i> Introduction to HTML
-                        </div>
-                        <div className="dropdown-toggle" onClick={(e) => { e.stopPropagation(); toggleDropdown('topic1'); }}>
-                            <span className={`arrow ${dropdownOpen === 'topic1' ? 'open' : ''}`}></span>
-                        </div>
-                        {dropdownOpen === 'topic1' && (
-                            <ul className="dropdown-menu">
-                                <li onClick={() => playVideo('https://www.youtube.com/embed/ZUx1t5Tf2hA', 'topic1', 'https://example.com/lab1')}>Start Learning</li>
-                                <li onClick={goToLab}>Go to Lab</li> {/* Same functionality as the button */}
-                            </ul>
-                        )}
-                    </li>
-
-                    {/* Other Topics */}
-                    {/* Add similar structure for other topics */}
-                </ul>
+      {index.map((topic, index1) => (
+        <li key={index1} onMouseLeave={handleMouseLeave}>
+          <div
+            className="topic-name"
+            onClick={() => {playVideo(topic.youtubeLink, topic.title, "https://example.com/lab1");
+                
+            }}
+          >
+          <i className="zmdi zmdi-view-dashboard"></i> {topic.title}
+          </div>
+          <div
+            className="dropdown-toggle"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleDropdown(index1);
+            }}
+          >
+            <span
+              className={`arrow ${dropdownOpen === index1 ? 'open' : ''}`}
+            ></span>
+          </div>
+          {dropdownOpen === index1 && (
+            <ul className="dropdown-menu">
+              <li onClick={() =>{ playVideo(topic.youtubeLink, topic.title, "https://example.com/lab1");
+                 
+                }
+                }>
+                Start Learning
+              </li>
+              <li onClick={() => goToLab("https://example.com/lab1")}>Go to Lab</li>
+            </ul>
+          )}
+        </li>
+      ))}
+    </ul>
             </div>
 
             {/* Content Section */}
@@ -87,8 +255,14 @@ const HtmlCourse = () => {
                     {/* Conditionally render the video or blog cards */}
                     {showVideo ? (
                         <>
+                            
                             <iframe id="topicVideo" src={videoUrl} allowFullScreen></iframe>
-                            {/* No "Go to Lab" button below the video anymore */}
+                             
+                            <div className="video-controls">
+                                <span className="timer-display">{formatTime(timer)}</span>
+                                <p> ({calculatePercentage(timer)}%){id}</p>
+                            </div>
+
                         </>
                     ) : (
                         showBlogs && (
@@ -152,8 +326,23 @@ const HtmlCourse = () => {
                     )}
                 </div>
             </div>
+        
+        {/* Exit Button */}
+        <button onClick={handleExit} className="exit-button">Exit</button>
+
+{/* Exit Confirmation Modal */}
+{isExitModalOpen && (
+    <div className="modal">
+        <div className="modal-content">
+            <p>Are you sure you want to exit?</p>
+            <button onClick={confirmExit}>Exit</button>
+            <button onClick={cancelExit}>Cancel</button>
+        </div>
+    </div>
+)}
+
         </div>
     );
 };
 
-export default HtmlCourse;
+export default HtmlCourse;            

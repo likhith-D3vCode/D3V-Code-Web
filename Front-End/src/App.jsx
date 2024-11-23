@@ -15,6 +15,7 @@ import PostQuestionsAndTestCases from "./AdminPage/PostQuestionsAndTestCases"
 import SignupPage from "./SignUpAndLogin/SignUpPage"
 import LoginPage from "./SignUpAndLogin/loginPage"
 import HtmlCourse from "./StudyPage/HtmlCourse"
+import PostCoursesAndLinks from "./AdminPage/PostCoursesAndLinks"
 function App() {
  
 
@@ -36,6 +37,7 @@ function App() {
       <Route path="/SignUp" element={<SignupPage/>}/>
       <Route path="/Admin" element={<PostQuestionsAndTestCases/>}/>
       <Route path="/StaticLogin" element={<LoginPage/>}/>
+      <Route path="/post-Courses" element={<PostCoursesAndLinks/>}/>
       <Route path="/Study" element={<Course1/>}/>
       <Route path="/CourseIndex" element={<HtmlCourse/>}/>
       <Route path="/questions" element={<ProtectedRoute element={<Questions />} />} />

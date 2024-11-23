@@ -21,6 +21,8 @@ const commenetsRouter=require('./routers/commentsRouter')
 const QuestionCommentsRouter=require('./routers/QnCommentsRouter')
 const solvedqnByuser=require("./routers/solvedQuestionsRouter")
 const UserLikesrouter=require("./routers/UserlikesRouter")
+const coursesRouter=require("./routers/courseRouter")
+
 // Use a default shell
 var shell = os.platform() === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'bash';
 
@@ -155,6 +157,14 @@ app.use("/likesget",authenticationCheck,UserLikesrouter)
 app.get('/auth/validate-token', authenticationCheck, (req, res) => {
   res.json({ isAuthenticated: true, user: req.user });
 });
+
+app.use("/post-course",authenticationCheck,coursesRouter)
+app.use("/get-course",authenticationCheck,coursesRouter);
+app.use("/updateCourses",coursesRouter)
+app.use("/progressUp",authenticationCheck,coursesRouter)
+
+
+app.use('/get-progress-api',authenticationCheck, coursesRouter);
 
 
 app.get('/files', async (req, res) => {
