@@ -41,7 +41,7 @@ const storage = multer.diskStorage({
 router.post('/add-course', upload.single('image'), async (req, res) => {
     const userId=req.user._id;
    
-    console.log(userId)
+  
   try {
     
     const { title, description, indexes } = req.body;
@@ -96,7 +96,7 @@ router.post('/update-progress', async (req, res) => {
   try {
 
     const { id , progress } = req.body;
-  console.log(req.body)
+
     const course = await Course.findById(id);
    
     if (!course) {
@@ -143,7 +143,7 @@ router.get('/progress/:courseId', async (req, res) => {
 
 
 
-      console.log(userProgress)
+     
       if (!userProgress) {
           return res.status(404).json({ message: 'User progress not found for this course' });
       }

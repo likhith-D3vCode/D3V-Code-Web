@@ -217,7 +217,7 @@ const HtmlCourse = () => {
           <div
             className="topic-name"
             onClick={() => {playVideo(topic.youtubeLink, topic.title, "https://example.com/lab1");
-                
+                formatTime(timer)
             }}
           >
           <i className="zmdi zmdi-view-dashboard"></i> {topic.title}
@@ -236,7 +236,7 @@ const HtmlCourse = () => {
           {dropdownOpen === index1 && (
             <ul className="dropdown-menu">
               <li onClick={() =>{ playVideo(topic.youtubeLink, topic.title, "https://example.com/lab1");
-                 
+                 formatTime(timer)
                 }
                 }>
                 Start Learning
@@ -259,8 +259,8 @@ const HtmlCourse = () => {
                             <iframe id="topicVideo" src={videoUrl} allowFullScreen></iframe>
                              
                             <div className="video-controls">
-                                <span className="timer-display">{formatTime(timer)}</span>
-                                <p> ({calculatePercentage(timer)}%){id}</p>
+                                <span className="timer-display"></span>
+                             
                             </div>
 
                         </>
