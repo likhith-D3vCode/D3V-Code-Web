@@ -62,3 +62,8 @@
     }
   }
   
+
+  .hidden-editor {
+    display: none;
+  }
+  
