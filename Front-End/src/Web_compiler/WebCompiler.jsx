@@ -34,7 +34,7 @@ const WebCompiler = ({ TestCases ,questionId}) => {
 const [jsoutput,setjsoutput]=useState([]);
 
 
-const API_KEY = "AIzaSyABIaJ6PoEYmInMAvQ_4j-Zl5Juva--P8c";
+const API_KEY = "{yourkey}";
 const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`;
 
 const [isResponseGenerating, setIsResponseGenerating] = useState(false);
