@@ -22,7 +22,7 @@ const QuestionCommentsRouter=require('./routers/QnCommentsRouter')
 const solvedqnByuser=require("./routers/solvedQuestionsRouter")
 const UserLikesrouter=require("./routers/UserlikesRouter")
 const coursesRouter=require("./routers/courseRouter")
-
+const jsvalidationChecker =require("./HtmlCssjsValidator/jsValidator")
 // Use a default shell
 var shell = os.platform() === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'bash';
 
@@ -165,7 +165,7 @@ app.use("/progressUp",authenticationCheck,coursesRouter)
 
 
 app.use('/get-progress-api',authenticationCheck, coursesRouter);
-
+app.use("/jsvalidator",jsvalidationChecker)
 
 app.get('/files', async (req, res) => {
   try {

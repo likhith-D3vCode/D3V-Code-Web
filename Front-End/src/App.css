@@ -508,8 +508,16 @@ a:hover {
 }
 
 .editor-container{
-  min-height: 60vh;
-  display: flex;
+  padding: 0; /* Remove extra padding */
+  margin: 0;
+  box-sizing: border-box;
+  
+
+}
+
+.ace_editor {
+  font-family: 'Courier New', Courier, monospace !important; /* Ensure monospace font */
+  line-height: 1.5 !important; /* Adjust line height */
 }
 
 li{
