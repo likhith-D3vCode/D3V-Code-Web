@@ -12,6 +12,8 @@ const UploadQuestions = () => {
     Requirements: [{ sectionTitle: '', sectionContent: '' }],
     AcceptanceCriteria: [{ Criteria1: '' }],
     TestCases: [{ description: '', includes: '', includestype: '' }],
+    topicname:''
+    
   });
 
   // Handler for form input change
@@ -45,12 +47,13 @@ const UploadQuestions = () => {
     e.preventDefault();
 
     try {
+      console.log(formData)
       const response = await axios.post('http://localhost:9000/questions/api', formData); // Post the data to the backend
       console.log('Response:', response.data);
       alert('Question created successfully!');
     } catch (error) {
       console.error('Error:', error.response.data);
-      alert('Failed to create question');
+      alert('Failed to create question'); 
     }
   };
 
@@ -96,6 +99,13 @@ const UploadQuestions = () => {
         type="text"
         value={formData.language}
         onChange={(e) => handleInputChange(e, null, 'language')}
+        required
+      />
+       <label>TopicName:</label>
+      <input
+        type="text"
+        value={formData.topicname}
+        onChange={(e) => handleInputChange(e, null, 'topicname')}
         required
       />
 

@@ -1,0 +1,48 @@
+  
+  .tag {
+    background-color: #cdc3c3;
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+  }
+  
+  .count {
+    background-color: #444;
+    color: #ddd;
+    padding: 2px 8px;
+    margin-left: 5px;
+    border-radius: 12px;
+  }
+  
+  .expand {
+    color: #0af;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .categories {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .category {
+    background-color: #2a2a2a;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .all-topics {
+    background-color: #444;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+  

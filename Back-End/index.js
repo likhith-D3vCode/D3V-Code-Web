@@ -118,6 +118,10 @@ app.use("/login",loginrouter)
 
 app.use("/questions",router);
 app.use("/display",router)
+app.use("/gettopicwise",router)
+
+
+
 app.use("/facts",factsRouter)
 app.use("/getFacts",factsRouter)
 app.use("/api", validator); 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import "./Questions.css"
 
 function Questions() {
   const [questions, setQuestions] = useState([
@@ -42,7 +43,9 @@ function Questions() {
     const fetchQuestions = async () => {
       try {
         const response = await axios.get("http://localhost:9000/display/get/api");
+        
         const questionsArray = Array.isArray(response.data) ? response.data : Object.values(response.data);
+        console.log(questionsArray.language)
         setQuestions(questionsArray);
       } catch (error) {
         console.error("Error fetching questions:", error);
@@ -71,7 +74,9 @@ function Questions() {
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h1>Frontend & Backend Tasks</h1>
+      <div  className="tag">
+           Html <span className="count">100</span>
+          </div>
         <div>
           <label htmlFor="difficulty">Difficulty Level: </label>
           <select

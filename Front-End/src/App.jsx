@@ -16,6 +16,7 @@ import SignupPage from "./SignUpAndLogin/SignUpPage"
 import LoginPage from "./SignUpAndLogin/loginPage"
 import HtmlCourse from "./StudyPage/HtmlCourse"
 import PostCoursesAndLinks from "./AdminPage/PostCoursesAndLinks"
+import SpecificquestionTopicWise from "./Labs/SpecificquestionTopicWise"
 function App() {
  
 
@@ -34,6 +35,7 @@ function App() {
     <Router>
     <Routes>
       <Route path="/" element={<NavBar/>}/>
+      <Route path="/specificQuestions" element={<SpecificquestionTopicWise/>}/>
       <Route path="/SignUp" element={<SignupPage/>}/>
       <Route path="/Admin" element={<PostQuestionsAndTestCases/>}/>
       <Route path="/StaticLogin" element={<LoginPage/>}/>

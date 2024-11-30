@@ -37,7 +37,8 @@ const TaskSchema = new Schema({
     type: [TestCaseSchema], // Stores dynamic test cases
     required: true
   },
-  language: { type: String, required: true }
+  language: { type: String, required: true },
+  topicname:{type:String,required:true}
 });
 
 const QuestionSchema = mongoose.model('WebQuestions', TaskSchema);

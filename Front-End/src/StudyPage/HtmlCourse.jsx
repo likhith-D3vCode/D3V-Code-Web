@@ -100,9 +100,14 @@ const HtmlCourse = () => {
 
 
 
-    const goToLab = () => {
-       
-        navigate("/questions")
+    const goToLab = async(title) => {
+        console.log(title)
+        //  const name="introduction to css";
+        
+        const response=await axios.get(`http://localhost:9000/gettopicwise/get/topicwise/${title}`);
+
+        console.log(response.data.questionsdata);
+        navigate("/specificQuestions", { state: { questions: response.data.questionsdata } })
     };
 
     const handleCourseClick = () => {
@@ -157,7 +162,7 @@ const HtmlCourse = () => {
                 progress: timerper, // Timer percentage
             };
 
-            console.log(timerper)
+           
     
             // Make an API call to update the progress
             const response = await axios.post('http://localhost:9000/progressUp/update-progress',  data,{  withCredentials: true });
@@ -241,7 +246,8 @@ const HtmlCourse = () => {
                 }>
                 Start Learning
               </li>
-              <li onClick={() => goToLab("https://example.com/lab1")}>Go to Lab</li>
+            
+              <li onClick={() => goToLab(topic.title)}>Go to Lab</li>
             </ul>
           )}
         </li>
