@@ -4,7 +4,7 @@ const QuestionSchema=require('../models/questionsSchema');
  const handlequestions=async (req,res)=>{
   
     try{
-        const {id,title,difficulty, description, Requirements, AcceptanceCriteria,TestCases,language}=req.body;
+        const {id,title,difficulty, description, Requirements, AcceptanceCriteria,TestCases,language,topicname}=req.body;
 
         const questions=await QuestionSchema.create({
             id,
@@ -14,7 +14,8 @@ const QuestionSchema=require('../models/questionsSchema');
             Requirements,
             AcceptanceCriteria,
             TestCases,
-            language
+            language,
+            topicname
         });
 
        return res.status(201).json({msg:'Question created successfully'});
