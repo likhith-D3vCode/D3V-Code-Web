@@ -1,0 +1,289 @@
+/* Profile Container */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+    font-family: "Arial", sans-serif;
+  }
+  
+  /* Profile Card */
+  .profile-card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  
+  /* Profile Image */
+  .profile-image {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 3px solid #007bff;
+  }
+  
+  /* User Info */
+  .user-info {
+    margin-top: 1rem;
+  }
+  
+  .user-info h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+  }
+  
+  .user-info p {
+    margin: 0.5rem 0;
+    color: #777;
+  }
+  
+  /* Role Tag */
+  .role-tag {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    margin-top: 0.5rem;
+  }
+  
+  /* Error Message */
+  .error-message {
+    color: red;
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+
+  
+  .courses-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .courses-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .course-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .course-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .course-progress {
+    font-size: 16px;
+    color: #777;
+  }
+
+  
+  .profile-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+  }
+  
+  .error-message {
+    color: red;
+    text-align: center;
+    margin: 10px 0;
+  }
+  
+  .profile-card {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-image {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+  
+  .user-info h2 {
+    font-size: 24px;
+    margin: 10px 0;
+  }
+  
+  .role-tag {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .courses-container {
+    margin-top: 30px;
+  }
+  
+  .courses-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .course-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .course-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .course-progress {
+    font-size: 16px;
+    color: #777;
+  }
+
+  
+/* Container for the solved questions section */
+.solved-questions-container {
+    margin-top: 30px;
+  }
+  
+  /* Title for the solved questions section */
+  .solved-questions-container h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* Wrapper for the list of solved questions */
+  .solved-questions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Each solved question entry */
+  .solved-question-card {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* The question title */
+  .solved-question-card .question-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 15px;
+    flex-grow: 1;
+  }
+  
+  /* The solved icon for each question */
+  .solved-question-card .solved-icon {
+    font-size: 18px;
+    color: green;
+    margin-left: 15px;
+  }
+
+  /* Calendar custom styles */
+.react-calendar .highlighted-date {
+    background-color: #4CAF50; /* Green color */
+    color: white;
+    border-radius: 50%;
+  }
+  
+  .calendar-container {
+    margin-top: 30px;
+  }
+  
+  .calendar-container h2 {
+    text-align: center;
+  }
+
+  
+  .edit-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
+  
+  .edit-form label {
+    display: block;
+    margin: 10px 0;
+  }
+  
+  .edit-form input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+  
+  .edit-form button {
+    margin: 10px 5px 0 0;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .edit-form button[type="submit"] {
+    background: #4caf50;
+    color: white;
+  }
+  
+  .edit-form button[type="button"] {
+    background: #f44336;
+    color: white;
+  }
+  

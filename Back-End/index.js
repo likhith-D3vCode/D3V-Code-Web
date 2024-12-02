@@ -115,7 +115,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/signup",SignupRouter);
 app.use("/login",loginrouter)
-
+app.use("/getOneUsername",authenticationCheck,loginrouter)
+app.use("/getallusers",authenticationCheck,loginrouter)
+app.use("/putuserdata",authenticationCheck,loginrouter)
 app.use("/questions",router);
 app.use("/display",router)
 app.use("/gettopicwise",router)
@@ -162,11 +164,25 @@ app.get('/auth/validate-token', authenticationCheck, (req, res) => {
   res.json({ isAuthenticated: true, user: req.user });
 });
 
+// Logout route to clear the cookie
+app.post("/logout", authenticationCheck,(req, res) => {
+  // Clear the token cookie
+  res.clearCookie('token', {
+    httpOnly: true,       // Prevents JavaScript access to the cookie
+    secure: false,        // Set `true` in production to use HTTPS
+    sameSite: "lax",      // Ensures cookies are sent on the same domain (adjust as needed)
+  
+  });
+
+  // Respond with a success message
+  return res.status(200).json({ msg: "Logged out successfully" });
+});
+
 app.use("/post-course",authenticationCheck,coursesRouter)
 app.use("/get-course",authenticationCheck,coursesRouter);
 app.use("/updateCourses",coursesRouter)
 app.use("/progressUp",authenticationCheck,coursesRouter)
-
+app.use("/allcourses",authenticationCheck,coursesRouter)
 
 app.use('/get-progress-api',authenticationCheck, coursesRouter);
 app.use("/jsvalidator",jsvalidationChecker)
@@ -194,6 +210,8 @@ app.get('/files/content', async (req, res) => {
 app.use("/solvedquestionsByuser",authenticationCheck,solvedqnByuser);
 app.use("/getsolvedquestionsByuser",solvedqnByuser);
 app.use("/getOneSolvedQn",authenticationCheck,solvedqnByuser)
+
+app.use("/profilesolvedqn",authenticationCheck,solvedqnByuser)
 
 //connection to the mongodb
 connectToThemongodb("mongodb://127.0.0.1:27017/QuestionAndTestCase")
