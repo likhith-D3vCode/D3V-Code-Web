@@ -1,7 +1,9 @@
 const express=require("express");
 const loginRouter=express.Router();
 const userdb=require("../models/signUpSchema");
-
+const multer = require('multer');
+const path = require('path');
+const { createHmac, randomBytes } = require('crypto');
 
 loginRouter.post("/api",async(req,res)=>{
     const {email,password}=req.body
@@ -27,6 +29,100 @@ loginRouter.post("/api",async(req,res)=>{
     
    
 })
+
+
+
+loginRouter.get("/userdata/api",async(req,res)=>{
+    const userid=req.user._id;
+    try{
+        const userdata=await userdb.find({_id:userid})
+        return res.status(201).json({msg:"user data",userdata})
+
+    }catch(err){
+        return res.status(401).json({msg:"user not found in the back end"})
+
+    }
+})
+
+loginRouter.get("/oneuser/api", async (req, res) => {
+    const userid = req.user._id;
+    try {
+        // Select only the 'username' field from the database
+        const userdata = await userdb.findById(userid).select('username');
+        
+        if (!userdata) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+
+        return res.status(200).json({ msg: "User data", userdata });
+
+    } catch (err) {
+        return res.status(500).json({ msg: "Error fetching user data", error: err.message });
+    }
+});
+
+
+
+
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, path.join(__dirname, '../../Front-End/public/UserImages')); // Destination folder in React frontend
+    },
+    filename: (req, file, cb) => {
+      const uniqueName = `${Date.now()}-${file.originalname}`;
+      cb(null, uniqueName);
+    },
+  });
+
+
+
+  const fileFilter = (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only JPEG, PNG, and JPG are allowed.'));
+    }
+  };
+
+  const upload = multer({
+    storage,
+    fileFilter,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  });
+
+
+
+
+
+  loginRouter.put('/updateUser',upload.single('image'), async (req, res) => {
+    try {
+        const { username, email } = req.body;
+        const profileImg = req.file ? req.file.filename : null;
+        const userId =req.user._id;
+
+        const updatedUser = await userdb.findByIdAndUpdate(
+            userId,
+            { username, email, profileImg },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        res.status(200).json({ msg: 'User updated successfully', updatedUser });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ msg: 'Server error' });
+    }
+});
+
+
+
+
+
 
 
 

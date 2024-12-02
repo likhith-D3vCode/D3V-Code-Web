@@ -23,6 +23,21 @@ const HtmlCourse = () => {
     const [timer, setTimer] = useState(0); // Timer state in seconds
     const [isTimerRunning, setIsTimerRunning] = useState(false); // Timer status
 
+
+    // useEffect(() => {
+    //     const preventBackNavigation = () => {
+    //         window.history.pushState(null, null, window.location.href);
+    //         alert("Back navigation is disabled on this page!");
+    //     };
+
+    //     window.history.pushState(null, null, window.location.href);
+    //     window.onpopstate = preventBackNavigation;
+
+    //     return () => {
+    //         window.onpopstate = null;
+    //     };
+    // }, []);
+
    
     useEffect(() => {
         const fetchProgress = async () => {

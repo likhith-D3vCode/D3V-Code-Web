@@ -70,8 +70,7 @@ router.post('/add-course', upload.single('image'), async (req, res) => {
 
 // Get all courses
 router.get('/courses', async (req, res) => {
-  const userId=req.user._id;
-
+  const userId = req.user._id;
 
   try {
     const courses = await Course.find({});
@@ -79,16 +78,21 @@ router.get('/courses', async (req, res) => {
 
     const filteredCourses = courses.map((course) => {
       const userProgress = course.users.find(user => user.userId.equals(userObjectId));
-      return { ...course._doc, progress: userProgress.progress };
+      
+      // Return course with user's progress if found, otherwise default progress
+      return {
+        ...course._doc,
+        progress: userProgress ? userProgress.progress : 0, // Default progress to 0 if not found
+      };
     });
-    
+
     res.json(filteredCourses);
   } catch (err) {
+    console.error('Error fetching courses:', err);
     res.status(500).json({ error: 'Error fetching courses' });
   }
-
-
 });
+
 
 // Update user progress
 router.post('/update-progress', async (req, res) => {
@@ -160,6 +164,46 @@ router.get('/progress/:courseId', async (req, res) => {
       res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
+
+
+// Route to get course data and user progress
+router.get("/getAllcourses", async (req, res) => {
+  const userId=req.user._id;
+  //  console.log(userId)
+  try {
+    // Retrieve courses with progress data for the specified user
+    const courses = await Course.find({
+      "users.userId":new mongoose.Types.ObjectId(userId), // Filter courses where the user exists in the users array
+    })
+      .select("title description image indexes users") // Select only necessary fields
+      .lean(); // Convert to plain JavaScript objects
+
+    // Map courses to include user-specific progress
+    const result = courses.map((course) => {
+      const userProgress = course.users.find(
+        (user) => user.userId.toString() === userId
+      );
+
+      return {
+        _id: course._id,
+        title: course.title,
+        description: course.description,
+        image: course.image,
+        indexes: course.indexes,
+        progress: userProgress ? userProgress.progress : 0, // Include progress or 0 if not found
+      };
+    });
+
+    res.status(200).json({ success: true, courses: result });
+  } catch (error) {
+    console.error("Error fetching courses:", error.message);
+    res.status(500).json({ success: false, message: "Failed to fetch courses" });
+  }
+});
+
+module.exports = router;
+
 
 
 
