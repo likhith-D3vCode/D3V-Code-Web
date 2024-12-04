@@ -21,13 +21,30 @@ const signupUser=new mongoose.Schema({
     },
    profileImg:{
     type:String,
-    default:"../userImages/download.png"
+    default:"../userImages/download.png"                 
    },
    role:{
     type:String,
     enum:["USER","ADMIN"],
     default:"USER"
-   }
+   },
+   phoneNo:{
+    type:Number,
+    default:"000"
+   },
+   skils:[
+    {
+        addskills: { type: String },
+    }
+   ],
+   Education:[
+    {
+        schoolName:{type:String},
+        year:{type:Number},
+        score:{type:String},
+        place:{type:String}
+    }
+   ],
 },
 {timestamps:true}
 );

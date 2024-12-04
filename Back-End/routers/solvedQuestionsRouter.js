@@ -72,10 +72,10 @@ solvedquestionsByUser.get("/users/solved-questions", async (req, res) => {
   try {
     const solvedQuestions = await solved
       .find({ createdBy: userId })
-      .populate("Question", "title description") // Populate question details
+      .populate("Question", "title description difficulty") // Populate question details
       .populate("createdBy", "username email") // Populate user details
       .sort({ solvedAt: -1 }); // Sort by the solved date
-    console.log("solvedqns",solvedQuestions)
+    // console.log("solvedqns",solvedQuestions)
     if (!solvedQuestions.length) {
       return res.status(404).json({ message: "No solved questions found for this user." });
     }
