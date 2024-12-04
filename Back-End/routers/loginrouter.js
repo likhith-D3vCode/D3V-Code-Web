@@ -98,15 +98,52 @@ const storage = multer.diskStorage({
 
   loginRouter.put('/updateUser',upload.single('image'), async (req, res) => {
     try {
-        const { username, email } = req.body;
+        const { username, email ,phoneNo, skills, education} = req.body;
+
+         
         const profileImg = req.file ? req.file.filename : null;
         const userId =req.user._id;
 
+         // Fetch the existing user data
+         const existingUser = await userdb.findById(userId);
+         if (!existingUser) {
+             return res.status(404).json({ message: 'User not found' });
+         }
+
+        // Parse skills and education if provided as JSON
+        // const parsedSkills = skills ? JSON.parse(skills) : [];
+        // const parsedEducation = education ? JSON.parse(education) : [];
+
+
+
+        const updateFields = {
+          username: username || existingUser.username,
+          email: email || existingUser.email,
+          profileImg: profileImg || existingUser.profileImg,
+          phoneNo: phoneNo || existingUser.phoneNo,
+         skils:skills !== '[""]'
+          ? JSON.parse(skills).map(skill => ({ addskills: skill }))
+          : existingUser.skils, // Use existing skills if new skills are not provided
+        Education:education !== '[{"schoolName":"","year":"","score":"","place":""}]'
+          ? JSON.parse(education).map(edu => ({
+              schoolName: edu.schoolName,
+              year: edu.year,
+              score: edu.score,
+              place: edu.place,
+            }))
+          : existingUser.Education, //
+      };
+
+       
+
+
+
+
         const updatedUser = await userdb.findByIdAndUpdate(
-            userId,
-            { username, email, profileImg },
-            { new: true } // Return the updated document
-        );
+          userId,
+          { $set: updateFields }, // Use $set to update only specified fields
+          { new: true } // Return the updated document
+      );
 
         if (!updatedUser) {
             return res.status(404).json({ msg: 'User not found' });

@@ -5,6 +5,7 @@ import '../CourseCard.css'; // Link to CSS for styling
 import PropTypes from 'prop-types';
 // import HTMLCourseImage from '../AdminPage/CourseImages/1732130508338-pexels-padrinan-1591061.jpg'; // Import the image
 import axios from 'axios';
+import RedimadeNavBar from '../HomePage/RedimadeNavBar';
 
 
 const CourseCard = () => {
@@ -30,7 +31,10 @@ useEffect(()=>{
 
 
   return (
+    <>
+    <RedimadeNavBar/>
     <div className="container mt-4">
+      
       <div className="row gy-4">
       {course.map((course) => (
           <div className="col-md-4 col-sm-6" key={course._id}>
@@ -39,6 +43,7 @@ useEffect(()=>{
         ))}
       </div>
     </div>
+    </>
   );
 };
 

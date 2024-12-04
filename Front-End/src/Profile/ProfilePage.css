@@ -251,13 +251,23 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
+    width: 80%;
+    max-width: 800px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000;
+    overflow: hidden; /* Prevent content overflow outside the modal */
   }
   
+  .edit-form {
+    max-height: 70vh; /* Set a maximum height for the form */
+    overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+
   .edit-form label {
     display: block;
     margin: 10px 0;
@@ -286,4 +296,74 @@
     background: #f44336;
     color: white;
   }
+  
+
+  
+
+
+  .progress-bar1 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .circle1 {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 8px solid #555;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  
+  .percentage1 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .text1 {
+    font-size: 16px;
+    margin-top: 5px;
+  }
+  
+  .submissions1 {
+    font-size: 14px;
+    color: #aaa;
+  }
+  
+  .difficulty-stats1 {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .difficulty-stats1 .easy1,
+  .difficulty-stats1 .medium1,
+  .difficulty-stats1 .hard1 {
+    text-align: center;
+  }
+  
+  .label1 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  .count1 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .container1{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #282c34;
+    color: white;
+    height: 100vh;
+    justify-content: center;
+  }
+
+
   
