@@ -52,10 +52,14 @@ function NavBar() {
 
   return (
     <>
-      <header className="p-3 text-bg-dark">
+      <header className="p-3 text-bg-dark .navbar-container">
         <div className="container">
           <nav className="navbar navbar-expand-lg navbar-dark">
-            <a className="navbar-brand">D3VCode</a>
+            <a className="navbar-brand"  onClick={(e) => {
+      e.preventDefault(); // Prevent the default anchor behavior
+      navigate("/");
+    }}
+    style={{ cursor: "pointer" }}>D3VCode</a>
             <button
               className="navbar-toggler"
               type="button"
@@ -71,7 +75,11 @@ function NavBar() {
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav me-auto navlinks">
                 <li className="nav-item">
-                  <a className="nav-link" onClick={() => navigate("/Study")}>
+                  <a className="nav-link"  onClick={(e) => {
+      e.preventDefault(); // Prevent the default anchor behavior
+      navigate("/Study");
+    }}
+    style={{ cursor: "pointer" }}>
                     Study
                   </a>
                 </li>
@@ -80,13 +88,17 @@ function NavBar() {
                     Labs
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
+                <li className="nav-item" >
+                  <a className="nav-link" href="#"  >
                     Events
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <a className="nav-link"   onClick={(e) => {
+      e.preventDefault(); // Prevent the default anchor behavior
+      navigate("/discuss");
+    }}
+    style={{ cursor: "pointer" }}>
                     Discussion
                   </a>
                 </li>

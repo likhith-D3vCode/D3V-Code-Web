@@ -18,6 +18,8 @@ import HtmlCourse from "./StudyPage/HtmlCourse"
 import PostCoursesAndLinks from "./AdminPage/PostCoursesAndLinks"
 import SpecificquestionTopicWise from "./Labs/SpecificquestionTopicWise"
 import ProfilePage from "./Profile/ProfilePage"
+import Discussion from "./DiscussionPage/Discussion";
+import ShowingContent from "./DiscussionPage/ShowingContentPage";
 function App() {
  
 
@@ -43,7 +45,9 @@ function App() {
       <Route path="/Admin" element={<PostQuestionsAndTestCases/>}/>
       <Route path="/StaticLogin" element={<LoginPage/>}/>
       <Route path="/post-Courses" element={<PostCoursesAndLinks/>}/>
+      <Route path="/discuss" element={<Discussion/>}/>
       <Route path="/Study" element={<Course1/>}/>
+      <Route path="/showingDiscussionContent/:id" element={<ShowingContent />} />
       <Route path="/CourseIndex" element={<HtmlCourse/>}/>
       <Route path="/questions" element={<ProtectedRoute element={<Questions />} />} />
       <Route path="/question/:id" element={<ProtectedRoute element={<PracticePage />} />} />
