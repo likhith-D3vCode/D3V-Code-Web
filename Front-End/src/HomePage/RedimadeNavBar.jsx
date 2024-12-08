@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 function RedimadeNavBar() {
   const [userData, setUserData] = useState(null);
@@ -11,10 +11,13 @@ function RedimadeNavBar() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://localhost:9000/getOneUsername/oneuser/api", {
-          method: "GET",
-          credentials: "include", // To include cookies in the request
-        });
+        const response = await fetch(
+          "http://localhost:9000/getOneUsername/oneuser/api",
+          {
+            method: "GET",
+            credentials: "include", // To include cookies in the request
+          }
+        );
         const data = await response.json();
 
         if (data.msg === "User data") {
@@ -32,12 +35,11 @@ function RedimadeNavBar() {
   const handleLogout = async () => {
     try {
       // Send a request to the backend to clear the cookie
-      const response =   await fetch("http://localhost:9000/logout", {
+      const response = await fetch("http://localhost:9000/logout", {
         method: "POST",
         credentials: "include", // To include cookies in the request
       });
-    
-  
+
       if (response.ok) {
         // If the response is OK, navigate to the login page
         navigate("/StaticLogin");
@@ -54,7 +56,11 @@ function RedimadeNavBar() {
       <header className="p-3 text-bg-dark">
         <div className="container">
           <nav className="navbar navbar-expand-lg navbar-dark">
-            <a className="navbar-brand">D3VCode</a>
+            <a className="navbar-brand"  onClick={(e) => {
+      e.preventDefault(); // Prevent the default anchor behavior
+      navigate("/");
+    }}
+    style={{ cursor: "pointer" }}>D3VCode</a>
             <button
               className="navbar-toggler"
               type="button"
@@ -70,7 +76,11 @@ function RedimadeNavBar() {
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav me-auto navlinks">
                 <li className="nav-item">
-                  <a className="nav-link" onClick={() => navigate("/Study")}>
+                  <a className="nav-link"  onClick={(e) => {
+      e.preventDefault(); // Prevent the default anchor behavior
+      navigate("/Study");
+    }}
+    style={{ cursor: "pointer" }}>
                     Study
                   </a>
                 </li>
@@ -85,7 +95,14 @@ function RedimadeNavBar() {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+             <a
+                    className="nav-link"
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/discuss");
+                    }}
+                  >
                     Discussion
                   </a>
                 </li>
@@ -105,7 +122,10 @@ function RedimadeNavBar() {
                     className="rounded-circle"
                     style={{ width: "40px", height: "40px" }}
                   />
-               <button onClick={()=>navigate("/UserProfile")}>  <span className="ms-2">{userData.username}</span></button> 
+                  <button onClick={() => navigate("/UserProfile")}>
+                    {" "}
+                    <span className="ms-2">{userData.username}</span>
+                  </button>
                   <button
                     type="button"
                     className="btn btn-outline-light ms-2"
@@ -137,7 +157,6 @@ function RedimadeNavBar() {
           </nav>
         </div>
       </header>
-     
     </>
   );
 }

@@ -116,12 +116,12 @@ const HtmlCourse = () => {
 
 
     const goToLab = async(title) => {
-        console.log(title)
+     
         //  const name="introduction to css";
         
         const response=await axios.get(`http://localhost:9000/gettopicwise/get/topicwise/${title}`);
 
-        console.log(response.data.questionsdata);
+        
         navigate("/specificQuestions", { state: { questions: response.data.questionsdata } })
     };
 

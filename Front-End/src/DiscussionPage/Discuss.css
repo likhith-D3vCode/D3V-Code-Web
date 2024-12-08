@@ -1,0 +1,94 @@
+
+  
+
+
+
+
+
+  .container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    margin-bottom: 10px;
+  }
+  
+  .tabs span {
+    margin-right: 20px;
+    cursor: pointer;
+  }
+  
+  input,
+  textarea {
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  
+
+
+
+  button1 {
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+  }
+  
+  .questions {
+    margin-top: 20px;
+  }
+  
+  .question {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .post-interface {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+  }
+  
+  textarea {
+    resize: none;
+  }
+  
+  .options {
+    margin-top: 10px;
+  }
+  
+  .buttons {
+    margin-top: 10px;
+  }
+  
+  .close-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .post-button {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .close-button:hover {
+    background-color: darkred;
+  }
+  
+  .post-button:hover {
+    background-color: darkgreen;
+  }
+  

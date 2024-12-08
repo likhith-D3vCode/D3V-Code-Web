@@ -23,6 +23,7 @@ const solvedqnByuser=require("./routers/solvedQuestionsRouter")
 const UserLikesrouter=require("./routers/UserlikesRouter")
 const coursesRouter=require("./routers/courseRouter")
 const jsvalidationChecker =require("./HtmlCssjsValidator/jsValidator")
+const DiscussRouter=require("./routers/DiscussionRouter")
 // Use a default shell
 var shell = os.platform() === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'bash';
 
@@ -212,6 +213,12 @@ app.use("/getsolvedquestionsByuser",solvedqnByuser);
 app.use("/getOneSolvedQn",authenticationCheck,solvedqnByuser)
 
 app.use("/profilesolvedqn",authenticationCheck,solvedqnByuser)
+
+app.use("/PostDiscussR",authenticationCheck,DiscussRouter)
+app.use("/GetDiscussR",DiscussRouter);
+app.use("/OneDiscussion",DiscussRouter);
+app.use("/postcomments",authenticationCheck,DiscussRouter)
+app.use("/getPostedcomments",DiscussRouter)
 
 //connection to the mongodb
 connectToThemongodb("mongodb://127.0.0.1:27017/QuestionAndTestCase")

@@ -11,13 +11,33 @@ import RedimadeNavBar from '../HomePage/RedimadeNavBar';
 const CourseCard = () => {
   const navigate = useNavigate();
   const [course,setcourse]=useState([])
+  const [courses, setCourses] = useState([]);
+  const [isLoadingCourses, setIsLoadingCourses] = useState(true);
+  const [error,setError]=useState("");
+    // Fetch courses
+    useEffect(() => {
+      const fetchCourses = async () => {
+        try {
+          const response = await axios.get("http://localhost:9000/allcourses/getAllcourses", {
+            withCredentials: true,
+          });
+          setCourses(response.data?.courses || []);
+        } catch (err) {
+          setError((prev) => prev + "Failed to fetch courses: " + err.message);
+        } finally {
+          setIsLoadingCourses(false);
+        }
+      };
+  
+      fetchCourses();
+    }, []);
   
   
 useEffect(()=>{
   const getCourse=async()=>{
    try{
     const response=await axios.get("http://localhost:9000/get-course/courses", { withCredentials: true });
-    console.log(response)
+    
     setcourse(response.data)
 
    }catch(err){
@@ -33,8 +53,27 @@ useEffect(()=>{
   return (
     <>
     <RedimadeNavBar/>
-    <div className="container mt-4">
+    <div className='recent'>
+     <h1 className='recent-h1'>Welcome to  <h2 className='recent-h2'>D3v Code Study</h2></h1>
+    
+    <div className="courses-container">
+        <h1>Continue Your Previous Viewed Courses</h1>
+        {courses.length > 0 ? (
+          <div className="courses-list">
+            {courses.map((course) => (
+              <CardItem key={course._id} card={course} navigate={navigate}  />
+            ))}
+          </div>
+        ) : (
+          <p>No courses available.</p>
+        )}
+      </div>
       
+
+    </div>
+
+    <div className="container mt-4">
+      <h1>Front End </h1>
       <div className="row gy-4">
       {course.map((course) => (
           <div className="col-md-4 col-sm-6" key={course._id}>
@@ -114,6 +153,14 @@ const CardItem = ({ card, navigate}) => {
     </div>
   );
 };
+
+
+// const CourseCardd = ({ course }) => (
+//   <div className="course-card">
+//     <h2 className="course-title">{course.title}</h2>
+//     <p className="course-progress">Progress: {course.progress}%</p>
+//   </div>
+// );
 
 CardItem.propTypes = {
   card: PropTypes.shape({
