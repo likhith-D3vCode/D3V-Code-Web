@@ -4,7 +4,7 @@
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     background-color: #f9f9f9;
-    max-width: 600px;
+    max-width: 950px;
     /* margin: auto; */
     font-family: Arial, sans-serif;
     color: #333;
@@ -67,3 +67,328 @@
     display: none;
   }
   
+
+
+.container{
+  /* background-color: #05171e68; */
+}
+
+
+
+
+
+  .compiler-error-box {
+    background-color: #1e1e2f;
+    color: #ffffff;
+    border: 1px solid #ff6b6b;
+    border-radius: 8px;
+    padding: 15px;
+    max-width: 950px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.compiler-error-box h2 {
+    font-size: 20px;
+    color: #ff6b6b;
+    margin: 0 0 10px;
+}
+
+.compiler-error-box .error-section {
+    margin-bottom: 15px;
+}
+
+.compiler-error-box .error-section h3 {
+    font-size: 18px;
+    margin: 5px 0;
+    color: #ffd166;
+}
+
+.compiler-error-box .error-section p {
+    font-size: 14px;
+    margin: 5px 0;
+    line-height: 1.6;
+    color: #ffffff;
+}
+
+.compiler-error-box .divider {
+    height: 1px;
+    background-color: #ff6b6b;
+    margin: 10px 0;
+}
+
+
+/* .toggle-buttons {
+  margin: 10px 0;
+}
+
+.toggle-buttons button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+} */
+
+
+
+
+
+.toggle-buttons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #607D8B;
+  padding: 6px; 
+  border-radius: 6px;
+  width: 100%;
+}
+
+.toggle-buttons button {
+  background-color: #607D8B;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 4px 9px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.testCasebtn i{
+  color: #fde79e;
+  
+}
+
+.TextCasesText{
+  padding-left: 7px;
+  font-weight: bold;
+  color: rgb(224, 222, 222);
+}
+
+.bugsbutton i{
+  color: #cbb469;
+}
+
+.liveoutputbtn i{
+  color: #efe3ba;
+}
+
+.toggle-buttons button:hover {
+  background-color: #3d6c84;
+  
+  
+}
+
+
+
+.toggle-buttons button:active {
+  background-color: #2f596e;
+  
+}
+
+.toggle-buttons button i {
+  
+  font-size: 24px;
+  transition: color 0.3s ease;
+}
+
+.toggle-buttons button:hover i {
+  color: #e4d39a;
+}
+
+.toggle-buttons button:active i {
+  color: #cbb469;
+}
+
+
+
+
+
+
+
+.compilerButtons{
+  display: flex;
+  gap: 1px;
+}
+
+.RunButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Space between icon and text */
+  padding: 6px 14px;
+  border: none;
+  border-radius: 8px 0px 0px 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+
+.RunButton1{
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Space between icon and text */
+  padding: 6px 14px;
+  border: none;
+  border-radius: 0px 8px 8px 0px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+}
+
+.RunButton i {
+  font-size: 20px;
+  
+}
+
+.RunButton p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* Styles for the 'Run' button */
+.RunButton.run {
+  background-color: #dcdcdc; /* Gainsboro */
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.RunButton.run:hover {
+  background: linear-gradient(135deg, #66bb6a, #388e3c);
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Styles for the 'Submit' button */
+.RunButton1.submit {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.RunButton1.submit:hover {
+  background: linear-gradient(135deg, #66bb6a, #388e3c);
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.solved-symbol i{
+  display: flex;
+   font-size: 25px;
+   color: #32cd32; /* Lime Green */
+   background-color: #ffffff; /* Gainsboro */
+   padding: 1.5px;
+   border-radius: 5px;
+}
+
+.solved-symbol i div{
+  font-size: 17px;
+  padding: 2px;
+}
+
+
+
+select {
+  width: 200px;
+  padding: 10px;
+  border: 2px solid #29a12f; /* Green border */
+  border-radius: 8px; /* Rounded corners */
+  background-color: #e6e6e6; /* Light background */
+  color: #29a12f; /* Dark text color */
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth transition */
+}
+
+select:hover {
+  border-color: #29a12f; /* Darker green on hover */
+  background-color: #f1f1f1; /* Slightly darker background */
+}
+
+select:focus {
+  outline: none; /* Remove default outline */
+  border-color: #2e7d32; /* Darker green border on focus */
+  box-shadow: 0 0 5px rgba(46, 125, 50, 0.5); /* Green glow effect */
+}
+
+option {
+  background-color: #ffffff; /* White background for options */
+  color: #333; /* Dark text color */
+  font-size: 16px;
+  padding: 10px;
+  
+}
+
+
+
+.editor-contai {
+  height: 100%;
+  width: 100%;
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 3px;
+  background-color: #1e1e2f; 
+  border: 1px solid #ececec; /* Highlighted blue outline */
+  border-radius: 8px; /* Smooth corners */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  */
+  overflow: hidden; /* Ensures a clean appearance */
+}
+
+.editor-contai .monaco-editor {
+ 
+  background-color: #8a1818; /* Text color in the editor */
+  
+}
+
+
+.editor-contai .monaco-editor .margin {
+  background-color: #dedee7; 
+
+}
+
+.editor-contai .monaco-editor .cursor {
+  border-color: #4a90e2 !important; /* Highlight the cursor color */
+}
+
+.editor-contai:hover {
+  border-color: #0b0c0c; /* Lighter blue when hovered */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow effect */
+}
+
+
+
+
+
+
+
+
+.preview-container {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #212020;
+  border-radius: 4px;
+  height: 400px;
+  
+}
+
+.output-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .preview-container {
+    height: 300px;
+  }
+}

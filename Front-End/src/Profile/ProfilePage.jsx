@@ -137,7 +137,7 @@ const ProfilePage = () => {
         });
         setCourses(response.data?.courses || []);
       } catch (err) {
-        setError((prev) => prev + "Failed to fetch courses: " + err.message);
+        setError((prev) => prev + "There are no Active courses" );
       } finally {
         setIsLoadingCourses(false);
       }
@@ -164,7 +164,7 @@ const ProfilePage = () => {
         );
         setDateMarked(solvedDates);
       } catch (err) {
-        setError((prev) => prev + "Failed to fetch solved questions: " + err.message);
+        setError("You are not yet solved any question");
       } finally {
         setIsLoadingSolved(false);
       }
@@ -454,7 +454,7 @@ const UserProfile = ({ user, onEdit }) => {
           e.target.src = "https://via.placeholder.com/100?text=User";
         }}
       />
-      <div className="user-info">
+      <div className="user-info1">
         <h2>{user.username}</h2>
         <p>{user.email}</p>
         <span className="role-tag">{user.role}</span>

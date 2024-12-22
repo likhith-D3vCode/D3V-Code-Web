@@ -30,17 +30,17 @@
   }
   
   /* User Info */
-  .user-info {
+  .user-info1 {
     margin-top: 1rem;
   }
   
-  .user-info h2 {
+  .user-info1 h2 {
     font-size: 1.5rem;
     color: #333;
     margin: 0;
   }
   
-  .user-info p {
+  .user-info1 p {
     margin: 0.5rem 0;
     color: #777;
   }

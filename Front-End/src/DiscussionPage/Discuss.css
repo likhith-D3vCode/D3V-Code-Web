@@ -19,8 +19,8 @@
     cursor: pointer;
   }
   
-  input,
-  textarea {
+  .input1,
+  .textarea1 {
     margin: 10px 0;
     padding: 10px;
     width: 100%;
@@ -56,7 +56,7 @@
     border-radius: 5px;
   }
   
-  textarea {
+  .textarea1 {
     resize: none;
   }
   

@@ -68,7 +68,8 @@
   background-color: rgb(255, 255, 255);
   width: 45%;
   height: 88%;
-  margin-left: 4rem;
+  margin-left: 1rem;
+  
 }
 
 /* Scrollable description section */
@@ -83,17 +84,19 @@
 }
 
 .TotalContainer{
+  
   display: flex;
   justify-content: space-between;
+  background-color: #dfdfdf;
 }
 
 .rightSideE{
   width: 53%;
   margin-top: 20px;
-  max-height: 800px;
-  background-color: rgb(255, 255, 255);
+  max-height: 1500px;
+  background-color: rgb(251, 248, 248);
   border-radius: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #be4e4e;
 }
 
 .SubTest {
@@ -507,13 +510,13 @@ a:hover {
   flex-direction: column;
 }
 
-.editor-container{
-  padding: 0; /* Remove extra padding */
+/* .editor-container{
+  padding: 0;
   margin: 0;
   box-sizing: border-box;
   
 
-}
+} */
 
 .ace_editor {
   font-family: 'Courier New', Courier, monospace !important; /* Ensure monospace font */
@@ -588,12 +591,16 @@ body {
   border: 1px solid #ddd;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  /* overflow: hidden; */
+  
 }
 
-.preview-container {
+/* .preview-container {
+  background-color: #fefefe;
   margin-top: 20px;
-}
+  border-radius: 5px;
+  border: 1px solid #302c2c;
+} */
 
 .live-preview {
   border: 1px solid #ddd;

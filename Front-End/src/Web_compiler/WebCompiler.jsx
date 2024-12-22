@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState,useEffect,useRef } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-html";
 import "ace-builds/src-noconflict/mode-css";
@@ -6,9 +6,11 @@ import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-github";
 import "../App.css";
 import "./WebCompiler.css"
+import MonacoEditor from "@monaco-editor/react";
 import PropTypes from "prop-types";
 import ace from 'ace-builds/src-noconflict/ace';
 import axios from "axios"
+import { flip } from "@popperjs/core";
 ace.config.set('basePath', '/node_modules/ace-builds/src-noconflict');
 
 
@@ -32,6 +34,12 @@ const WebCompiler = ({ TestCases ,questionId}) => {
     success: true,
   });
 const [jsoutput,setjsoutput]=useState([]);
+
+const outputRef = useRef(null);
+
+const [showTestCases, setShowTestCases] = useState(false);
+  const [showTestResults, setShowTestResults] = useState(false);
+  const [showOutputInterface, setshowOutputInterface] = useState(true);
 
 
 const API_KEY = "{yourkey}";
@@ -67,8 +75,13 @@ const [messages, setMessages] = useState([]);
     checkIfSolved();
   }, [questionId]);
 
+
+  
+
  
   const runCode = () => {
+    
+    
     const completeCode = `
       <html>
         <head>
@@ -81,7 +94,7 @@ const [messages, setMessages] = useState([]);
       </html>
     `;
     setOutput(completeCode);
-
+    scrollToOutput();
     executeCode();
     validateSyntax();
     
@@ -89,11 +102,21 @@ const [messages, setMessages] = useState([]);
      setValue("Analyze the following code:"+htmlCode+cssCode+jsCode+" Your task:1.Check if the code contains any syntax errors. 2Check if the code has runtime errors that occur during execution. 3.If there are no errors, confirm that the code is correct.Provide only one response based on your analysis:  Syntax Error: If the code contains syntax issues.    Runtime        Error: If the code has execution issues.     Success: If the code is fully correct with no errors.Do not provide any explanations or additional information, only respond with one of these:Syntax Error, Runtime Error, or Success.")
    
     generateApiResponse()
-  
+     
+    
 
     
   };
 
+
+  const scrollToOutput = () => {
+    if (outputRef.current) {
+      console.log("clicked")
+      outputRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  
 
 
 
@@ -174,11 +197,18 @@ const [messages, setMessages] = useState([]);
         { withCredentials: true } // Sends cookies with the request (for token)
       );
       
-     
+       // Show Test Cases on success
+       setshowOutputInterface(true)
+      setShowTestResults(false);
+      setShowTestCases(false);
       setjsoutput(response.data.result.run.output.split("\n")); 
       console.log(response.data.result.run.output.split("\n"))
      
     } catch (error) {
+       // Show Test Results on error
+       setShowTestResults(true);
+       setshowOutputInterface(false)
+      setShowTestCases(false);
       console.error("Error executing code:", error);
       setjsoutput("Error executing code. Please try again.");
     }
@@ -196,6 +226,17 @@ const [messages, setMessages] = useState([]);
         });
         const result = await response.json();
         setSyntaxErrors(result.messages.map((msg) => msg.message));
+        if (syntaxErrors.length > 0) {
+          setSyntaxErrors(syntaxErrors);
+          setShowTestResults(true); // Show Test Results on error
+          setShowTestCases(false);
+          setshowOutputInterface(false)
+        } else {
+          setSyntaxErrors([]);
+          setshowOutputInterface(true)
+          setShowTestCases(false); // Show Test Cases on success
+          setShowTestResults(false);
+        }
       }else if (language === "javascript") {
         // JavaScript Syntax Validation
         try {
@@ -242,6 +283,7 @@ const [messages, setMessages] = useState([]);
 
 
   const validateCode = async (html, css, js) => {
+    
     try {
       const response = await fetch('http://localhost:9000/api/validate', {
         method: 'POST',
@@ -250,6 +292,9 @@ const [messages, setMessages] = useState([]);
       });
       const result = await response.json();
       setIsValid(result.success);
+      setShowTestCases(true)
+      setTestResults(false);
+      setshowOutputInterface(false)
       setCssValidation({
         errors: result.errors || [],
         warnings: result.warnings || [],
@@ -274,12 +319,18 @@ const [messages, setMessages] = useState([]);
 
   const handleSubmit = () => {
     validateCode(htmlCode, cssCode, jsCode);
+    scrollToOutput();
   };
 
   const handleTextareaChange = (value) => {
     setTextareaValue(value);
-    if (language === "html") setHtmlCode(value);
-    else if (language === "css") setCssCode(value);
+
+   
+    if (language === "html")
+    {
+      setHtmlCode(value);
+    }
+      else if (language === "css") setCssCode(value);
     else setJsCode(value);
 
     setValue( "Analyze the following code:"+htmlCode+cssCode+jsCode+"Your task:1.Check if the code contains any syntax errors. 2Check if the code has runtime errors that occur during execution. 3.If there are no errors, confirm that the code is correct.Provide only one response based on your analysis:  Syntax Error: If the code contains syntax issues.    Runtime        Error: If the code has execution issues.     Success: If the code is fully correct with no errors.Do not provide any explanations or additional information, only respond with one of these:Syntax Error, Runtime Error, or Success.")
@@ -310,32 +361,36 @@ const [messages, setMessages] = useState([]);
           <option value="javascript">JavaScript</option>
         </select>
 
-        {isSolved && <span className="solved-symbol">✔️</span>} {/* Solved symbol */}
+        {isSolved && <span className="solved-symbol"><i className="bi bi-check2-square"><div>Solved</div></i></span>} {/* Solved symbol */}
 
-
-        <button onClick={runCode}>Run</button>
-        <button onClick={handleSubmit}>Submit</button>
+        <div className="compilerButtons">
+        <button onClick={() => {runCode();
+    scrollToOutput();
+  }}  className="RunButton run"><i onClick={() => {
+    
+  }} className="bi bi-play-btn"></i>Run</button>
+        <button onClick={handleSubmit} className="RunButton1 submit" ><i className="bi bi-check-circle-fill"></i>Submit</button>
+        </div>
       </div>
 
-      <div className="editor-container">
-      <div className="textarea-container">
-        
-          <textarea
-            className="textarea"
-            value={textareaValue}
-            onChange={(e) => handleTextareaChange(e.target.value)}
-            style={{
-              width: "100%",
-              height: "500px",
-              resize: "none",
-              padding: "10px",
-              fontSize: "14px",
-              fontFamily: "monospace",
-              overflow: "auto",
-            }}
-            placeholder={`Write your ${language.toUpperCase()} code here...`}
-          ></textarea>
-        </div>
+      <div className=""> 
+        {/* className="editor-container" */}
+
+
+      <div className="editor-contai">
+        <MonacoEditor
+          height="500px"
+          className="monaco-editor"
+          value={textareaValue}
+          onChange={(value) => handleTextareaChange(value)}
+          options={{
+            minimap: { enabled: false },
+            fontSize: 14,
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+          }}
+        />
+      </div>
         <AceEditor
           mode={language}
           theme="github"
@@ -354,18 +409,22 @@ const [messages, setMessages] = useState([]);
         />
       </div>
 
-      <div className="preview-container">
-        <iframe
-          title="Live Preview"
-          srcDoc={output}
-          sandbox="allow-scripts"
-          style={{ border: "none" }}
-          width="100%"
-          height="300px"
-        ></iframe>
+     
+      <div className="toggle-buttons">
+        <button className="testCasebtn" onClick={() => {setShowTestCases(true),setShowTestResults(false),setshowOutputInterface(false)}}>
+        <i className="bi bi-card-checklist"></i> <div className="TextCasesText">Test cases</div>
+        </button>
+        <button className="bugsbutton" onClick={() => {setShowTestResults(true),setShowTestCases(false),setshowOutputInterface(false)}}>
+        <i className="bi bi-bug"></i>
+        </button>
+        <button className="liveoutputbtn" onClick={() => {setshowOutputInterface(true),setShowTestCases(false),setShowTestResults(false)}}>
+        <i className="bi bi-broadcast"></i>
+        </button>
       </div>
 
+
       {/* Test Results Section */}
+      {showTestCases && (
       <div className="test-results">
   <h3>
     Test Results: 
@@ -383,9 +442,35 @@ const [messages, setMessages] = useState([]);
       ))}
   </ul>
 </div>
+)}
+
+
+
+
+{showOutputInterface && (
+<div className="preview-container"
+   ref={outputRef}
+>
+        <iframe
+          title="Live Preview"
+          srcDoc={output}
+          sandbox="allow-scripts"
+          className="output-iframe"
+          style={{ border: "none" }}
+          width="100%"
+          height="300px"
+        ></iframe>
+ </div>
+)}
+
+
+
      
     {/* Syntax Errors Section */}
-    <div className="syntax-errors">
+    {showTestResults && (
+    <div className="compiler-error-box">
+    <h2>Compiler Errors</h2>
+    <div className="error-section">
         <h3>Syntax Errors:</h3>
         {syntaxErrors.length > 0 ? (
           <ul>
@@ -399,7 +484,8 @@ const [messages, setMessages] = useState([]);
           <p>No syntax errors found!</p>
         )}
       </div>
-      <div className="css-validation">
+      <div className="divider"></div>
+      <div className="error-section">
   <h3>CSS Validation Results:</h3>
   {cssValidation.success ? (
     <p className="success-message">CSS is valid!</p>
@@ -424,7 +510,14 @@ const [messages, setMessages] = useState([]);
     </>
   )}
 </div>
+<div className="divider"></div>
+<div className="error-section">
 <h3>RunTimeCheck::{chatgptoutput}</h3>
+</div>
+
+</div>
+    )}
+
 {/* <h3>jsOutput:</h3>
 {
   jsoutput ? (

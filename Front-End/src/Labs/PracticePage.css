@@ -1,39 +1,162 @@
 /* Style for the main description container */
 .discription {
-    padding: 20px;
+    padding: 0px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    background-color: #f9f9f9;
+   
     font-family: Arial, sans-serif;
     max-width: 800px;
+    max-height: 1200px;
     /* margin: auto; */
-    color: #333;
+   
+   /* background-color: #05171e0e; */
+    /* background: linear-gradient(135deg, #eceff1, #011a24); */
   }
   
   /* Header styling */
+ 
+
+
+
+  
+/* Like and Comments Section */
+
+.commentsCss {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.commentsCss .commentsCounts {
+  font-size: 13px;
+  font-weight: bold;
+  color: rgb(192, 186, 186);
+}
+
+.commentsCss i {
+  cursor: pointer;
+  color: #bbb;
+  font-size: 20px;
+}
+
+
+
+
+/* questiosCss here starts */
+
+.TopclsAbove .questionTitle{
+  padding-left: 12px;
+  padding-bottom:17px;
+  font-weight: bold;
+  font-size: 30px;
+  color:#393535 ;
+}
+
+.discription .questionDescription{
+  font-weight: bold;
+  padding-left: 25px;
+  font-size: 18px;
+  color: #393535;
+  
+  font-family: 'Open Sans', sans-serif;
+
+}
+
+.discription .questionRequirements{
+  font-size: 20px;
+  padding-left: 25px;
+  color:#393535 ;
+  margin-bottom: 24px;
+  
+}
+
+.discription .questionSectionTitle{
+  font-size: 19px;
+  padding-left: 25px;
+  color:#393535 ;
+  font-weight: bold;
+
+}
+
+.discription .questionSectionContent{
+
+  padding-left: 25px;
+  color:#393535 ;
+  font-weight: bold;
+
+}
+
+.discription .questionsCriteria{
+  padding-left: 25px;
+  background-color: #55555524;
+  border: 2px solid rgb(31, 26, 26);
+  border-radius: 5px;
+  margin-left: 25px;
+  color:#393535 ;
+  
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* questionsCss ends */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   .Topcls {
     display: flex;
-    justify-content: space-between;
+   
     align-items: center;
     margin-bottom: 20px;
+    background-color: #646464;
+    border-radius: 0px 3px 0px 0px;
+    padding-bottom: 4px;
+    
   }
   
-  .Topcls p {
-    font-size: 1rem;
-    margin: 0;
-    color: #555;
+  .Topcls .SubmissionText {
+    font-size: 13px;
+    font-weight: bold;
+    padding: 2px;
+    color: #e6dede;
+    
   }
+
   
-  .Topcls .number {
-    background-color: #0073e6;
-    color: white;
-    border: none;
-    padding: 4px 12px;
-    font-size: 0.9rem;
-    margin-left: 5px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+
+  .commentsCss{
+    display: flex;
+    align-items: center;
   }
   
   .Topcls .number:hover {
@@ -115,9 +238,8 @@
 
 .like-container {
   display: flex;
-  align-items: center;
-  gap: 8px;
   font-family: Arial, sans-serif;
+  
 }
 
 .like-button {
@@ -125,6 +247,8 @@
   border: none;
   cursor: pointer;
   outline: none;
+ 
+  border-radius: 70px;
 }
 
 .like-button:hover {
@@ -132,21 +256,191 @@
 }
 
 .heart-icon {
-  color: gray;
-  font-size: 24px;
+  color: rgb(234, 232, 232);
+  font-size: 18px;
   transition: color 0.2s ease;
 }
 
 .heart-icon.liked {
-  color: red;
+  color: #a38642;
 }
 
-.likes-count {
+.like-container .likes-count {
+  font-size: 13px;
+  padding: 0px;
+  font-weight: bold;
+  color: #c9c3c3;
+}
+
+
+
+
+
+
+.button-container {
+  display: flex;
+  gap: 0.2rem;
+  padding-left: 10px;
+  background-color: #646464;
+  padding-top: 20px;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.button-container button {
+  background-color: #646464; /* Primary blue color */
+  color: #d4d0d0; /* White text color */
+  font-size: 0.8rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  padding: 9px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.htmlButton{
+
+  
+
+}
+
+.button-container button:hover {
+  background-color: #07203a; /* Darker blue for hover */
+  
+}
+
+.button-container button:active {
+  background-color: #003d80; /* Even darker blue for active state */
+  
+}
+
+.button-container button i {
+  margin-right: 8px;
+  font-size: 1.2rem;
+  color: #a38642;
+}
+
+.button-container button:focus {
+  /* outline: 2px solid #80bdff; /* Light blue outline */
+  /* outline-offset: 2px; */ 
+}
+
+  
+/* question description comments css starts */
+
+.discription .questionComments p{
+  
+
+
+}
+
+
+.discription .questionComments{
+  margin-top: 70px;
+  padding: 10px;
+  border: 1px solid #a6ac56;
+  border-radius: 4px;
+  height: 200px;
+}
+
+.discription .questionComments .questionCommentsDiv {
+  /* background-color: #005bb5; */
+  display: flex;
+  
+}
+
+.discription .questionComments .questionCommentsDiv textarea{
+  outline: none;
+  resize: none;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+  font-size: 14px;
+  border: none;
+  border-color: white;
+  height: 100px;
+
+}
+
+.discription .questionComments .questionCommentsDiv button{
+  height: 40px;
+  width: 89px;
+  margin-top: 100px;
+  border-radius: 5px;
+  border: none;
+  color:white;
+  background-color:#a38642;
+}
+
+@media (max-width: 768px) {
+  .discription .questionComments{
+    height: 300px;
+  }
+}
+
+
+.TotalContainer .comment-container{
+  /* background-color: #005bb5; */
+}
+
+.comment-container {
+
+  max-height: 900px;
+ 
+  
+}
+
+.comment-container .comment-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  /* margin-right: 10px; */
+}
+
+.comment-container .comment-avatar-fallback {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #707275;
+  color: #a38642;
+  font-weight: bold;
   font-size: 16px;
-  color: #333;
+  text-transform: uppercase;
+  /* margin-right: 10px; */
 }
 
+.comment-container .comment-username {
+  font-weight: bold;
+  color: #333;
+  margin: 13px;
+}
+
+.comment-container .comment-header{
+  display: flex;
+  align-items: center;
+  /* margin-bottom: 30px; */
+}
+
+.questionCommentsContent .comment-content {
+  /* margin-top: 60px;
   
+  margin-left: -80px; */
+   /* Reset margin to avoid extra spacing */
+  line-height: 1.5; /* Ensure proper line spacing */
+  word-wrap: break-word;
+}
+
+.questionCommentsContent {
+  /* margin-left: 50px;  */
+}
 
 
-  
+
+/* question description comments css Ends  */

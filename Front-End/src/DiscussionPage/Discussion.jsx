@@ -74,6 +74,7 @@ const Discussion = () => {
         <span>Front end(FameWorks)</span>
       </div>
       <input
+      className='input1'
         type="text"
         placeholder="Search topics or comments..."
         value={search}
@@ -84,6 +85,7 @@ const Discussion = () => {
         {newPostVisible && (
           <div className="post-interface">
             <input
+            className='input1'
               type="text"
               placeholder="Enter topic title..."
               value={postContent.title}
@@ -91,7 +93,8 @@ const Discussion = () => {
                 setPostContent({ ...postContent, title: e.target.value })
               }
             />
-            <input
+            <input 
+            className='input1'
               type="text"
               placeholder="Tag your topic (e.g. 'facebook', 'binary-search'...)"
               value={postContent.tags}
@@ -99,7 +102,7 @@ const Discussion = () => {
                 setPostContent({ ...postContent, tags: e.target.value })
               }
             />
-            <textarea
+            <textarea className='textarea1'
               placeholder="If you want to include code in your post, please surround your code block with 3 backticks (```). For example:\n```\ndef helloWorld():\n    pass\n```"
               rows="8"
               value={postContent.content}
@@ -110,6 +113,7 @@ const Discussion = () => {
             <div className="options">
               <label>
                 <input
+                className='input1'
                   type="checkbox"
                   checked={postContent.anonymous}
                   onChange={(e) =>
