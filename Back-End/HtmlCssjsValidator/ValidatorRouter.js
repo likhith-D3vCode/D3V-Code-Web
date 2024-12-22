@@ -127,9 +127,10 @@ router.post("/validate", async (req, res) => {
 
       if (testcase.includestype === "html") {
         testFunction = () => html.includes(testcase.includes);
+         console.log(html)
       } else if (testcase.includestype === "css") {
         testFunction = () => css.includes(testcase.includes);
-        console.log(css.includes("  padding: 10px 20px;"));
+       
       } else if (testcase.includestype === "js") {
         testFunction = () => js.includes(testcase.includes);
       } else {

@@ -106,7 +106,7 @@ const CardItem = ({ card, navigate}) => {
  
   const handleNavigation = () => {
     navigate("/CourseIndex", { state: { index: card.indexes, title: card.title,id:card._id } }); // Pass data via state
-  };
+  };                                                          
 
 
   return (

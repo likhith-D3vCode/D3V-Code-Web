@@ -13,7 +13,7 @@ const ShowingContent = () => {
   const fetchQuestion = async () => {
     const response = await axios.get(`http://localhost:9000/OneDiscussion/DiscussOnequestions/${id}`);
     
-    const questionObject =response.data;
+    const questionObject =response.data; 
 
     console.log(questionObject[0].createdBy.username)
     // const questionArray = Object.entries(questionObject); // Convert object to array
@@ -31,7 +31,7 @@ const ShowingContent = () => {
 
   useEffect(() => {
     fetchQuestion();
-  }, [id]);
+  }, [id,]);
 
  
 
@@ -47,7 +47,7 @@ const ShowingContent = () => {
 
   useEffect(() => {
     fetchComments();
-  }, [id]);
+  }, [id,handleComment]);
 
 
 
