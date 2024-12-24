@@ -2,8 +2,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./Questions.css"
+import RedimadeNavBar from '../HomePage/RedimadeNavBar';
 
 function Questions() {
+  const [htmlcount,setHtmlCount]=useState(0);
+const [csscount,setCssCount]=useState(0);
+
+const [jscount,setJsCount]=useState(0);
   const [questions, setQuestions] = useState([
     { 
       _id:2386,
@@ -37,6 +42,9 @@ function Questions() {
   const [selectedDifficulty, setSelectedDifficulty] = useState("All");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  const [filteredQuestionss, setFilteredQuestionss] = useState([]);
+  
 
   // Fetch data from the API on component mount
   useEffect(() => {
@@ -45,8 +53,9 @@ function Questions() {
         const response = await axios.get("http://localhost:9000/display/get/api");
         
         const questionsArray = Array.isArray(response.data) ? response.data : Object.values(response.data);
-        console.log(questionsArray.language)
+        console.log(questionsArray)
         setQuestions(questionsArray);
+        setFilteredQuestionss(questionsArray[0])
       } catch (error) {
         console.error("Error fetching questions:", error);
         setError("Failed to load questions. Please try again later.");
@@ -57,28 +66,73 @@ function Questions() {
     fetchQuestions();
   }, []);
 
-  // Handle difficulty filter change
-  const handleDifficultyChange = (e) => {
-    setSelectedDifficulty(e.target.value);
+   // Filter questions based on selected language
+   const getLangBasedQuestions = (lang) => {
+    
+    const langFilteredQuestions = questions[0].filter((q) => q.language.toLowerCase() === lang.toLowerCase());
+    setFilteredQuestionss(langFilteredQuestions);
   };
 
-  // Filter questions based on selected difficulty
-  const filteredQuestions = questions.filter(
-    (question) => selectedDifficulty === "All" || question[0].difficulty === selectedDifficulty
+
+
+
+  useEffect(()=>{
+
+    const getcount=()=>{
+      const htmllang='html';
+      const csslang='css';
+      const jslang='js'
+      const htmlFilteredQuestions = filteredQuestionss.filter((q) => q.language.toLowerCase() === htmllang.toLowerCase());
+      const cssFilteredQuestions = filteredQuestionss.filter((q) => q.language.toLowerCase() === csslang.toLowerCase());
+
+      const jsFilteredQuestions = filteredQuestionss.filter((q) => q.language.toLowerCase() === jslang.toLowerCase());
+
+      console.log("length of html",htmlFilteredQuestions.length)
+      setHtmlCount(htmlFilteredQuestions.length);
+      setCssCount(cssFilteredQuestions.length);
+      setJsCount(jsFilteredQuestions.length);
+    }
+
+    getcount(); 
+
+  },[filteredQuestionss])
+
+
+ // Handle difficulty filter change
+ const handleDifficultyChange = (e) => {
+  const difficulty = e.target.value;
+  setSelectedDifficulty(difficulty);
+
+  const difficultyFilteredQuestions = questions[0].filter(
+    (question) =>
+      difficulty === "All" || question.difficulty.toLowerCase() === difficulty.toLowerCase()
   );
+  setFilteredQuestionss(difficultyFilteredQuestions);
+};
   
   if (loading) return <p>Loading questions...</p>;
   if (error) return <p>{error}</p>;
   if (!questions || questions.length === 0) return <p>No questions available.</p>;
    
   return (
+    <>
+     <RedimadeNavBar/>
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
-      <div  className="tag">
-           Html <span className="count">100</span>
-          </div>
-        <div>
-          <label htmlFor="difficulty">Difficulty Level: </label>
+        <div className="TagClass">
+        <div className="tag">
+          HTML <span className="count" onClick={() => getLangBasedQuestions("html")}>{htmlcount}</span>
+        </div>
+        <div className="tag">
+          CSS <span className="count" onClick={() => getLangBasedQuestions("css")}>{csscount}</span>
+        </div>
+        <div className="tag">
+          JS <span className="count" onClick={() => getLangBasedQuestions("js")}>{jscount}</span>
+        </div>
+        </div>
+      
+        <div className="difficultyCss">
+          <label htmlFor="difficulty" >Difficulty Level: </label>
           <select
             id="difficulty"
             className="form-select"
@@ -93,12 +147,10 @@ function Questions() {
           </select>
         </div>
       </div>
-  
-      <h2>Questions List</h2>
-      
+      <div className="QuestionsList">
       <ul className="list-group">
-        {filteredQuestions && filteredQuestions.length > 0 ? (
-          filteredQuestions[0].map((question, index) => (
+        {filteredQuestionss && filteredQuestionss.length > 0 ? (
+          filteredQuestionss.map((question, index) => (
             <li key={question._id || question.id || index} className="list-group-item">
               <Link
                 to={`/question/${question.id}`}
@@ -115,14 +167,19 @@ function Questions() {
                 <h3 className="fw-bold">{question.title}</h3>
                 <small className="text-muted">Difficulty: {question.difficulty}</small>
               </Link>
+              
             </li>
+            
           ))
         ) : (
           <p>No questions available</p>
         )}
       </ul>
+      </div>
+      
     </div>
+    </>
   );
 }
 
-export default Questions;
+export default Questions;  

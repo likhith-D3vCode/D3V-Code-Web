@@ -1,16 +1,20 @@
   
   .tag {
-    background-color: #cdc3c3;
+    background-color: #646464;
     padding: 5px 10px;
     border-radius: 20px;
     display: flex;
     align-items: center;
     font-size: 14px;
+    color: #fcfcfc;
+    cursor: pointer;
+   
+    
   }
   
   .count {
-    background-color: #444;
-    color: #ddd;
+    background-color: #a38642;
+    color: #e4dfdf;
     padding: 2px 8px;
     margin-left: 5px;
     border-radius: 12px;
@@ -23,11 +27,7 @@
     margin-top: 5px;
   }
   
-  .categories {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-  }
+  
   
   .category {
     background-color: #2a2a2a;
@@ -46,3 +46,94 @@
     font-size: 14px;
   }
   
+
+
+
+
+
+
+
+
+
+
+
+  /* questions list css starts */
+
+  .QuestionsList {
+    margin-top: 20px;
+    
+   
+  }
+  
+  .list-group {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .list-group-item {
+    background-color: #efeeea;
+    border-bottom: 1px solid #404646;
+    border-radius: 0px;
+    margin-bottom: 9px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+   padding-left: 42px;
+    
+  }
+
+  .TagClass{
+    display: flex;
+    gap: 30px;
+  }
+  
+ 
+  
+  .list-group-item h3 {
+    font-size: 1rem;
+    margin: 0 0 10px;
+    color: #343a40;
+    
+  }
+  
+  
+
+  .list-group-item small.text-muted {
+    font-size: 0.875rem;
+    color: #a38642 !important;   
+}
+
+  
+  .list-group-item a {
+    text-decoration: none;
+  }
+  
+  .list-group-item a:hover h3 {
+    color: #646464;
+  }
+  
+  .QuestionsList p {
+    text-align: center;
+    color: #a38642;
+    font-size: 1rem;
+    margin-top: 20px;
+  }
+  
+  .difficultyCss label{
+  color: #a38642;
+  font-weight: bold;
+}
+
+ .form-select{
+  color: rgb(9, 9, 9);
+  border: 1px solid #a38642;
+ }
+
+ /* Change color when focused */
+.form-select:focus {
+  border-color: #302d2c; /* Change this to your desired color */
+  box-shadow: 0 0 5px rgba(1, 1, 1, 0.5); /* Optional glow effect */
+}
+
+
+  /* questions list css ends */
