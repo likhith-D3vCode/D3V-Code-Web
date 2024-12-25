@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import "../Html.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { useParams } from "react-router-dom";
 
 const HtmlCourse = () => {
-    const location = useLocation();
-    const { index, title, id } = location.state || {};
+    // const location = useLocation();
+    const { id} = useParams();
+    // const { index, title, idd } = location.state || {};
     const navigate=useNavigate();
     const [videoUrl, setVideoUrl] = useState('https://www.youtube.com/embed/UB1O30fR-EE');
     const [activeTopic, setActiveTopic] = useState('');
@@ -14,11 +16,9 @@ const HtmlCourse = () => {
     const [dropdownOpen, setDropdownOpen] = useState(null); // Track which dropdown is open
     const [showBlogs, setShowBlogs] = useState(true); // State to toggle between video and blog cards
     const[timerper,setTimerper]=useState(0);
-
-
+    const [indexes, setIndexes] = useState([]); // For storing index data specifically
+    const [course, setCourse] = useState(null); // For storing entire course data
     const [isExitModalOpen, setIsExitModalOpen] = useState(false);
-
-   
 
     const [timer, setTimer] = useState(0); // Timer state in seconds
     const [isTimerRunning, setIsTimerRunning] = useState(false); // Timer status
@@ -37,6 +37,25 @@ const HtmlCourse = () => {
     //         window.onpopstate = null;
     //     };
     // }, []);
+
+
+
+
+    // Block back navigation using history.pushState and popstate
+    useEffect(() => {
+        const preventBackNavigation = () => {
+            window.history.pushState(null, null, window.location.href);
+            alert("Back navigation is disabled on this page!");
+        };
+
+        window.history.pushState(null, null, window.location.href); // Push a new state to history
+        window.onpopstate = preventBackNavigation; // Add popstate event listener
+
+        // Cleanup on component unmount
+        return () => {
+            window.onpopstate = null; // Remove event listener
+        };
+    }, []);
 
    
     useEffect(() => {
@@ -60,6 +79,26 @@ const HtmlCourse = () => {
     }, [id]);
 
 
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const response = await axios.get(`http://localhost:9000/CoursesIndex/courses/index/${id}`, { withCredentials: true });
+                const  Courses  = response.data;
+
+                 console.log(Courses[0].indexes)
+                 setCourse(Courses[0].title)
+                 setIndexes(Courses[0].indexes)
+
+            } catch (error) {
+                console.error('Error fetching Courses:', error);
+            }
+        };
+
+        
+        fetchCourses();
+        
+    }, []);
 
 
     useEffect(() => {
@@ -169,16 +208,14 @@ const HtmlCourse = () => {
     };
 
     const confirmExit = async() => {
-
+                                                 
         try {
             // Prepare the data to send to the API
             const data = {
                 id: id, // The id from location.state
                 progress: timerper, // Timer percentage
             };
-
-           
-    
+   
             // Make an API call to update the progress
             const response = await axios.post('http://localhost:9000/progressUp/update-progress',  data,{  withCredentials: true });
     
@@ -229,10 +266,10 @@ const HtmlCourse = () => {
             {/* Sidebar Section */}
             <div id="sidebar">
                 <header>
-                    <a href="#" onClick={handleCourseClick}>{title}</a>
+                    <a href="#" onClick={handleCourseClick}>{course}</a>
                 </header>
                 <ul className="nav">
-      {index.map((topic, index1) => (
+      {indexes.map((topic, index1) => (
         <li key={index1} onMouseLeave={handleMouseLeave}>
           <div
             className="topic-name"

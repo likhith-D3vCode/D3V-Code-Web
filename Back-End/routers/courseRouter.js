@@ -94,6 +94,42 @@ router.get('/courses', async (req, res) => {
 });
 
 
+
+
+
+
+
+// Get all courses
+router.get('/courses/index/:id', async (req, res) => {
+  const userId = req.user._id;
+
+  try {
+    const courses = await Course.find({_id:req.params.id});
+    const userObjectId = new mongoose.Types.ObjectId(userId);
+    
+    const filteredCourses = courses.map((course) => {
+      const userProgress = course.users.find(user => user.userId.equals(userObjectId));
+      
+      // Return course with user's progress if found, otherwise default progress
+      return {
+        ...course._doc,
+        progress: userProgress ? userProgress.progress : 0, // Default progress to 0 if not found
+      };
+    });
+
+    res.json(filteredCourses);
+  } catch (err) {
+    console.error('Error fetching courses:', err);
+    res.status(500).json({ error: 'Error fetching courses' });
+  }
+});
+
+
+
+
+
+
+
 // Update user progress
 router.post('/update-progress', async (req, res) => {
   const userId=req.user._id;

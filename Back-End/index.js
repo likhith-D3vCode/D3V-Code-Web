@@ -123,7 +123,7 @@ app.use("/questions",router);
 app.use("/display",router)
 app.use("/gettopicwise",router)
 
-
+app.use("/CoursesIndex",authenticationCheck,coursesRouter);
 
 app.use("/facts",factsRouter)
 app.use("/getFacts",factsRouter)
