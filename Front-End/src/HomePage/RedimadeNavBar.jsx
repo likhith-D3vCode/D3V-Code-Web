@@ -2,10 +2,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-
+import "./RedimadeNavBar.css"
 function RedimadeNavBar() {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
+  const [profile, setProfile] = useState();
+  const [showDropdown, setShowDropdown] = useState(false);
 
   // Fetch user data from the API
   useEffect(() => {
@@ -22,6 +24,7 @@ function RedimadeNavBar() {
 
         if (data.msg === "User data") {
           setUserData(data.userdata);
+          setProfile(data.userdata.profileImg);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -34,15 +37,13 @@ function RedimadeNavBar() {
   // Logout function to clear token from the cookie and redirect to login
   const handleLogout = async () => {
     try {
-      // Send a request to the backend to clear the cookie
       const response = await fetch("http://localhost:9000/logout", {
         method: "POST",
-        credentials: "include", // To include cookies in the request
+        credentials: "include",
       });
 
       if (response.ok) {
-        // If the response is OK, navigate to the login page
-        navigate("/StaticLogin");
+        navigate("/");
       } else {
         console.error("Error logging out");
       }
@@ -51,16 +52,23 @@ function RedimadeNavBar() {
     }
   };
 
+  const imageUrl = `/UserImages/${profile}`;
+
   return (
     <>
       <header className="p-3 text-bg-dark">
         <div className="container">
           <nav className="navbar navbar-expand-lg navbar-dark">
-            <a className="navbar-brand"  onClick={(e) => {
-      e.preventDefault(); // Prevent the default anchor behavior
-      navigate("/");
-    }}
-    style={{ cursor: "pointer" }}>D3VCode</a>
+            <a
+              className="navbar-brand"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/");
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              D3VCode
+            </a>
             <button
               className="navbar-toggler"
               type="button"
@@ -76,11 +84,14 @@ function RedimadeNavBar() {
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav me-auto navlinks">
                 <li className="nav-item">
-                  <a className="nav-link"  onClick={(e) => {
-      e.preventDefault(); // Prevent the default anchor behavior
-      navigate("/Study");
-    }}
-    style={{ cursor: "pointer" }}>
+                  <a
+                    className="nav-link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/Study");
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
                     Study
                   </a>
                 </li>
@@ -95,7 +106,7 @@ function RedimadeNavBar() {
                   </a>
                 </li>
                 <li className="nav-item">
-             <a
+                  <a
                     className="nav-link"
                     href="#"
                     onClick={(e) => {
@@ -113,29 +124,73 @@ function RedimadeNavBar() {
                 </li>
               </ul>
 
-              {/* Display the profile icon and username when user is logged in */}
               {userData ? (
-                <div className="ms-auto d-flex align-items-center">
+                <div className="ms-auto d-flex align-items-center position-relative profileBox-container">
                   <img
-                    src="https://via.placeholder.com/40"
-                    alt="Profile"
+                    src={imageUrl}
+                    alt={`${userData.username}'s Profile`}
                     className="rounded-circle"
-                    style={{ width: "40px", height: "40px" }}
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => setShowDropdown((prev) => !prev)}
                   />
-                  <button onClick={() => navigate("/UserProfile")}>
-                    {" "}
-                    <span className="ms-2">{userData.username}</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline-light ms-2"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </button>
+                  {showDropdown && (
+                    <div
+                      className="profileBox"
+                     
+                    >
+                      <div
+                        className="dropdown-item imageOfprofile"
+                        onClick={() => {
+                          navigate("/UserProfile");
+                          setShowDropdown(false);
+                        }}
+                      >
+                        <img
+                    src={imageUrl}
+                    alt={`${userData.username}'s Profile`}
+                    className="rounded-circle"
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      cursor: "pointer",
+                    }}
+                  />  <strong style={{
+                     
+                      cursor: "pointer",
+                    }}  > 
+                  {userData.username}</strong>
+                      </div>
+                      <div
+                        className="dropdown-item"
+                        onClick={() => {
+                          navigate("/settings");
+                          setShowDropdown(false);
+                        }}
+                      >
+                        Settings
+                      </div>
+                      <div
+                        className="dropdown-item text-danger"
+                        onClick={() => {
+                          handleLogout();
+                          setShowDropdown(false);
+                        }}
+
+                        style={{
+                     
+                          cursor: "pointer",
+                        }}
+                      ><i className="bi bi-box-arrow-right"></i>
+                        Logout
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
-                // Show login and signup buttons if user is not logged in
                 <div className="ms-auto d-flex">
                   <button
                     type="button"
