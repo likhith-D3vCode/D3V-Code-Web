@@ -48,7 +48,7 @@ loginRouter.get("/oneuser/api", async (req, res) => {
     const userid = req.user._id;
     try {
         // Select only the 'username' field from the database
-        const userdata = await userdb.findById(userid).select('username');
+        const userdata = await userdb.findById(userid);
         
         if (!userdata) {
             return res.status(404).json({ msg: "User not found" });

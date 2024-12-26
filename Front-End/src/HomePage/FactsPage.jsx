@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 import {
@@ -26,7 +27,8 @@ function FactsPage() {
 
   const [Dfacts, setFacts] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+    const navigate = useNavigate();
+  
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
@@ -249,12 +251,16 @@ function FactsPage() {
 
             {/* Right-side cards displayed one by one with increased height and button */}
             {/* Right-side cards displayed one by one with increased height and button */}
-            <div className="course-suggested-card mt-3">
+            <div className="course-suggested-card mt-5">
               <div
                 className="card right-card text-bg-light mb-3"
                 style={{ backgroundImage: `url(${expressImage})` }}
               >
-                <a href="#" className="btn card-btn">
+                <a  onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/Study");
+                    }}
+                    style={{ cursor: "pointer" }} className="btn card-btn">
                   Go to course
                 </a>
               </div>
@@ -263,7 +269,11 @@ function FactsPage() {
                 className="card right-card text-bg-light mb-3"
                 style={{ backgroundImage: `url(${react})` }}
               >
-                <a href="#" className="btn card-btn">
+                <a  onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/Study");
+                    }}
+                    style={{ cursor: "pointer" }} className="btn card-btn">
                   Go to course
                 </a>
               </div>
@@ -272,7 +282,11 @@ function FactsPage() {
                 className="card right-card text-bg-light mb-3"
                 style={{ backgroundImage: `url(${node})` }}
               >
-                <a href="#" className="btn card-btn">
+                <a  onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/Study");
+                    }}
+                    style={{ cursor: "pointer" }} className="btn card-btn">
                   Go to course
                 </a>
               </div>

@@ -7,6 +7,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 function NavBar() {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
+  const [profile, setProfile] = useState();
+  const [showDropdown, setShowDropdown] = useState(false);
 
   // Fetch user data from the API
   useEffect(() => {
@@ -20,6 +22,8 @@ function NavBar() {
 
         if (data.msg === "User data") {
           setUserData(data.userdata);
+          setProfile(data.userdata.profileImg);
+
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -49,6 +53,8 @@ function NavBar() {
       console.error("Logout request failed", error);
     }
   };
+  const imageUrl = `/UserImages/${profile}`;
+
 
   return (
     <>
@@ -111,22 +117,71 @@ function NavBar() {
 
               {/* Display the profile icon and username when user is logged in */}
               {userData ? (
-                <div className="ms-auto d-flex align-items-center">
-                  <img
-                    src="https://via.placeholder.com/40"
-                    alt="Profile"
-                    className="rounded-circle"
-                    style={{ width: "40px", height: "40px" }}
-                  />
-               <button onClick={()=>navigate("/UserProfile")}>  <span className="ms-2">{userData.username}</span></button> 
-                  <button
-                    type="button"
-                    className="btn btn-outline-light ms-2"
-                    onClick={handleLogout}
+                <div className="ms-auto d-flex align-items-center position-relative profileBox-container">
+                <img
+                  src={imageUrl}
+                  alt={`${userData.username}'s Profile`}
+                  className="rounded-circle"
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => setShowDropdown((prev) => !prev)}
+                />
+                {showDropdown && (
+                  <div
+                    className="profileBox"
+                   
                   >
-                    Logout
-                  </button>
-                </div>
+                    <div
+                      className="dropdown-item imageOfprofile"
+                      onClick={() => {
+                        navigate("/UserProfile");
+                        setShowDropdown(false);
+                      }}
+                    >
+                      <img
+                  src={imageUrl}
+                  alt={`${userData.username}'s Profile`}
+                  className="rounded-circle"
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    cursor: "pointer",
+                  }}
+                />  <strong style={{
+                   
+                    cursor: "pointer",
+                  }}  > 
+                {userData.username}</strong>
+                    </div>
+                    <div
+                      className="dropdown-item"
+                      onClick={() => {
+                        navigate("/settings");
+                        setShowDropdown(false);
+                      }}
+                    >
+                      Settings
+                    </div>
+                    <div
+                      className="dropdown-item text-danger"
+                      onClick={() => {
+                        handleLogout();
+                        setShowDropdown(false);
+                      }}
+
+                      style={{
+                   
+                        cursor: "pointer",
+                      }}
+                    ><i className="bi bi-box-arrow-right"></i>
+                      Logout
+                    </div>
+                  </div>
+                )}
+              </div>
               ) : (
                 // Show login and signup buttons if user is not logged in
                 <div className="ms-auto d-flex">

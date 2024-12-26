@@ -38,17 +38,21 @@ function App() {
     <Router>
     <Routes>
       <Route path="/" element={<NavBar/>}/>
-      <Route path="/specificQuestions" element={<SpecificquestionTopicWise/>}/>
-      <Route path="/UserProfile" element={<ProfilePage/>}/>
 
       <Route path="/SignUp" element={<SignupPage/>}/>
       <Route path="/Admin" element={<PostQuestionsAndTestCases/>}/>
       <Route path="/StaticLogin" element={<LoginPage/>}/>
       <Route path="/post-Courses" element={<PostCoursesAndLinks/>}/>
-      <Route path="/discuss" element={<Discussion/>}/>
-      <Route path="/Study" element={<Course1/>}/>
-      <Route path="/showingDiscussionContent/:id" element={<ShowingContent />} />
-      <Route path="/CourseIndex/:id" element={<HtmlCourse/>}/>
+      
+      <Route path="/discuss" element={<ProtectedRoute element={<Discussion />} />} />
+      <Route path="/UserProfile" element={<ProtectedRoute element={<ProfilePage />} />} />
+      <Route path="/specificQuestions" element={<SpecificquestionTopicWise/>}/>
+
+     
+
+      <Route path="/Study" element={<ProtectedRoute element={<Course1 />} />} />
+      <Route path="/CourseIndex/:id" element={<ProtectedRoute element={<HtmlCourse />} />} />
+      <Route path="/showingDiscussionContent/:id" element={<ProtectedRoute element={<ShowingContent />} />} />
       <Route path="/questions" element={<ProtectedRoute element={<Questions />} />} />
       <Route path="/question/:id" element={<ProtectedRoute element={<PracticePage />} />} />
     </Routes>
