@@ -1,8 +1,20 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./ProfilePage.css";
+import { FaPen, FaToolbox, FaGraduationCap, FaPhoneAlt, FaChevronRight } from "react-icons/fa"; 
 import PropTypes from "prop-types";
 import Calendar from "react-calendar";
+import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
@@ -16,6 +28,8 @@ const ProfilePage = () => {
   const [editMode, setEditMode] = useState(false);
   const [totalSolved, settotalSolved] = useState(null);
   const [accepted, setaccepted] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const highlightedDates = dateMarked.map((date) => new Date(date));
   const [editForm, setEditForm] = useState({
     username: "",
     email: "",
@@ -25,7 +39,23 @@ const ProfilePage = () => {
     education: [],
   });
 
+  const Modal = ({ isOpen, onClose, children }) => {
+    if (!isOpen) return null;
   
+    return (
+      <div className="modal-overlay">
+        <div className="modal-content">
+          <button className="close-button" onClick={onClose}>
+            &times;
+          </button>
+          {children}
+        </div>
+      </div>
+    );
+  };
+  
+
+
   const [difficulties, setDifficulties] = useState({
     Beginner: 0,
     Intermediate: 0,
@@ -81,6 +111,7 @@ const ProfilePage = () => {
     const updatedEducation = education.filter((_, i) => i !== index);
     setEducation(updatedEducation);
   };
+  const [courseIndex, setCourseIndex] = useState(0);
 
 
   // const [email, setEmail] = useState("");
@@ -200,7 +231,17 @@ const ProfilePage = () => {
     calculateStats();
   }, [solvedQuestions]);
   
-
+  const pieChartData = {
+    labels: ["Hard", "Medium", "Easy"],
+    datasets: [
+      {
+        data: [difficulties.Hard, difficulties.Intermediate, difficulties.Beginner],
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+      },
+    ],
+  };
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -262,90 +303,133 @@ const ProfilePage = () => {
   if (isLoadingUser || isLoadingCourses || isLoadingSolved) {
     return <div className="loading">Loading...</div>;
   }
+  
+
+
 
   return (
     
     <div className="profile-container">
-
-        <div className="percentage1">{accepted}%</div>
-          <div className="text1">Acceptance</div>
-          <div className="submissions1">{totalSolved} submissions</div>
-          <div className="easy">
-          <div className="label">Easy</div>
-          <div className="count">{difficulties.Beginner}</div>
+    <div className="profile-and-stats">
+      {/* Profile Details */}
+      {userData && <UserProfile user={userData} onEdit={handleEditClick} />}
+      
+      {/* Stats Containers */}
+      <div className="stats-side-container">
+        <div className="stats-item">
+          <h2>Acceptance Rate</h2>
+          <CircularProgressbar
+            value={accepted}
+            text={`${accepted}%`}
+            styles={buildStyles({
+              textColor: "#333",
+              pathColor: "#4CAF50",
+              trailColor: "#d6d6d6",
+              textSize: "12px",
+              pathWidth: 6,
+            })}
+          />
+          <p>Total Submissions: {totalSolved}</p>
         </div>
-        <div className="medium">
-          <div className="label">Medium</div>
-          <div className="count">{difficulties.Intermediate}</div>
+  
+        <div className="stats-item">
+          <h2>Difficulty Breakdown</h2>
+          <Pie
+            data={pieChartData}
+            options={{
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: true,
+                  position: "bottom",
+                  labels: {
+                    font: { size: 10 },
+                  },
+                },
+              },
+            }}
+          />
         </div>
-        <div className="hard">
-          <div className="label">Hard</div>
-          <div className="count">{difficulties.Hard}</div>
-        </div>
-          
-      {userData && <UserProfile user={userData}onEdit={handleEditClick} />}
-        
-      {editMode && (
-        <div className="edit-modal">
-          <form onSubmit={handleFormSubmit} className="edit-form">
-            <label>
-              Username:
-              <input
-                type="text"
-                name="username"
-                value={editForm.username}
-                onChange={handleInputChange}
-                required
-              />
-            </label>
-            <label>
-              Email:
-              <input
-                type="email"
-                name="email"
-                value={editForm.email}
-                onChange={handleInputChange}
-                required
-              />
-            </label>
-            <label>
-              PhoneNumber:
-              <input
-                type="number"
-                name="phoneNo"
-                value={editForm.phoneNo}
-                onChange={handleInputChange}
-                required
-              />
-            </label>
-            <label>
-              Profile Image:
-              <input type="file" name="profileImg" onChange={handleFileChange} />
-            </label>
-            <div className="skills-container">
-        <h2>Skills</h2>
-        {skills.map((skill, index) => (
-          <div key={index} className="skill-row">
-            <input
-              type="text"
-              value={skill}
-              onChange={(e) => handleSkillChange(index, e.target.value)}
-              placeholder="Enter a skill"
-            />
-            {skills.length > 1 && (
-              <button type="button" onClick={() => removeSkill(index)}>
-                Remove
-              </button>
-            )}
-          </div>
-        ))}
-        <button type="button" onClick={addSkill}>
-          Add More Skills
-        </button>
       </div>
+    </div>
+  
+   
 
-      {/* Education Section */}
-      <div className="education-container">
+      {editMode && (
+ <div className="modal-overlay">
+ <div className="modal-content">
+   <button className="close-button" onClick={closeEditForm}>
+     &times;
+   </button>
+   <form onSubmit={handleFormSubmit} className="edit-form">
+     <label>
+       Username:
+       <input
+         type="text"
+         name="username"
+         value={editForm.username}
+         onChange={handleInputChange}
+         required
+       />
+     </label>
+     <label>
+       Email:
+       <input
+         type="email"
+         name="email"
+         value={editForm.email}
+         onChange={handleInputChange}
+         required
+       />
+     </label>
+     <label>
+       Phone Number:
+       <input
+         type="number"
+         name="phoneNo"
+         value={editForm.phoneNo}
+         onChange={handleInputChange}
+         required
+       />
+     </label>
+     <label>
+       Profile Image:
+       <input type="file" name="profileImg" onChange={handleFileChange} />
+     </label>
+
+     {/* Skills Section */}
+     <div className="skills-container">
+  <h2>Skills</h2>
+  {skills.map((skill, index) => (
+    <div key={index} className="skill-row">
+      <input
+        type="text"
+        value={skill}
+        onChange={(e) => handleSkillChange(index, e.target.value)}
+        placeholder="Enter a skill"
+        required
+      />
+    </div>
+  ))}
+
+  {/* + Icon */}
+  <div
+    className={`add-icon ${
+      skills.some((skill) => skill.trim() === '') ? 'disabled' : ''
+    }`}
+    onClick={() => {
+      if (!skills.some((skill) => skill.trim() === '')) {
+        addSkill();
+      }
+    }}
+  >
+    +
+  </div>
+</div>
+
+
+     {/* Education Section */}
+     <div className="education-container">
   <h2>Education</h2>
   {education.map((edu, index) => (
     <div key={index} className="education-row">
@@ -354,86 +438,145 @@ const ProfilePage = () => {
         value={edu.schoolName}
         onChange={(e) => handleEducationChange(index, 'schoolName', e.target.value)}
         placeholder="School Name"
+        required
       />
       <input
         type="text"
         value={edu.year}
         onChange={(e) => handleEducationChange(index, 'year', e.target.value)}
         placeholder="Year"
+        required
       />
       <input
         type="text"
         value={edu.score}
         onChange={(e) => handleEducationChange(index, 'score', e.target.value)}
         placeholder="Score"
+        required
       />
       <input
         type="text"
         value={edu.place}
         onChange={(e) => handleEducationChange(index, 'place', e.target.value)}
         placeholder="Place"
+        required
       />
-      {education.length > 1 && (
-        <button type="button" onClick={() => removeEducation(index)}>
-          Remove
-        </button>
-      )}
     </div>
   ))}
-  <button type="button" onClick={addEducation}>
-    Add More Education
-  </button>
+
+  {/* + Icon */}
+  <div
+    className={`add-icon ${
+      education.some((edu) =>
+        Object.values(edu).some((field) => field.trim() === '')
+      )
+        ? 'disabled'
+        : ''
+    }`}
+    onClick={() => {
+      if (
+        !education.some((edu) =>
+          Object.values(edu).some((field) => field.trim() === '')
+        )
+      ) {
+        addEducation();
+      }
+    }}
+  >
+    +
+  </div>
+</div>
+
+     {/* Buttons */}
+     <div className="edit-form-buttons">
+       <button type="submit">Save Changes</button>
+       <button type="button" onClick={closeEditForm}>
+         Cancel
+       </button>
+     </div>
+   </form>
+ </div>
+</div>
+
+
+)}
+{error && <ErrorMessage message={error} />}
+
+
+
+
+
+
+
+
+<div className="courses-container">
+  <h2 className="container-title">Courses</h2>
+  <div className="courses-grid">
+    {courses.map((course) => (
+      <div key={course._id} className="course-card">
+        <h3 className="course-title">{course.title}</h3>
+        <p className="course-progress">Progress: {course.progress}%</p>
+      </div>
+    ))}
+  </div>
 </div>
 
 
 
-            <button type="submit">Save Changes</button>
-            <button type="button" onClick={closeEditForm}>
-              Cancel
-            </button>
-          </form>
-        </div>
-      )}
-
-      {error && <ErrorMessage message={error} />}
-
-      <div className="courses-container">
-        <h1>Courses</h1>
-        {courses.length > 0 ? (
-          <div className="courses-list">
-            {courses.map((course) => (
-              <CourseCard key={course._id} course={course} />
-            ))}
-          </div>
-        ) : (
-          <p>No courses available.</p>
-        )}
-      </div>
-
       <div className="solved-questions-container">
-        <h2>My Solved Questions</h2>
-        {solvedQuestions.length > 0 ? (
-          <div className="solved-questions-list">
-            {solvedQuestions.map((solved) => (
-              <SolvedQuestionCard key={solved._id} solved={solved} />
-            ))}
-          </div>
-        ) : (
-          <p>No solved questions available.</p>
-        )}
-      </div>
+  <div className="solved-questions-header">
+    <h2>My Solved Problems</h2>
+    <p className="total-solved-count">Total Solved: {solvedQuestions.length}</p>
+  </div>
+  {solvedQuestions.length > 0 ? (
+    <table className="solved-questions-table">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Question Name</th>
+          <th>Question Description</th>
+          <th>Solved At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {solvedQuestions.map((solved, index) => (
+          <tr key={solved._id}>
+            <td>{index + 1}</td>
+            <td>{solved.Question ? solved.Question.title : "N/A"}</td>
+            <td>{solved.Question ? solved.Question.description : "N/A"}</td>
+            <td>{new Date(solved.solvedAt).toLocaleString()}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>No solved questions available.</p>
+  )}
+</div>
+
 
       <div className="calendar-container">
-        <h2>Your Progress</h2>
-        <Calendar
-          tileClassName={({ date }) =>
-            dateMarked.includes(date.toLocaleDateString()) ? "highlighted-date" : ""
-          }
-        />
-      </div>
+      <h2 className="calendar-header">Your Progress</h2>
+      <DatePicker
+        selected={selectedDate}
+        onChange={(date) => setSelectedDate(date)}
+        inline
+        highlightDates={highlightedDates}
+        dayClassName={(date) =>
+          highlightedDates.some(
+            (highlightedDate) =>
+              date.getDate() === highlightedDate.getDate() &&
+              date.getMonth() === highlightedDate.getMonth() &&
+              date.getFullYear() === highlightedDate.getFullYear()
+          )
+            ? "highlighted-date"
+            : undefined
+        }
+      />
     </div>
-  );
-};
+    </div>
+   );
+ };
 
 
 
@@ -445,78 +588,106 @@ const UserProfile = ({ user, onEdit }) => {
   return (
     
     <div className="profile-card">
-      <img
-        className="profile-image"
-        src={imageUrl}
-        alt={`${user.username}'s Profile`}
-        onError={(e) => {
-          e.target.onerror = null;
-          e.target.src = "https://via.placeholder.com/100?text=User";
-        }}
-      />
-      <div className="user-info1">
-        <h2>{user.username}</h2>
-        <p>{user.email}</p>
-        <span className="role-tag">{user.role}</span>
-        <p><strong>Phone:</strong> {user.phoneNo || "N/A"}</p>
-        <p>
-          <strong>Skills:</strong>
-          {user.skils && user.skils.length > 0 ? (
-            <ul>
-              {user.skils.map((skill, index) => (
-                <li key={index}>{skill.addskills}</li>
-              ))}
-            </ul>
-          ) : (
-            "No skills listed"
-          )}
-        </p>
-        <p>
-          <strong>Education:</strong>
-          {user.Education && user.Education.length > 0 ? (
-            <ul>
-              {user.Education.map((edu, index) => (
-                <li key={index}>
-                  {edu.schoolName} ({edu.year}) - {edu.score} - {edu.place}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            "No education details listed"
-          )}
-        </p>
-        <button onClick={onEdit}>Edit Profile</button>
-      </div>
+    {/* Profile Image */}
+    <img
+      className="profile-image"
+      src={imageUrl}
+      alt={`${user.username}'s Profile`}
+      onError={(e) => {
+        e.target.onerror = null;
+        e.target.src = "https://via.placeholder.com/100?text=User";
+      }}
+    />
+  
+    {/* User Info */}
+    <div className="user-info">
+      <h2 className="username">{user.username}</h2>
+      <p className="email">{user.email}</p>
+      <span className="role-tag">{user.role}</span>
+      <div className="user-detail">
+  <FaPhoneAlt /> <span>{user.phoneNo || "N/A"}</span>
+</div>
+
     </div>
+  
+    {/* Skills Section */}
+    <div className="skills-container">
+      <h3><FaToolbox /> Skills</h3>
+      {user.skils && user.skils.length > 0 ? (
+        <ul>
+          {user.skils.map((skill, index) => (
+            <li key={index}>
+              <FaChevronRight /> {skill.addskills}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No skills listed</p>
+      )}
+    </div>
+  
+    {/* Education Section */}
+    <div className="education-container">
+      <h3><FaGraduationCap /> Education</h3>
+      {user.Education && user.Education.length > 0 ? (
+        <ul>
+          {user.Education.map((edu, index) => (
+            <li key={index}>
+              <FaChevronRight /> {edu.schoolName} ({edu.year}) - {edu.score} - {edu.place}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No education details listed</p>
+      )}
+    </div>
+  
+    {/* Edit Icon */}
+    <div className="edit-icon-container">
+      <FaPen
+        onClick={onEdit}
+        className="edit-icon"
+        style={{ color: '#ff5733', cursor: 'pointer', fontSize: '24px' }}
+      />
+    </div>
+  </div>
+  
   );
 };
 
 
 
-
-
 const CourseCard = ({ course }) => (
   <div className="course-card">
-    <h2 className="course-title">{course.title}</h2>
-    <p className="course-progress">Progress: {course.progress}%</p>
+    <div className="course-card-header">
+      <h2 className="course-title">{course.title}</h2>
+    </div>
+    <div className="course-card-body">
+      <p className="course-progress">Progress: {course.progress}%</p>
+    </div>
   </div>
 );
 
 const SolvedQuestionCard = ({ solved }) => (
   <div className="solved-question-card">
-    {solved.Question ? (
-      <>
+    <div className="solved-question-header">
+      {solved.Question ? (
         <h3 className="question-title">{solved.Question.title}</h3>
+      ) : (
+        <p className="no-question">Question not available</p>
+      )}
+    </div>
+    <div className="solved-question-body">
+      {solved.Question && (
         <p className="question-description">{solved.Question.description}</p>
-      </>
-    ) : (
-      <p className="no-question">Question not available</p>
-    )}
-    <span className="solved-at">
-      Solved At: {new Date(solved.solvedAt).toLocaleString()}
-    </span>
+      )}
+      <span className="solved-at">
+        Solved At: {new Date(solved.solvedAt).toLocaleString()}
+      </span>
+    </div>
   </div>
 );
+
 
 const ErrorMessage = ({ message }) => (
   <div className="error-message">
