@@ -1,369 +1,934 @@
-/* Profile Container */
-.profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    background-color: #f9f9f9;
-    min-height: 100vh;
-    font-family: "Arial", sans-serif;
-  }
-  
-  /* Profile Card */
-  .profile-card {
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    padding: 1.5rem;
-    text-align: center;
-  }
-  
-  /* Profile Image */
-  .profile-image {
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border: 3px solid #007bff;
-  }
-  
-  /* User Info */
-  .user-info1 {
-    margin-top: 1rem;
-  }
-  
-  .user-info1 h2 {
-    font-size: 1.5rem;
-    color: #333;
-    margin: 0;
-  }
-  
-  .user-info1 p {
-    margin: 0.5rem 0;
-    color: #777;
-  }
-  
-  /* Role Tag */
-  .role-tag {
-    display: inline-block;
-    background-color: #007bff;
-    color: #fff;
-    padding: 0.3rem 0.6rem;
-    font-size: 0.9rem;
-    border-radius: 5px;
-    margin-top: 0.5rem;
-  }
-  
-  /* Error Message */
-  .error-message {
-    color: red;
-    font-size: 1rem;
-    margin-top: 1rem;
-  }
+/* General styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+.profile-image-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
 
+.photo-menu {
+  position: absolute;
+  top: 110%; /* Adjust to position below the image */
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+}
+
+.photo-menu button {
+  padding: 10px;
+  font-size: 14px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.photo-menu button:last-child {
+  border-bottom: none;
+}
+
+.photo-menu button:hover {
+  background-color: #f9f9f9;
+}
+
+.photo-menu button:focus {
+  outline: none;
+}
+
+
+.profile-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Profile Card */
+.profile-card {
+  flex: 1; /* Profile takes up equal space */
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 15px; /* Add spacing between elements */
+  max-width: 400px; /* Optional: limit the width */
+  margin: 0 auto;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #4caf50;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px; /* Add spacing between text elements */
+}
+
+.username {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.email {
+  font-size: 1rem;
+  color: #666;
+}
+
+.role-tag {
+  background-color: #4caf50;
+  color: #fff;
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+.user-detail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.user-detail svg {
+  color: #4caf50;
+  font-size: 1.2rem;
+}
+
+.skills-container, .education-container {
+  text-align: left;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.skills-container h3, .education-container h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #4caf50;
+  margin-bottom: 10px;
+}
+
+.skills-container ul, .education-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.skills-container li, .education-container li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.skills-container li svg, .education-container li svg {
+  color: #4caf50;
+  font-size: 1rem;
+}
+
+
+.edit-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #555;
+}
+
+.edit-icon:hover {
+  color: #000;
+}
+
+/* Edit Form */
+.edit-form-container {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.edit-form label {
+  font-weight: bold;
+  color: #333;
+}
+
+.edit-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.edit-form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-form input:focus {
+  border-color: #4CAF50;
+  outline: none;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+.edit-form button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.edit-form button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.edit-form button[type="submit"]:hover {
+  background-color: #388E3C;
+}
+.edit-form button[type="button"] {
+  background-color: #f44336;
+  color: white;
+}
+
+.edit-form button[type="button"]:hover {
+  background-color: #d32f2f;
+}
+
+/* Add Button Styling */
+.add-icon {
+  width: 40px;
+  height: 40px; /* Square icon */
+  border-radius: 4px; /* Subtle rounded corners */
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px; /* Space between fields and icon */
+}
+.add-icon:hover {
+  background-color: #388E3C;
+}
+.add-icon.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.add-icon:hover:not(.disabled) {
+  background-color: #388E3C;
+}
+/* Skill and Education Rows */
+.skill-row,
+.education-row {
+  display: flex;  
+  flex-direction: column; /* Arrange fields line by line */
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.skill-row input,
+.education-row input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  color: #333;
+}
+.education-row input:focus {
+  border-color: #4CAF50;
+  outline: none;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+/* Courses and Solved Questions */
+/* General Card Styles */
+.course-card, .solved-question-card {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 16px 0;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover, .solved-question-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Course Card Styles */
+.course-card-header {
+  background: linear-gradient(120deg, #36a2eb, #4caf50);
+  padding: 16px;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+}
+
+.course-title {
+  font-size: 18px;
+  margin: 0;
+}
+
+.course-card-body {
+  padding: 16px;
+}
+
+.course-progress {
+  font-size: 16px;
+  color: #555;
+  text-align: center;
+}
+
+/* Solved Question Card Styles */
+.solved-question-header {
+  background-color: #4caf50;
+  padding: 16px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.question-title {
+  font-size: 18px;
+  margin: 0;
+}
+
+.solved-question-body {
+  padding: 16px;
+}
+
+.question-description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.solved-at {
+  display: block;
+  font-size: 12px;
+  color: #999;
+  text-align: right;
+  margin-top: 8px;
+}
+
+/* Utility Styles */
+.no-question {
+  font-size: 14px;
+  color: #d32f2f;
+  text-align: center;
+  margin: 16px 0;
+}
+/* Carousel Container */
+.courses-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Carousel Buttons */
+.carousel-button {
+  background-color: #4caf50;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.carousel-button:hover {
+  background-color: #36a2eb;
+}
+
+.carousel-button:disabled {
+  background-color: #d6d6d6;
+  cursor: not-allowed;
+}
+
+/* Courses List */
+.courses-list {
+  display: flex;
+  gap: 16px;
+  flex-grow: 1;
+  overflow: hidden;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Course Card */
+.course-card {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  text-align: center;
+  flex: 0 0 calc(33.33% - 16px); /* 3 items per row with spacing */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.course-title {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.course-progress {
+  font-size: 14px;
+  color: #666;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.progress-filled {
+  height: 100%;
+  background-color: #0066cc;
+}
+
+/* Calendar Container */
+.calendar-container {
+  background: linear-gradient(145deg, #f9f9f9, #e6e6e6);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin: 2rem auto;
+  max-width: 800px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+/* Header Styling */
+
+
+/* * Header */
+.calendar-header {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+/* Custom Date Picker */
+.react-datepicker {
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: #fff;
+  padding: 1rem;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  margin: 0.2rem;
+  font-size: 0.9rem;
+  color: #333;
+  text-align: center;
+}
+
+.react-datepicker__day--today {
+  background: #007bff;
+  color: white;
+  border-radius: 50%;
+}
+
+.react-datepicker__day--highlighted {
+  background: #17a2b8;
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.react-datepicker__day:hover {
+  background: #ffc107;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.highlighted {
+  background-color: #ffeb3b;
+  border-radius: 50%;
+}
+
+/* Error Message */
+.error-message {
+  padding: 1rem;
+  background-color: #ffcccc;
+  border: 1px solid #f44336;
+  border-radius: 5px;
+  color: #f44336;
+  margin-bottom: 2rem;
+}
+
+.edit-icon-container {
+  margin-top: 10px;
+}
+
+.edit-icon {
+  cursor: pointer;
+  font-size: 24px;
+  color: #ff5733; /* You can change the color here */
+}
+
+.edit-icon:hover {
+  color: #ff9600; /* Hover effect for the pencil icon */
+}
+
+.profile-card {
+  position: relative;
+  width: 100%;
+ 
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.edit-icon-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.edit-icon {
+  font-size: 20px;
+  color: #ff9800; /* Color of the pencil icon */
+  transition: color 0.3s ease;
+}
+
+.edit-icon:hover {
+  color: #f57c00; /* Hover color */
+}
+
+.profile-image {
   
-  .courses-container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  h1 {
-    text-align: center;
-    color: #333;
-  }
-  
-  .courses-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-  }
-  
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-info1 {
+  margin-top: 15px;
+}
+
+.role-tag {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 5px 0;
+  background-color: #e0f7fa;
+  color: #00796b;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  width: 450px; /* Smaller width */
+  max-height: 80vh; /* Restrict height */
+  overflow-y: auto; /* Enable vertical scroll */
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.modal-content button {
+  margin: 3px;
+  padding: 5px 15px;
+  cursor: pointer;
+}
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: red;
+}
+
+.course-card, .solved-question-card {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.course-card:hover, .solved-question-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+/* Main Container for Courses */
+.courses-container {
+  width: 100%; /* Full width */
+  padding: 20px;
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  border-radius: 8px;
+}
+
+/* Title for the Courses Section */
+.container-title {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  text-align: left;
+  border-bottom: 2px solid #4caf50;
+  padding-bottom: 10px;
+}
+
+/* Flexbox Layout for Cards */
+.courses-grid {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping to the next row */
+  gap: 20px; /* Space between cards */
+  align-items: flex-start; /* Align cards at the top */
+}
+
+/* Styling for Individual Course Cards */
+.course-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  width: 300px; /* Fixed width for cards */
+  text-align: left;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Course Title Styling */
+.course-title {
+  font-size: 1.4rem;
+  color: #34495e;
+  margin-bottom: 10px;
+}
+
+/* Course Progress Styling */
+.course-progress {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
   .course-card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    width: 300px;
-    text-align: center;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: calc(50% - 20px); /* Adjust to 2 cards per row on smaller screens */
   }
-  
-  .course-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #555;
-  }
-  
-  .course-progress {
-    font-size: 16px;
-    color: #777;
-  }
+}
 
-  
-  .profile-container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  h1 {
-    text-align: center;
-    color: #333;
-  }
-  
-  .loading {
-    text-align: center;
-    font-size: 18px;
-    color: #555;
-  }
-  
-  .error-message {
-    color: red;
-    text-align: center;
-    margin: 10px 0;
-  }
-  
-  .profile-card {
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .profile-image {
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-  }
-  
-  .user-info h2 {
-    font-size: 24px;
-    margin: 10px 0;
-  }
-  
-  .role-tag {
-    font-size: 14px;
-    color: #666;
-  }
-  
-  .courses-container {
-    margin-top: 30px;
-  }
-  
-  .courses-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-  }
-  
+@media (max-width: 480px) {
   .course-card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    width: 250px;
-    text-align: center;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Full width for small screens */
   }
-  
-  .course-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .course-progress {
-    font-size: 16px;
-    color: #777;
-  }
+}
 
-  
-/* Container for the solved questions section */
+
+
+/* Solved Questions Container Header */
+.solved-questions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.solved-questions-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.total-solved-count {
+  font-size: 1rem;
+  color: #555;
+  background-color: #f9f9f9;
+  padding: 5px 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .solved-questions-container {
-    margin-top: 30px;
-  }
-  
-  /* Title for the solved questions section */
-  .solved-questions-container h1 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  /* Wrapper for the list of solved questions */
-  .solved-questions-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  /* Each solved question entry */
-  .solved-question-card {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* The question title */
-  .solved-question-card .question-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-right: 15px;
-    flex-grow: 1;
-  }
-  
-  /* The solved icon for each question */
-  .solved-question-card .solved-icon {
-    font-size: 18px;
-    color: green;
-    margin-left: 15px;
+  margin: 20px 0;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.solved-questions-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.solved-questions-table thead {
+  background-color: #f9f9f9;
+}
+
+.solved-questions-table th, .solved-questions-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.solved-questions-table th {
+  font-weight: bold;
+  color: #333;
+  background-color: #f4f4f4;
+}
+
+.solved-questions-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.solved-questions-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.solved-questions-table td {
+  color: #555;
+  word-break: break-word; /* Prevent long words from overflowing */
+}
+
+.stats-container {
+  display: flex;
+  justify-content: center; /* Center the entire container */
+  align-items: center;
+  gap: 20px; /* Spacing between the two cards */
+  margin: 20px 0;
+}
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.profile-and-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px; /* Adjust spacing between profile and stats */
+}
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Profile and Stats Container: Flex row to align items side by side */
+.profile-and-stats {
+  display: flex;
+  justify-content: space-between; /* Align items with space between */
+  align-items: flex-start; /* Align items to the top */
+  gap: 20px; /* Spacing between profile and stats */
+}
+
+/* Profile Card: Adjust height based on content */
+.profile-card {
+  flex: 1; /* Profile takes up equal space */
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto; /* Adjust height dynamically based on content */
+}
+
+/* Stats Side Container: Side by side stats */
+.stats-side-container {
+  display: flex;
+  flex: 1; /* Stats take up equal space */
+  gap: 20px;
+  align-items: center; /* Center stats cards vertically */
+}
+
+/* Stats Items: Acceptance Rate and Difficulty Breakdown */
+.stats-item {
+  flex: 1; /* Each stats container takes equal space */
+  max-width: 300px;
+  height: 300px; /* Fixed height for stats containers */
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Adjust Pie Chart Size */
+.stats-item canvas {
+  max-width: 200px;
+  max-height: 200px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-and-stats {
+    flex-direction: column; /* Stack items vertically */
   }
 
-  /* Calendar custom styles */
-.react-calendar .highlighted-date {
-    background-color: #4CAF50; /* Green color */
-    color: white;
-    border-radius: 50%;
+  .stats-item {
+    height: auto; /* Adjust height for smaller screens */
+    max-width: 100%; /* Allow containers to take full width */
   }
-  
-  .calendar-container {
-    margin-top: 30px;
-  }
-  
-  .calendar-container h2 {
-    text-align: center;
-  }
+}
 
-  
-  .edit-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    max-width: 800px;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    z-index: 1000;
-    overflow: hidden; /* Prevent content overflow outside the modal */
+.acceptance-container, .difficulty-chart-container {
+  width: 300px; /* Equal width for both cards */
+  height: 300px; /* Ensure same height for both cards */
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column; /* Stack content inside cards */
+  justify-content: center; /* Vertically center content */
+  align-items: center; /* Horizontally center content */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+}
+.difficulty-chart-container {
+  width: 300px; /* Ensure card has consistent width */
+  height: 300px; /* Ensure card has consistent height */
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.vertical-separator {
+  display: none; /* Remove separator to simplify layout */
+}
+
+.difficulty-chart-container canvas {
+  max-width: 200px; /* Restrict the chart's maximum width */
+  max-height: 200px; /* Restrict the chart's maximum height */
+}
+
+/* Modal Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
   }
-  
-  .edit-form {
-    max-height: 70vh; /* Set a maximum height for the form */
-    overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
-    padding: 20px;
-    box-sizing: border-box;
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
+}
 
 
-  .edit-form label {
-    display: block;
-    margin: 10px 0;
+/* Responsive Design */
+@media (max-width: 768px) {
+  .course-card, .solved-question-card {
+    width: calc(50% - 1rem);
   }
-  
-  .edit-form input {
+}
+
+@media (max-width: 480px) {
+  .course-card, .solved-question-card {
     width: 100%;
-    padding: 8px;
-    margin-top: 5px;
   }
-  
-  .edit-form button {
-    margin: 10px 5px 0 0;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .edit-form button[type="submit"] {
-    background: #4caf50;
-    color: white;
-  }
-  
-  .edit-form button[type="button"] {
-    background: #f44336;
-    color: white;
-  }
-  
-
-  
-
-
-  .progress-bar1 {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .circle1 {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 8px solid #555;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-  
-  .percentage1 {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .text1 {
-    font-size: 16px;
-    margin-top: 5px;
-  }
-  
-  .submissions1 {
-    font-size: 14px;
-    color: #aaa;
-  }
-  
-  .difficulty-stats1 {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .difficulty-stats1 .easy1,
-  .difficulty-stats1 .medium1,
-  .difficulty-stats1 .hard1 {
-    text-align: center;
-  }
-  
-  .label1 {
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-  
-  .count1 {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .container1{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #282c34;
-    color: white;
-    height: 100vh;
-    justify-content: center;
-  }
-
-
-  
+}
