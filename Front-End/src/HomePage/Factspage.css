@@ -1,4 +1,4 @@
-.comment-container {
+.comment-containerofFacts {
     max-height: 200px; /* Set maximum height for the comments section */
     overflow-y: auto; /* Enable vertical scrolling when comments exceed the max height */
     padding: 10px;
