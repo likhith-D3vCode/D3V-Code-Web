@@ -44,7 +44,7 @@ router.post('/add-course', upload.single('image'), async (req, res) => {
   
   try {
     
-    const { title, description, indexes } = req.body;
+    const { title, description, indexes,progress } = req.body;
     const image = req.file ? req.file.filename : null;
 
     if (!image) {
@@ -56,6 +56,7 @@ router.post('/add-course', upload.single('image'), async (req, res) => {
       title,
       description,
       image,
+      progress,
       indexes:parsedIndexes,
       users: [{ userId, progress: 0 }],
     });
@@ -114,9 +115,10 @@ router.get('/courses/index/:id', async (req, res) => {
       return {
         ...course._doc,
         progress: userProgress ? userProgress.progress : 0, // Default progress to 0 if not found
+        courseProgress: course.progress,
       };
     });
-
+   
     res.json(filteredCourses);
   } catch (err) {
     console.error('Error fetching courses:', err);
@@ -175,9 +177,7 @@ router.get('/progress/:courseId', async (req, res) => {
       // Convert userId to ObjectId for comparison
       const userObjectId = new mongoose.Types.ObjectId(userId);
 
-      console.log(userObjectId); // Debugging: Confirm the converted ObjectId
-      console.log(course.users); // Debugging: Check the users array in the course
-      // Find the user's progress in the course
+     
       
       const userProgress = course.users.find(user => user.userId.equals(userObjectId));
 

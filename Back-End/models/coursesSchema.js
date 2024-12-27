@@ -14,6 +14,12 @@ const courseSchema = new mongoose.Schema({
     required: true,
 
   },
+  progress:{
+
+    type:Number,
+    required:true
+
+  },
   indexes: [
     {
       title: { type: String, required: true }, // Title of the course index
