@@ -1,94 +1,443 @@
+/* General Body and Container Styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f3f4f6;
+  margin: 0;
+  padding: 0;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
+  z-index: 100; /* Ensures overlay is above all other elements */
+  pointer-events: all; /* Prevent interaction with background */
+}
+.search-bar-container {
+ 
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.search-bar {
+  position: relative;
+  width: 100%;
+ 
+}
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #888;
+}
 
+/* Search Bar Container */
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  position: relative;
+  width: 100%;
+
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #888;
+}
+
+/* Input Field */
+.search-bar input {
+  width: 100%;
+  padding: 10px 12px 10px 36px; /* Leaves space for the icon */
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.search-bar input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+/* Hide the icon when input is focused */
+.search-bar input:focus + .search-icon {
+  opacity: 0; /* Makes the icon invisible */
+  pointer-events: none; /* Prevents interaction with the icon */
+}
+.container {
+  padding: 20px;
+}
+
+h1 {
+  color: #333;
+}
+
+.categories {
+  margin-bottom: 20px;
+}
+
+.category-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #e0e0e0;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.category-button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Search Bar and Tabs */
+.tabs span {
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  border: none;
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 16px;
+}
+
+/* New Post Button */
+.new-post-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.new-post-button svg {
+  margin-right: 8px;
+}
+
+/* Post Interface */
+.post-container {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
   
+  height: 50%;
+  background-color: white; /* Fully opaque container */
+  border-radius: 15px 15px 0 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for elevation */
+  padding: 20px;
+  z-index: 101; /* Above the overlay */
+   /* Allows scrolling if content overflows */
+}
+
+.post-container-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 
+@keyframes slideIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
 
+/* Input Fields */
+.post-container input,
+.post-container textarea {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
 
+.post-container input.title-input {
+  width: 70%; /* Leave space for buttons */
+}
 
-  .container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  h1 {
-    margin-bottom: 10px;
-  }
-  
-  .tabs span {
-    margin-right: 20px;
-    cursor: pointer;
-  }
-  
-  .input1,
-  .textarea1 {
-    margin: 10px 0;
-    padding: 10px;
-    width: 100%;
-    max-width: 600px;
-    box-sizing: border-box;
-    font-size: 14px;
-  }
-  
+.post-container-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
+/* Buttons */
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
+.post-button,
+.close-button {
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px; /* Unified Button Size */
+}
 
-  button1 {
-    padding: 10px;
-    margin: 5px;
-    cursor: pointer;
-  }
-  
-  .questions {
-    margin-top: 20px;
-  }
-  
-  .question {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .post-interface {
-    border: 1px solid #ddd;
-    padding: 20px;
-    margin-top: 20px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-  }
-  
-  .textarea1 {
-    resize: none;
-  }
-  
-  .options {
-    margin-top: 10px;
-  }
-  
-  .buttons {
-    margin-top: 10px;
-  }
-  
-  .close-button {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-  }
-  
-  .post-button {
-    background-color: green;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-  }
-  
-  .close-button:hover {
-    background-color: darkred;
-  }
-  
-  .post-button:hover {
-    background-color: darkgreen;
-  }
-  
+.post-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.post-button svg {
+  margin-left: 5px; /* Adjust for space between text and icon */
+}
+
+.close-button {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.post-button:hover {
+  background-color: #0056b3;
+}
+
+.close-button:hover {
+  background-color: #c7c7c7;
+}
+
+/* Options Section */
+.options {
+  margin-top: 10px;
+}
+
+.options label {
+  font-size: 14px;
+  color: #555;
+  display: flex;
+  align-items: center;
+}
+
+.options input {
+  margin-right: 5px;
+}
+
+/* Questions Section */
+.question {
+  padding: 15px;
+  background-color: white;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.question-title {
+  cursor: pointer;
+  color: #007bff;
+}
+.post-actions {
+  display: flex;
+  gap: 10px; /* Ensures space between buttons */
+  align-items: center;
+}
+
+.cancel-button {
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cancel-button:hover {
+  background-color: #c7c7c7;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px; /* Adds space between text and icon */
+}
+
+.submit-button svg {
+  margin-left: 0;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+.submit-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.questions {
+  margin-top: 20px;
+}
+.questions {
+  margin-top: 20px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.post-list-container {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  position: relative; /* For positioning child elements */
+}
+
+.post-list-item:last-child {
+  border-bottom: none;
+}
+
+.post-list-item:hover {
+  background-color: #f9f9f9;
+}
+.eye-icon-container,
+.replies-icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.post-title {
+  font-size: 1.2rem;
+  color: #007bff;
+  margin: 0;
+}
+
+.post-title:hover {
+  text-decoration: underline;
+}
+
+.post-details {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Adds gap between the title and tags */
+}
+.eye-icon,
+.replies-icon {
+  font-size: 24px; /* Larger icon size */
+  color: #a39f9f;
+}
+
+.eye-count,
+.replies-count {
+  font-size: 12px; /* Smaller count text */
+  color: #888;
+  text-align: center;
+}
+.post-view-details span {
+  font-size: 14px;
+  color: #555;
+}
+.last-reply {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.no-posts {
+  text-align: center;
+  color: #888;
+  font-size: 1rem;
+  padding: 20px;
+}
+.tags-container {
+  display: flex;
+  gap: 10px; /* Space between individual tags */
+}
+
+.tag-item {
+  background-color: #007bff;
+  color: white;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 15px;
+  display: inline-block;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.tag-item:hover,
+.tag-item:focus {
+  background-color: #0056b3; /* Darker blue on hover/focus */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Adds a slight shadow */
+}
+.icons-container {
+  display: flex;
+  gap: 30px; /* Adds more gap between eye and replies icons */
+  align-items: center;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
