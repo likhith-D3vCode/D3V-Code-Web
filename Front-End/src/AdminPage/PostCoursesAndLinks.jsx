@@ -6,6 +6,7 @@ function CourseManager() {
   const [newCourse, setNewCourse] = useState({
     title: '',
     description: '',
+    progress:0,
     indexes: [{ title: '', youtubeLink: '' }],
   });
   const [image, setImage] = useState(null);
@@ -18,6 +19,7 @@ function CourseManager() {
     formData.append('title', newCourse.title);
     formData.append('description', newCourse.description);
     formData.append('indexes', JSON.stringify(newCourse.indexes)); // Convert indexes to string
+    formData.append('progress',newCourse.progress);
     if (image) {
       formData.append('image', image); // Add the image file
     }
@@ -27,7 +29,7 @@ function CourseManager() {
       .then((response) => {
         alert('Course added successfully!');
         setCourses([...courses, response.data.course]);
-        setNewCourse({ title: '', description: '', indexes: [{ title: '', youtubeLink: '' }] });
+        setNewCourse({ title: '', description: '',progress:0, indexes: [{ title: '', youtubeLink: '' }] });
         setImage(null);
       })
       .catch((error) => console.error('Error adding course:', error));
@@ -78,6 +80,7 @@ function CourseManager() {
               placeholder="YouTube Link"
               value={index.youtubeLink}
               onChange={(e) => handleIndexChange(i, 'youtubeLink', e.target.value)}
+              
               required
             />
           </div>
@@ -85,6 +88,9 @@ function CourseManager() {
         <button type="button" onClick={addNewIndex}>
           Add New Index
         </button>
+        <div>
+          <input type="number" value={newCourse.progress}   onChange={(e) => setNewCourse({ ...newCourse, progress: e.target.value })}  placeholder='enter total progress' />
+        </div>
         <div>
           <label>Image:</label>
           <input

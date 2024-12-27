@@ -19,7 +19,7 @@ const HtmlCourse = () => {
     const [indexes, setIndexes] = useState([]); // For storing index data specifically
     const [course, setCourse] = useState(null); // For storing entire course data
     const [isExitModalOpen, setIsExitModalOpen] = useState(false);
-
+    const [totalProgress,settotalProgress]=useState();
     const [timer, setTimer] = useState(0); // Timer state in seconds
     const [isTimerRunning, setIsTimerRunning] = useState(false); // Timer status
 
@@ -86,7 +86,8 @@ const HtmlCourse = () => {
                 const response = await axios.get(`http://localhost:9000/CoursesIndex/courses/index/${id}`, { withCredentials: true });
                 const  Courses  = response.data;
 
-                 console.log(Courses[0].indexes)
+                //  console.log(Courses[0].courseProgress)
+                 settotalProgress(Courses[0].courseProgress)
                  setCourse(Courses[0].title)
                  setIndexes(Courses[0].indexes)
 
@@ -195,7 +196,7 @@ const HtmlCourse = () => {
 
          // Calculate timer as a percentage of 1000
     const calculatePercentage = (timer) => {
-        return(Math.min((timer / 10000) * 100, 100).toFixed(2)); // Return percentage formatted to 2 decimal places
+        return(Math.min((timer / {totalProgress}) * 100, 100).toFixed(2)); // Return percentage formatted to 2 decimal places
     };
 
 
