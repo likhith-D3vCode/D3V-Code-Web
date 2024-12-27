@@ -16,6 +16,8 @@ import SignupPage from "./SignUpAndLogin/SignUpPage"
 import LoginPage from "./SignUpAndLogin/loginPage"
 import HtmlCourse from "./StudyPage/HtmlCourse"
 import PostCoursesAndLinks from "./AdminPage/PostCoursesAndLinks"
+import PostFacts from "./AdminPage/PostFacts"
+
 import SpecificquestionTopicWise from "./Labs/SpecificquestionTopicWise"
 import ProfilePage from "./Profile/ProfilePage"
 import Discussion from "./DiscussionPage/Discussion";
@@ -43,7 +45,8 @@ function App() {
       <Route path="/Admin" element={<PostQuestionsAndTestCases/>}/>
       <Route path="/StaticLogin" element={<LoginPage/>}/>
       <Route path="/post-Courses" element={<PostCoursesAndLinks/>}/>
-      
+      <Route path="/post-Facts" element={<PostFacts/>}/>
+
       <Route path="/discuss" element={<ProtectedRoute element={<Discussion />} />} />
       <Route path="/UserProfile" element={<ProtectedRoute element={<ProfilePage />} />} />
       <Route path="/specificQuestions" element={<SpecificquestionTopicWise/>}/>

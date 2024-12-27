@@ -168,7 +168,7 @@ function FactsPage() {
                       </span>
 
                       {showComments && (
-                        <div className="mt-3 comment-container">
+                        <div className="mt-3 comment-containerofFacts">
                           {getcommentData.length > 0 ? (
                             getcommentData.map((comment) => (
                               <div key={comment._id} className="comment">
