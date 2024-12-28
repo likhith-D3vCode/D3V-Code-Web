@@ -40,9 +40,9 @@ const outputRef = useRef(null);
 const [showTestCases, setShowTestCases] = useState(false);
   const [showTestResults, setShowTestResults] = useState(false);
   const [showOutputInterface, setshowOutputInterface] = useState(true);
+  const [chatgptapi,setChatgptApi]=useState();
 
-
-const API_KEY = "{yourkey}";
+const API_KEY = chatgptapi;
 const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`;
 
 const [isResponseGenerating, setIsResponseGenerating] = useState(false);
@@ -76,6 +76,20 @@ const [messages, setMessages] = useState([]);
   }, [questionId]);
 
 
+
+  useEffect(() => {
+    const getchatgptapi = async () => {
+      try {
+        const response = await axios.get('http://localhost:9000/getChatgptApi', { withCredentials: true });
+                setChatgptApi(response.data.apiUrl)
+      } catch (error) {
+        console.error("Error fetching solved status:", error);
+      }
+    };
+    getchatgptapi();
+  }, []);
+
+
   
 
  
@@ -95,14 +109,14 @@ const [messages, setMessages] = useState([]);
     `;
     setOutput(completeCode);
     scrollToOutput();
+    setValue("Analyze the following code:"+htmlCode+cssCode+jsCode+" Your task:1.Check if the code contains any syntax errors. 2Check if the code has runtime errors that occur during execution. 3.If there are no errors, confirm that the code is correct.Provide only one response based on your analysis:  Syntax Error: If the code contains syntax issues.    RuntimeError: If the code has execution issues.     Success: If the code is fully correct with no errors(Note:Do not give success answer even a small syntax error appear in the code check the code line by line).Do not provide any explanations or additional information, only respond with one of these:Syntax Error, Runtime Error, or Success.")
     executeCode();
     validateSyntax();
     
     ValidateCss(htmlCode, cssCode, jsCode);
-     setValue("Analyze the following code:"+htmlCode+cssCode+jsCode+" Your task:1.Check if the code contains any syntax errors. 2Check if the code has runtime errors that occur during execution. 3.If there are no errors, confirm that the code is correct.Provide only one response based on your analysis:  Syntax Error: If the code contains syntax issues.    Runtime        Error: If the code has execution issues.     Success: If the code is fully correct with no errors.Do not provide any explanations or additional information, only respond with one of these:Syntax Error, Runtime Error, or Success.")
    
     generateApiResponse()
-     
+  
     
 
     
@@ -122,7 +136,8 @@ const [messages, setMessages] = useState([]);
 
 
   const generateApiResponse = async () => {
-    
+    setValue("Analyze the following code:"+htmlCode+cssCode+jsCode+" Your task:1.Check if the code contains any syntax errors check line by line whearther the tags are correct or not there corresponding tages are there are not check striclty . 2Check if the code has runtime errors that occur during execution. 3.If there are no errors, confirm that the code is correct.Provide only one response based on your analysis:  Syntax Error: If the code contains syntax issues.    RuntimeError: If the code has execution issues.     Success: If the code is fully correct with no errors(Note:Do not give success answer even a small syntax error appear in the code check the code line by line).Do not provide any explanations or additional information just if it is syntax error or runtime error give me one line sentance why it is error, only respond with one of these:Syntax Error, Runtime Error, or Success. if it is syntax error or runtime error give me one line sentance why it is error")
+
    console.log("inside api",value)
     try {
       const response = await fetch(API_URL, {
@@ -148,6 +163,11 @@ const [messages, setMessages] = useState([]);
       );
 
       console.log("ans",apiResponse)
+
+      if(apiResponse=="Syntax Error"||apiResponse=="RuntimeError"){
+        setshowOutputInterface(false)
+        setShowTestResults(true);
+      }
       
       setchatgptoutput(apiResponse);
       
@@ -333,7 +353,7 @@ const [messages, setMessages] = useState([]);
       else if (language === "css") setCssCode(value);
     else setJsCode(value);
 
-    setValue( "Analyze the following code:"+htmlCode+cssCode+jsCode+"Your task:1.Check if the code contains any syntax errors. 2Check if the code has runtime errors that occur during execution. 3.If there are no errors, confirm that the code is correct.Provide only one response based on your analysis:  Syntax Error: If the code contains syntax issues.    Runtime        Error: If the code has execution issues.     Success: If the code is fully correct with no errors.Do not provide any explanations or additional information, only respond with one of these:Syntax Error, Runtime Error, or Success.")
+    setValue( "Analyze the following code:"+htmlCode+" "+cssCode+jsCode+"Your task:1.Check if the code contains any syntax errors. 2Check if the code has runtime errors that occur during execution. 3.If there are no errors, confirm that the code is correct.Provide only one response based on your analysis:  Syntax Error: If the code contains syntax issues.    Runtime        Error: If the code has execution issues.     Success: If the code is fully correct with no errors.Do not provide any explanations or additional information, only respond with one of these:Syntax Error, Runtime Error, or Success.")
      console.log(value)
   };
   
