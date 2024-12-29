@@ -9,7 +9,9 @@ const Comment=require("./models/commentsSchema");
 const authRouter=require("./routers/authenticationRouter")
 const { Server: SocketServer } = require('socket.io');
 var os = require('os');
-const pty = require('node-pty');
+// const pty = require('node-pty');
+const { spawn } = require("child_process");
+
 const {connectToThemongodb}=require("./connection/connect")
 const loginrouter=require("./routers/loginrouter")
 const validator=require("./HtmlCssjsValidator/ValidatorRouter")
@@ -24,17 +26,24 @@ const UserLikesrouter=require("./routers/UserlikesRouter")
 const coursesRouter=require("./routers/courseRouter")
 const jsvalidationChecker =require("./HtmlCssjsValidator/jsValidator")
 const DiscussRouter=require("./routers/DiscussionRouter")
+const dotenv=require("dotenv")
+require('dotenv').config();
+
+
 // Use a default shell
 var shell = os.platform() === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'bash';
 
 // Correctly resolve the path for the working directory
-const ptyProcess = pty.spawn(shell, [], {
-  name: 'xterm-color',
-  cols: 80,
-  rows: 30,
-  cwd: path.join(process.env.INIT_CWD || __dirname, 'user'), // Fix cwd
-  env: process.env
-});
+// const ptyProcess = pty.spawn(shell, [], {
+//   name: 'xterm-color',
+//   cols: 80,
+//   rows: 30,
+//   cwd: path.join(process.env.INIT_CWD || __dirname, 'user'), // Fix cwd
+//   env: process.env
+// });
+
+
+
 
 const app = express();
 app.use(cors({
@@ -55,33 +64,71 @@ const io = new SocketServer(server, {
   }
 }); 
 
+app.use(cookieParser());
+// Spawn a shell process
+const shellProcess = spawn(shell, [], {
+  stdio: "pipe", // Use pipe to capture stdout and stderr
+  cwd: path.resolve(__dirname, "user"), // Correct working directory
+  env: process.env
+});
 
-app.use(cookieParser()); // add cookie-parser middleware
+
+
 chokidar.watch('./user').on('all', (event, filePath) => {
   io.emit('file:refresh', filePath);
 });
 
-ptyProcess.onData(data => {
-  io.emit('terminal:data', data);
-});
+// shellProcess.stdout.on("data",(data) => {
+//   socket.emit('terminal:data', data.toString());
+// });
 
-io.on('connection', (socket) => {
-  socket.emit('file:refresh');
+// shellProcess.stderr.on("data", (data) => {
+//   socket.emit("terminal:error", data.toString());
+// });
 
-  socket.on('file:change', async ({ path: relativePath, content }) => {
-    const fullPath = path.join(__dirname, 'user', relativePath);  // Correct path join
+
+// Handle terminal and file system
+io.on("connection", (socket) => {
+  console.log("Client connected");
+
+  // Spawn a shell process
+  const shellProcess = spawn(shell, [], {
+    cwd: path.resolve(__dirname, "user"),
+    env: process.env,
+    stdio: ["pipe", "pipe", "pipe"],
+  });
+
+  shellProcess.stdout.on("data", (data) => {
+    socket.emit("terminal:data", data.toString());
+  });
+
+  shellProcess.stderr.on("data", (data) => {
+    socket.emit("terminal:error", data.toString());
+  });
+
+  socket.on("file:change", async ({ path: relativePath, content }) => {
+    const fullPath = path.join(__dirname, "user", relativePath);
     try {
-      await fs.writeFile(fullPath, content);  // Ensure it's writing to a file, not directory
+      await fs.writeFile(fullPath, content);
       console.log(`File written: ${fullPath}`);
     } catch (error) {
       console.error(`Error writing file: ${error.message}`);
     }
   });
 
-  socket.on('terminal:write', (data) => {
-    ptyProcess.write(data);
+  socket.on("terminal:write", (input) => {
+    if (shellProcess.stdin.writable) {
+      shellProcess.stdin.write(input+"\n");
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+    shellProcess.kill();
   });
 });
+
+
 
 
 
@@ -220,22 +267,18 @@ app.use("/OneDiscussion",DiscussRouter);
 app.use("/postcomments",authenticationCheck,DiscussRouter)
 app.use("/getPostedcomments",DiscussRouter)
 
+app.get("/getChatgptApi",(req,res)=>{
+  res.json({ apiUrl: process.env.MyApiKey });
+})
+
 //connection to the mongodb
-connectToThemongodb("mongodb://127.0.0.1:27017/QuestionAndTestCase")
+connectToThemongodb(process.env.MONGO_DB)
 .then(()=>console.log("mongodb is connected"))
 .catch((err)=>console.log("not connected",err));
 
 
 
 server.listen(9000, () => console.log(`Server running at port: 9000`));
-
-
-
-
-
-
-
-
 
 
 
