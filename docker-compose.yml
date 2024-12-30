@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./Back-End
+    ports:
+      - "9000:9000"
+    environment:
+     MONGO_DB: "mongodb://mongodb:27017/D3vCode"
+     MyApiKey: "AIzaSyABIaJ6PoEYmInMAvQ_4j-Zl5Juva--P8c"
+    volumes:
+      - ./Back-End:/app
+    depends_on:
+      - mongodb
+
+  frontend:
+    command: sh -c "npm uninstall @rollup/rollup-linux-x64-musl && npm install && npm run dev"
+    build:
+      context: ./Front-End
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Front-End:/app
+    
+
+  mongodb:
+    image: mongo:5.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
