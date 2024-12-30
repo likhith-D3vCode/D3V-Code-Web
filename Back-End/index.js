@@ -31,7 +31,7 @@ require('dotenv').config();
 
 
 // Use a default shell
-var shell = os.platform() === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'bash';
+// var shell = os.platform() === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'bash';
 
 // Correctly resolve the path for the working directory
 // const ptyProcess = pty.spawn(shell, [], {
@@ -66,11 +66,11 @@ const io = new SocketServer(server, {
 
 app.use(cookieParser());
 // Spawn a shell process
-const shellProcess = spawn(shell, [], {
-  stdio: "pipe", // Use pipe to capture stdout and stderr
-  cwd: path.resolve(__dirname, "user"), // Correct working directory
-  env: process.env
-});
+// const shellProcess = spawn(shell, [], {
+//   stdio: "pipe", // Use pipe to capture stdout and stderr
+//   cwd: path.resolve(__dirname, "user"), // Correct working directory
+//   env: process.env
+// });
 
 
 
@@ -88,45 +88,45 @@ chokidar.watch('./user').on('all', (event, filePath) => {
 
 
 // Handle terminal and file system
-io.on("connection", (socket) => {
-  console.log("Client connected");
+// io.on("connection", (socket) => {
+//   console.log("Client connected");
 
   // Spawn a shell process
-  const shellProcess = spawn(shell, [], {
-    cwd: path.resolve(__dirname, "user"),
-    env: process.env,
-    stdio: ["pipe", "pipe", "pipe"],
-  });
+  // const shellProcess = spawn(shell, [], {
+  //   cwd: path.resolve(__dirname, "user"),
+  //   env: process.env,
+  //   stdio: ["pipe", "pipe", "pipe"],
+  // });
 
-  shellProcess.stdout.on("data", (data) => {
-    socket.emit("terminal:data", data.toString());
-  });
+  // shellProcess.stdout.on("data", (data) => {
+  //   socket.emit("terminal:data", data.toString());
+  // });
 
-  shellProcess.stderr.on("data", (data) => {
-    socket.emit("terminal:error", data.toString());
-  });
+  // shellProcess.stderr.on("data", (data) => {
+  //   socket.emit("terminal:error", data.toString());
+  // });
 
-  socket.on("file:change", async ({ path: relativePath, content }) => {
-    const fullPath = path.join(__dirname, "user", relativePath);
-    try {
-      await fs.writeFile(fullPath, content);
-      console.log(`File written: ${fullPath}`);
-    } catch (error) {
-      console.error(`Error writing file: ${error.message}`);
-    }
-  });
+  // socket.on("file:change", async ({ path: relativePath, content }) => {
+  //   const fullPath = path.join(__dirname, "user", relativePath);
+  //   try {
+  //     await fs.writeFile(fullPath, content);
+  //     console.log(`File written: ${fullPath}`);
+  //   } catch (error) {
+  //     console.error(`Error writing file: ${error.message}`);
+  //   }
+  // });
 
-  socket.on("terminal:write", (input) => {
-    if (shellProcess.stdin.writable) {
-      shellProcess.stdin.write(input+"\n");
-    }
-  });
+  // socket.on("terminal:write", (input) => {
+  //   if (shellProcess.stdin.writable) {
+  //     shellProcess.stdin.write(input+"\n");
+  //   }
+  // });
 
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-    shellProcess.kill();
-  });
-});
+  // socket.on("disconnect", () => {
+  //   console.log("Client disconnected");
+  //   shellProcess.kill();
+  // });
+// });
 
 
 
