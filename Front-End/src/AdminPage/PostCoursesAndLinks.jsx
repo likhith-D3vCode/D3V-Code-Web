@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import BACKEND_URL from '../config';
 
 function CourseManager() {
   const [courses, setCourses] = useState([]);
@@ -13,6 +14,7 @@ function CourseManager() {
 
   const handleAddCourse = (e) => {
     e.preventDefault();
+    const tokenauth = localStorage.getItem('authToken');
 
     // Prepare FormData for the request
     const formData = new FormData();
@@ -25,7 +27,9 @@ function CourseManager() {
     }
 
     axios
-      .post('http://localhost:9000/post-course/add-course', formData,{  withCredentials: true })
+      .post(`${BACKEND_URL}/post-course/add-course`, formData,{ headers: {
+        Authorization: `Bearer ${tokenauth}`, 
+      }, withCredentials: true })
       .then((response) => {
         alert('Course added successfully!');
         setCourses([...courses, response.data.course]);

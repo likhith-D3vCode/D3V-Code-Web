@@ -3,6 +3,7 @@ import "../Html.css";
 import {  useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { useParams } from "react-router-dom";
+import BACKEND_URL from '../config';
 
 const HtmlCourse = () => {
     // const location = useLocation();
@@ -61,7 +62,7 @@ const HtmlCourse = () => {
     useEffect(() => {
         const fetchProgress = async () => {
             try {
-                const response = await axios.get(`http://localhost:9000/get-progress-api/progress/${id}`, { withCredentials: true });
+                const response = await axios.get(`${BACKEND_URL}/get-progress-api/progress/${id}`, { withCredentials: true });
                 const { progress } = response.data;
 
                 // Convert progress percentage to time (assuming 10,000 seconds as 100%)
@@ -83,7 +84,7 @@ const HtmlCourse = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await axios.get(`http://localhost:9000/CoursesIndex/courses/index/${id}`, { withCredentials: true });
+                const response = await axios.get(`${BACKEND_URL}/CoursesIndex/courses/index/${id}`, { withCredentials: true });
                 const  Courses  = response.data;
 
                 //  console.log(Courses[0].courseProgress)
@@ -159,7 +160,7 @@ const HtmlCourse = () => {
      
         //  const name="introduction to css";
         
-        const response=await axios.get(`http://localhost:9000/gettopicwise/get/topicwise/${title}`);
+        const response=await axios.get(`${BACKEND_URL}/gettopicwise/get/topicwise/${title}`);
 
         
         navigate("/specificQuestions", { state: { questions: response.data.questionsdata } })
@@ -218,7 +219,7 @@ const HtmlCourse = () => {
             };
    
             // Make an API call to update the progress
-            const response = await axios.post('http://localhost:9000/progressUp/update-progress',  data,{  withCredentials: true });
+            const response = await axios.post(`${BACKEND_URL}/progressUp/update-progress`,  data,{  withCredentials: true });
     
             if (response.ok) {
                 // Handle successful response

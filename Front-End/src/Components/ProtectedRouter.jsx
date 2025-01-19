@@ -1,6 +1,7 @@
 // src/components/ProtectedRoute.js
 import { Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import BACKEND_URL from '../config';
 
 import axios from 'axios';
 import { useState,useEffect } from "react";
@@ -10,8 +11,12 @@ const ProtectedRoute = ({ element }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
+      const tokenauth = localStorage.getItem('authToken');
       try {
-        const response = await axios.get('http://localhost:9000/auth/validate-token', {
+        const response = await axios.get(`${BACKEND_URL}/auth/validate-token`, {
+          headers: {
+            Authorization: `Bearer ${tokenauth}`, // Include the token in the Authorization header
+          },
           withCredentials: true,
         });
         setIsAuthenticated(response.data.isAuthenticated);

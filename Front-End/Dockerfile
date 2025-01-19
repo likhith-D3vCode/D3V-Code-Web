@@ -14,7 +14,7 @@ RUN npm uninstall @rollup/rollup-linux-x64-musl || true
 COPY . .
 
 # Expose the frontend port
-EXPOSE 5173
+EXPOSE 80
 
 # Run the application
-CMD ["npm", "run","dev" "--","--host"]
+CMD ["npm", "run","dev", "--","--host"]

@@ -3,13 +3,14 @@ import axios from "axios";
 import "./ProfilePage.css";
 import { FaPen, FaToolbox, FaGraduationCap, FaPhoneAlt, FaChevronRight } from "react-icons/fa"; 
 import PropTypes from "prop-types";
-import Calendar from "react-calendar";
+// import Calendar from "react-calendar";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import BACKEND_URL from '../config';
 
 
 
@@ -138,8 +139,13 @@ const ProfilePage = () => {
   // Fetch user data
   useEffect(() => {
     const fetchUserData = async () => {
+      const tokenauth = localStorage.getItem('authToken');
+
       try {
-        const response = await axios.get("http://localhost:9000/getallusers/userdata/api", {
+        const response = await axios.get(`${BACKEND_URL}/getallusers/userdata/api`, {
+          headers: {
+            Authorization: `Bearer ${tokenauth}`, 
+          },
           withCredentials: true,
         });
         const user = response.data?.userdata?.[0];
@@ -162,8 +168,13 @@ const ProfilePage = () => {
   // Fetch courses
   useEffect(() => {
     const fetchCourses = async () => {
+      const tokenauth = localStorage.getItem('authToken');
+
       try {
-        const response = await axios.get("http://localhost:9000/allcourses/getAllcourses", {
+        const response = await axios.get(`${BACKEND_URL}/allcourses/getAllcourses`, {
+          headers: {
+            Authorization: `Bearer ${tokenauth}`, 
+          },
           withCredentials: true,
         });
         setCourses(response.data?.courses || []);
@@ -180,10 +191,14 @@ const ProfilePage = () => {
   // Fetch solved questions
   useEffect(() => {
     const fetchSolvedQuestions = async () => {
+      const tokenauth = localStorage.getItem('authToken');
+
       try {
         const response = await axios.get(
-          "http://localhost:9000/profilesolvedqn/users/solved-questions",
-          {
+          `${BACKEND_URL}/profilesolvedqn/users/solved-questions`,
+          { headers: {
+            Authorization: `Bearer ${tokenauth}`, 
+          },
             withCredentials: true,
           }
         );
@@ -285,7 +300,7 @@ const ProfilePage = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:9000/putuserdata/updateUser",
+        `${BACKEND_URL}/putuserdata/updateUser`,
         formData,
         {
           withCredentials: true,
@@ -593,10 +608,7 @@ const UserProfile = ({ user, onEdit }) => {
       className="profile-image"
       src={imageUrl}
       alt={`${user.username}'s Profile`}
-      onError={(e) => {
-        e.target.onerror = null;
-        e.target.src = "https://via.placeholder.com/100?text=User";
-      }}
+      
     />
   
     {/* User Info */}

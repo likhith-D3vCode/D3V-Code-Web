@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import RedimadeNavBar from "../HomePage/RedimadeNavBar";
 import "./Course1.css";
+import BACKEND_URL from '../config';
 
 const CourseCard = () => {
   const navigate = useNavigate();
@@ -20,10 +21,15 @@ const CourseCard = () => {
   // Fetch courses
   useEffect(() => {
     const fetchCourses = async () => {
+      const tokenauth = localStorage.getItem('authToken');
+
       try {
         const response = await axios.get(
-          "http://localhost:9000/allcourses/getAllcourses",
+          `${BACKEND_URL}/allcourses/getAllcourses`,
           {
+            headers: {
+              Authorization: `Bearer ${tokenauth}`, 
+            },
             withCredentials: true,
           }
         );
@@ -50,10 +56,14 @@ const CourseCard = () => {
 
   useEffect(() => {
     const getCourse = async () => {
+      const tokenauth = localStorage.getItem('authToken');
+
       try {
         const response = await axios.get(
-          "http://localhost:9000/get-course/courses",
-          { withCredentials: true }
+          `${BACKEND_URL}/get-course/courses`,
+          { headers: {
+            Authorization: `Bearer ${tokenauth}`, 
+          }, withCredentials: true }
         );
 
         setcourse(response.data);

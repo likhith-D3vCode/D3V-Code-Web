@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import BACKEND_URL from '../config';
 
 const FactsForm = () => {
   const [fact, setFact] = useState("");
@@ -7,8 +8,12 @@ const FactsForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const tokenauth = localStorage.getItem('authToken');
+
     try {
-      const response = await axios.post("http://localhost:9000/facts/api", { facts: fact },{withCredentials:true});
+      const response = await axios.post('http://d3vcode-loadbalancer-625613918.eu-north-1.elb.amazonaws.com/facts/api', { facts: fact },{ headers: {
+        Authorization: `Bearer ${tokenauth}`, // Include the token in the Authorization header
+      },withCredentials:true});
       if (response.status === 200) {
         setMessage("Fact added successfully!");
         setFact(""); // Clear the input field

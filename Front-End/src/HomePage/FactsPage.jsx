@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-
+import BACKEND_URL from "../config";
+import React from "react";
 import {
   FaUserCircle,
   FaThumbsUp,
@@ -26,13 +26,27 @@ function FactsPage() {
   // });
 
   const [Dfacts, setFacts] = useState([]);
+
+  const [comments, setComments] = useState({ content: "", likes: false });
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const navigate = useNavigate();
-  
+  const navigate = useNavigate();
+
   useEffect(() => {
     const checkAuthStatus = async () => {
+      const tokenauth = localStorage.getItem("authToken");
+
       try {
-        const response = await axios.get("http://localhost:9000/check/api/check-auth", { withCredentials: true });
+        const response = await axios.get(
+          `${BACKEND_URL}/check/api/check-auth`,
+          {
+            headers: {
+              Authorization: `Bearer ${tokenauth}`, // Include the token in the Authorization header
+            },
+            withCredentials: true,
+          }
+        );
+
         setIsAuthenticated(response.data.isAuthenticated);
       } catch (error) {
         console.error("Error checking auth status:", error);
@@ -41,18 +55,16 @@ function FactsPage() {
     };
     checkAuthStatus();
   }, []);
-  
 
   useEffect(() => {
     const fetchFacts = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:9000/getFacts/api/get"
-        );
+        const response = await axios.get(`${BACKEND_URL}/getFacts/api/get`);
         const factsArray = Array.isArray(response.data)
           ? response.data
           : Object.values(response.data);
         setFacts(factsArray);
+        console.log(BACKEND_URL);
       } catch (err) {
         console.error("Error fetching facts and comments:", err);
       }
@@ -60,13 +72,15 @@ function FactsPage() {
     fetchFacts();
   }, []);
 
-  const [commentData, setCommentData] = useState({
-    content: "",
-    likes: false,
-  });
+  // const [commentData, setCommentData] = useState({
+  //   content: "",
+  //   likes: false,
+  // });
 
   const [getcommentData, getsetCommentData] = useState([]);
   const [showComments, setShowComments] = useState(false);
+
+  const [showCommentslength, setShowCommentslength] = useState(true);
 
   const handleCommentClick = async (id) => {
     if (showComments) {
@@ -75,7 +89,7 @@ function FactsPage() {
       try {
         // console.log("factsid", id);
         const responses = await axios.get(
-          `http://localhost:9000/getComments/api/${id}`
+          `${BACKEND_URL}/getComments/api/${id}`
         );
 
         // console.log("view comments array", responses.data.response);
@@ -87,33 +101,64 @@ function FactsPage() {
     }
   };
 
-  const handleCommentChange = (e) => {
-    setCommentData({
-      ...commentData,
-      [e.target.name]: e.target.value,
+  const handleCommentChange = (e, factId) => {
+    const { value } = e.target;
+    setComments({
+      ...comments,
+      [factId]: value,
     });
   };
 
   const handleSubmitComment = async (factId, e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
+
+    const tokenauth = localStorage.getItem("authToken"); // Get auth token
+    const contentnew = comments[factId] || ""; // Get comment for the specific fact
+
+    if (!contentnew.trim()) {
+      console.error("Comment cannot be empty.");
+      return; // Do not proceed if the comment is empty
+    }
 
     try {
-      console.log("data", commentData);
+      // Prepare the payload based on the schema
+      const payload = {
+        content: contentnew,
+        factsId: factId,
+      };
+
+      // Send the POST request
       const response = await axios.post(
-        `http://localhost:9000/comments/api/${factId}`,
-        commentData,
-        { withCredentials: true }
+        `${BACKEND_URL}/comments/api/${factId}`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${tokenauth}`, // Include token in headers
+          },
+          withCredentials: true,
+        }
       );
 
-      console.log("sucess", response);
-      setCommentData({
-        content: "",
-        likes: false,
-      });
+      console.log("Success", response.data);
+
+      // Reset comment for the current fact after successful submission
+      setComments((prevComments) => ({
+        ...prevComments,
+        [factId]: "", // Clear the comment for the current fact
+      }));
     } catch (error) {
-      console.log(error);
+      console.error("Error submitting comment:", error);
     }
   };
+
+  const commentCounts = React.useMemo(() => {
+    const counts = {};
+    getcommentData.forEach((comment) => {
+      counts[comment.factsId] = (counts[comment.factsId] || 0) + 1;
+    });
+
+    return counts;
+  }, [getcommentData]);
 
   // const handleLikeClick = (index) => {
   //   setCommentData((prev) =>
@@ -162,22 +207,34 @@ function FactsPage() {
                         onClick={() => handleCommentClick(fact._id)}
                         className="view-comments"
                       >
-                        {showComments
-                          ? `Hide Comments (${getcommentData.length})`
-                          : `view Comments `}
+                        {showComments[fact._id]
+                          ? `Hide Comments${
+                              commentCounts[fact._id]
+                                ? ` (${commentCounts[fact._id]})`
+                                : ""
+                            }`
+                          : `View Comments${
+                              commentCounts[fact._id]
+                                ? ` (${commentCounts[fact._id]})`
+                                : ""
+                            }`}
                       </span>
 
                       {showComments && (
                         <div className="mt-3 comment-containerofFacts">
                           {getcommentData.length > 0 ? (
-                            getcommentData.map((comment) => (
-                              <div key={comment._id} className="comment">
-                                <p>
-                                  <strong>{comment.createdBy.username}:</strong>{" "}
-                                  {comment.content}
-                                </p>
-                              </div>
-                            ))
+                            getcommentData
+                              .filter((comment) => comment.factsId === fact._id) // Filter comments by fact ID
+                              .map((comment) => (
+                                <div key={comment._id} className="comment">
+                                  <p>
+                                    <strong>
+                                      {comment.createdBy.username}:
+                                    </strong>{" "}
+                                    {comment.content}
+                                  </p>
+                                </div>
+                              ))
                           ) : (
                             <p>No comments to display.</p>
                           )}
@@ -191,9 +248,9 @@ function FactsPage() {
                         <textarea
                           className="form-control comment-textarea"
                           rows="1"
-                          value={commentData.content}
+                          value={comments[fact._id]}
                           name="content"
-                          onChange={handleCommentChange}
+                          onChange={(e) => handleCommentChange(e, fact._id)}
                           placeholder="Write your comment here..."
                           required
                         ></textarea>
@@ -256,11 +313,14 @@ function FactsPage() {
                 className="card right-card text-bg-light mb-3"
                 style={{ backgroundImage: `url(${expressImage})` }}
               >
-                <a  onClick={(e) => {
-                      e.preventDefault();
-                      navigate("/Study");
-                    }}
-                    style={{ cursor: "pointer" }} className="btn card-btn">
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/Study");
+                  }}
+                  style={{ cursor: "pointer" }}
+                  className="btn card-btn"
+                >
                   Go to course
                 </a>
               </div>
@@ -269,11 +329,14 @@ function FactsPage() {
                 className="card right-card text-bg-light mb-3"
                 style={{ backgroundImage: `url(${react})` }}
               >
-                <a  onClick={(e) => {
-                      e.preventDefault();
-                      navigate("/Study");
-                    }}
-                    style={{ cursor: "pointer" }} className="btn card-btn">
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/Study");
+                  }}
+                  style={{ cursor: "pointer" }}
+                  className="btn card-btn"
+                >
                   Go to course
                 </a>
               </div>
@@ -282,11 +345,14 @@ function FactsPage() {
                 className="card right-card text-bg-light mb-3"
                 style={{ backgroundImage: `url(${node})` }}
               >
-                <a  onClick={(e) => {
-                      e.preventDefault();
-                      navigate("/Study");
-                    }}
-                    style={{ cursor: "pointer" }} className="btn card-btn">
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/Study");
+                  }}
+                  style={{ cursor: "pointer" }}
+                  className="btn card-btn"
+                >
                   Go to course
                 </a>
               </div>

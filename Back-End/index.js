@@ -25,6 +25,9 @@ const solvedqnByuser=require("./routers/solvedQuestionsRouter")
 const UserLikesrouter=require("./routers/UserlikesRouter")
 const coursesRouter=require("./routers/courseRouter")
 const jsvalidationChecker =require("./HtmlCssjsValidator/jsValidator")
+
+const chatgptvalidator =require("./HtmlCssjsValidator/chatgptvalidation")
+
 const DiscussRouter=require("./routers/DiscussionRouter")
 const dotenv=require("dotenv")
 require('dotenv').config();
@@ -46,10 +49,32 @@ require('dotenv').config();
 
 
 const app = express();
+
+// const allowedOrigins = [
+//   'http://d3vcode-loadbalancer-latest-194744182.eu-north-1.elb.amazonaws.com',
+//   'http://d3vcode-loadbalancer-625613918.eu-north-1.elb.amazonaws.com'
+// ];
+
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },         // Allow the specific frontend origin
+//   methods: ["GET", "POST", "PUT", "DELETE"], // Specify HTTP methods if needed
+//   allowedHeaders: ["Content-Type","Authorization"],  
+//   domain:'.eu-north-1.elb.amazonaws.com',       
+//   credentials: true                         // Allow credentials (cookies, authorization headers)
+// }));
+
+
+
 app.use(cors({
-  origin: "http://localhost:5173",         // Allow the specific frontend origin
+  origin: 'http://localhost:5173',         // Allow the specific frontend origin
   methods: ["GET", "POST", "PUT", "DELETE"], // Specify HTTP methods if needed
-  allowedHeaders: ["Content-Type"],         // Include Content-Type in allowed headers
+  allowedHeaders: ["Content-Type","Authorization"],         // Include Content-Type in allowed headers
   credentials: true                         // Allow credentials (cookies, authorization headers)
 }));
 
@@ -160,6 +185,7 @@ async function generateFileTree(directory) {
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
+app.set('trust proxy', 1); // Required for cookies behind a proxy
 
 app.use("/signup",SignupRouter);
 app.use("/login",loginrouter)
@@ -176,7 +202,7 @@ app.use("/facts",factsRouter)
 app.use("/getFacts",factsRouter)
 app.use("/api", validator); 
 // app.use("/comments",commenetsRouter);
-app.use("/check",authRouter);
+app.use("/check",authenticationCheck,authRouter);
 
 app.post("/comments/api/:factsId",authenticationCheck,async(req,res)=>{
   try {
@@ -215,15 +241,26 @@ app.get('/auth/validate-token', authenticationCheck, (req, res) => {
 // Logout route to clear the cookie
 app.post("/logout", authenticationCheck,(req, res) => {
   // Clear the token cookie
-  res.clearCookie('token', {
-    httpOnly: true,       // Prevents JavaScript access to the cookie
-    secure: false,        // Set `true` in production to use HTTPS
-    sameSite: "lax",      // Ensures cookies are sent on the same domain (adjust as needed)
+  // res.clearCookie('token', {
+  //   httpOnly: true,       // Prevents JavaScript access to the cookie
+  //   secure: false,        // Set `true` in production to use HTTPS
+  //   sameSite: "none",      // Ensures cookies are sent on the same domain (adjust as needed)
   
-  });
+  // });
 
-  // Respond with a success message
-  return res.status(200).json({ msg: "Logged out successfully" });
+  // // Respond with a success message
+  // return res.status(200).json({ msg: "Logged out successfully" });
+
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    return res.status(400).json({ message: 'No token provided' });
+  }
+
+  // Add the token to a blacklist or invalidate it in the database
+  invalidateToken(token); // Implement this function as per your logic
+
+  res.status(200).json({ message: 'Logout successful' });
 });
 
 app.use("/post-course",authenticationCheck,coursesRouter)
@@ -270,7 +307,12 @@ app.use("/getPostedcomments",DiscussRouter)
 app.get("/getChatgptApi",(req,res)=>{
   res.json({ apiUrl: process.env.MyApiKey });
 })
+app.get("/api",(req,res)=>{
+  res.json({message:"hello there updatedagain11"})
+})
 
+
+app.use("/chatgpt",chatgptvalidator)
 //connection to the mongodb
 connectToThemongodb(process.env.MONGO_DB)
 .then(()=>console.log("mongodb is connected"))

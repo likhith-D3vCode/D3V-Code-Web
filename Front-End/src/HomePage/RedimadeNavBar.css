@@ -1,15 +1,22 @@
+
+
+
 .profileBox-container .profileBox{
     background-color: rgb(21, 22, 22);
-    width: 150px;
+    width: auto; /* Allow the width to adjust dynamically */
+    min-width: 200px; /* Set a minimum width to ensure it doesn't shrink too much */
+    max-width: 300px;
     top: 100%;
+    left: -50px;
+    right: -100px;
     height: 250px;
-    padding: 30px;
+    padding: 30px 30px 30px 30px;
     margin-top: 20px;
    position: absolute;
    display: flex;
    flex-direction: column;
    gap: 40px;
-   align-items: center;
+   align-items: flex-start;
    border-radius: 5px;
 }
 

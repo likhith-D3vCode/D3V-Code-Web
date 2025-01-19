@@ -3,10 +3,19 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./Questions.css"
 import RedimadeNavBar from '../HomePage/RedimadeNavBar';
+import BACKEND_URL from '../config';
 
 function Questions() {
   const [htmlcount,setHtmlCount]=useState(0);
 const [csscount,setCssCount]=useState(0);
+
+ // Pagination state
+ const [currentPage, setCurrentPage] = useState(1);
+ const itemsPerPage = 9; // Number of items per page
+
+
+
+
 
 const [jscount,setJsCount]=useState(0);
   const [questions, setQuestions] = useState([
@@ -50,7 +59,7 @@ const [jscount,setJsCount]=useState(0);
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await axios.get("http://localhost:9000/display/get/api");
+        const response = await axios.get(`${BACKEND_URL}/display/get/api`);
         
         const questionsArray = Array.isArray(response.data) ? response.data : Object.values(response.data);
         console.log(questionsArray)
@@ -113,6 +122,52 @@ const [jscount,setJsCount]=useState(0);
   if (loading) return <p>Loading questions...</p>;
   if (error) return <p>{error}</p>;
   if (!questions || questions.length === 0) return <p>No questions available.</p>;
+
+
+   // Calculate total pages
+  const totalPages = Math.ceil((filteredQuestionss?.length || 0) / itemsPerPage);
+
+  // Paginated questions
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedQuestions = filteredQuestionss?.slice(startIndex, startIndex + itemsPerPage) || [];
+
+  // Change page
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  // Generate pagination buttons
+  const generatePageButtons = () => {
+    const maxButtons = 5; // Maximum number of buttons to show
+    const buttons = [];
+
+    if (totalPages <= maxButtons) {
+      // Show all buttons if total pages are less than or equal to maxButtons
+      for (let i = 1; i <= totalPages; i++) {
+        buttons.push(i);
+      }
+    } else {
+      // Handle pagination with ellipsis
+      const start = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+      const end = Math.min(totalPages, currentPage + Math.floor(maxButtons / 2));
+
+      if (start > 1) buttons.push(1); // First page button
+      if (start > 2) buttons.push("..."); // Ellipsis
+
+      for (let i = start; i <= end; i++) {
+        buttons.push(i);
+      }
+
+      if (end < totalPages - 1) buttons.push("..."); // Ellipsis
+      if (end < totalPages) buttons.push(totalPages); // Last page button
+    }
+
+    return buttons;
+  };
+
+
    
   return (
     <>
@@ -149,8 +204,8 @@ const [jscount,setJsCount]=useState(0);
       </div>
       <div className="QuestionsList">
       <ul className="list-group">
-        {filteredQuestionss && filteredQuestionss.length > 0 ? (
-          filteredQuestionss.map((question, index) => (
+        {paginatedQuestions.length > 0 ? (
+          paginatedQuestions.map((question, index) => (
             <li key={question._id || question.id || index} className="list-group-item">
               <Link
                 to={`/question/${question.id}`}
@@ -160,23 +215,53 @@ const [jscount,setJsCount]=useState(0);
                   Requirements: question.Requirements,
                   AcceptanceCriteria: question.AcceptanceCriteria,
                   TestCases: question.TestCases,
-                  _id:question._id
+                  _id: question._id,
                 }}
-                style={{ textDecoration: 'none', color: 'inherit' }}
+                style={{ textDecoration: "none", color: "inherit" }}
               >
                 <h3 className="fw-bold">{question.title}</h3>
                 <small className="text-muted">Difficulty: {question.difficulty}</small>
               </Link>
-              
             </li>
-            
           ))
         ) : (
           <p>No questions available</p>
         )}
       </ul>
-      </div>
-      
+
+      {/* Pagination controls */}
+      {totalPages > 1 && (
+        <div className="pagination mt-3">
+          <button
+            className="btn btn-secondary me-2"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          {generatePageButtons().map((button, index) =>
+            button === "..." ? (
+              <span key={index} className="mx-1">...</span>
+            ) : (
+              <button
+                key={index}
+                className={`btn ${currentPage === button ? "btn-primary" : "btn-outline-primary"} mx-1`}
+                onClick={() => handlePageChange(button)}
+              >
+                {button}
+              </button>
+            )
+          )}
+          <button
+            className="btn btn-secondary ms-2"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
+    </div>
     </div>
     </>
   );

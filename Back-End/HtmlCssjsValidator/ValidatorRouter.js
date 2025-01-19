@@ -14,6 +14,9 @@ router.post("/validate", async (req, res) => {
   const selectorMap = new Map();
   try {
     
+
+  
+
     // Parse and validate the CSS with csstree
     csstree.parse(css, {
       onParseError: (error) => {
@@ -36,10 +39,10 @@ router.post("/validate", async (req, res) => {
     }
 
     // Check for invalid hex color codes
-    const invalidHexColors = /#[0-9A-Fa-f]{1,5}[^0-9A-Fa-f\s;]/g;
-    if (invalidHexColors.test(css)) {
-      validationErrors.push("Invalid hex color code found.");
-    }
+    // const invalidHexColors = /#[0-9A-Fa-f]{1,5}[^0-9A-Fa-f\s;]/g;
+    // if (invalidHexColors.test(css)) {
+    //   validationErrors.push("Invalid hex color code found.");
+    // }
 
     // Check for duplicate selectors
 
@@ -84,6 +87,7 @@ router.post("/validate", async (req, res) => {
       "cm",
       "mm",
       "in",
+      "s"
     ];
     const unitRegex = /(\d+)([a-zA-Z]+)/g;
     let match;
