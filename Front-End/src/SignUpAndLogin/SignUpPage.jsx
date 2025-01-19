@@ -1,6 +1,9 @@
 import { useState } from "react"
 import axios from 'axios';
 import './SignupPage.css'
+import BACKEND_URL from '../config';
+import { useNavigate } from "react-router-dom";
+
 const SignUpPage = () => {
    const [formdata, setFormdata]=useState({
     username:"",
@@ -10,6 +13,7 @@ const SignUpPage = () => {
 
    const [success,setSuccess]=useState('')
    const [errors, setErrors] = useState({});
+   const navigate = useNavigate();
 
 
    const handleChange=(e)=>{
@@ -35,10 +39,11 @@ const SignUpPage = () => {
     e.preventDefault();
      if(!validateForm()) return;
     try {
-        const response = await axios.post('http://localhost:9000/signup/user', formdata);
+        const response = await axios.post(`${BACKEND_URL}/signup/user`, formdata);
         setSuccess(response.data.msg); // Display success message
         setFormdata({ username: '', email: '', password: '' }); // Reset form
         setErrors({});
+        navigate("/StaticLogin")
       } catch (error) {
         setErrors({ api: error.response?.data.msg || "Signup failed" });
       }
@@ -86,6 +91,9 @@ const SignUpPage = () => {
             </label>
             
             <button type="submit" className="signup-button">Sign Up</button>
+            <hr />
+            <button onClick={() => navigate("/StaticLogin")}>Login</button>
+
         </form>
     </div>
   )

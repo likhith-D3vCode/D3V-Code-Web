@@ -1,7 +1,10 @@
 const {validateToken}=require("../service/authentication");
 
 function authenticationCheck(req,res,next){
-    const token=req.cookies.token;
+    // const token=req.cookies.token;
+    const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
    
     try{
           const user=validateToken(token);

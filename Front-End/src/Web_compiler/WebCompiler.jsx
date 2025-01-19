@@ -13,8 +13,19 @@ import axios from "axios"
 import { flip } from "@popperjs/core";
 ace.config.set('basePath', '/node_modules/ace-builds/src-noconflict');
 
+// import { Configuration, OpenAIApi } from "openai";
 
-const WebCompiler = ({ TestCases ,questionId}) => {
+// const configuration = new Configuration({
+//   apiKey: "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", // Replace with your actual API key
+// });
+
+// import OpenAI from "openai";
+
+// const openai = new OpenAI({
+//   apiKey: "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", // Replace with your actual API key
+// });
+
+const WebCompiler = ({ TestCases ,questionId,questionDescription,questionCriteria,questionRequirement}) => {
   const [language, setLanguage] = useState("html");
   const [htmlCode, setHtmlCode] = useState("<h1>Hello World</h1>");
   const [cssCode, setCssCode] = useState("h1 { color: red; }");
@@ -41,9 +52,12 @@ const [showTestCases, setShowTestCases] = useState(false);
   const [showTestResults, setShowTestResults] = useState(false);
   const [showOutputInterface, setshowOutputInterface] = useState(true);
   const [chatgptapi,setChatgptApi]=useState();
-
+ const [runcheck,setruncheck]=useState(false)
 const API_KEY = chatgptapi;
-const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`;
+// const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`;
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+
 
 const [isResponseGenerating, setIsResponseGenerating] = useState(false);
 const [value, setValue] = useState("");
@@ -89,13 +103,10 @@ const [messages, setMessages] = useState([]);
     getchatgptapi();
   }, []);
 
-
-  
-
  
-  const runCode = () => {
+  const runCode = async() => {
     
-    
+    // console.log("inside run code",value)
     const completeCode = `
       <html>
         <head>
@@ -107,21 +118,47 @@ const [messages, setMessages] = useState([]);
         </body>
       </html>
     `;
+
     setOutput(completeCode);
     scrollToOutput();
-    setValue("Analyze the following code:"+htmlCode+cssCode+jsCode+" Your task:1.Check if the code contains any syntax errors. 2Check if the code has runtime errors that occur during execution. 3.If there are no errors, confirm that the code is correct.Provide only one response based on your analysis:  Syntax Error: If the code contains syntax issues.    RuntimeError: If the code has execution issues.     Success: If the code is fully correct with no errors(Note:Do not give success answer even a small syntax error appear in the code check the code line by line).Do not provide any explanations or additional information, only respond with one of these:Syntax Error, Runtime Error, or Success.")
+    const acceptanceCriteriaString = questionCriteria
+  .map(criteria => criteria.Criteria1)
+  .join(", ");
+    
+    // setValue("Analyze the following code:"+htmlCode+cssCode+jsCode+"    questionsDetails:"+ questionDescription+"  "+ acceptanceCriteriaString+"Task1: check the given code based on the question details if the logic is correct based on the question details the give me the output as public testcases passed if not tell me it failed give me only these words wheather passed or not.")
     executeCode();
     validateSyntax();
     
     ValidateCss(htmlCode, cssCode, jsCode);
    
-    generateApiResponse()
-  
-    
-
-    
+    // sendMessageToServer("Analyze the following code:"+htmlCode+cssCode+jsCode+"    questionsDetails:"+ questionDescription+"  "+ acceptanceCriteriaString+"Task1: check the given code based on the question details if the logic is correct based on the question details the give me the output as public testcases passed if not tell me it failed give me only these words wheather passed or not..");
+    generateApiResponse();    
   };
 
+
+
+
+  // Use an async function to handle the API call
+// async function fetchCompletion() {
+//   try {
+//     const completion = await openai.createChatCompletion({
+//       model: "gpt-4",
+//       messages: [
+//         { role: "system", content: "You are a helpful assistant." },
+//         {
+//           role: "user",
+//           content: "Write a haiku about recursion in programming.",
+//         },
+//       ],
+//     });
+
+//     console.log("OpenAI Response:", completion.data.choices[0].message.content);
+//   } catch (error) {
+//     console.error("Error with OpenAI API:", error);
+//   }
+// }
+
+  
 
   const scrollToOutput = () => {
     if (outputRef.current) {
@@ -130,15 +167,24 @@ const [messages, setMessages] = useState([]);
     }
   };
 
+
   
-
-
-
-
+ 
   const generateApiResponse = async () => {
-    setValue("Analyze the following code:"+htmlCode+cssCode+jsCode+" Your task:1.Check if the code contains any syntax errors check line by line whearther the tags are correct or not there corresponding tages are there are not check striclty . 2Check if the code has runtime errors that occur during execution. 3.If there are no errors, confirm that the code is correct.Provide only one response based on your analysis:  Syntax Error: If the code contains syntax issues.    RuntimeError: If the code has execution issues.     Success: If the code is fully correct with no errors(Note:Do not give success answer even a small syntax error appear in the code check the code line by line).Do not provide any explanations or additional information just if it is syntax error or runtime error give me one line sentance why it is error, only respond with one of these:Syntax Error, Runtime Error, or Success. if it is syntax error or runtime error give me one line sentance why it is error")
+    const acceptanceCriteriaString = questionCriteria
+  .map(criteria => criteria.Criteria1)
+  .join(", "); // You can use any separator, such as ", ", "\n", etc.
 
-   console.log("inside api",value)
+  const RequirementsString = questionRequirement
+  .map(rquss => rquss.sectionContent)
+  .join(", "); // You can use any separator, such as ", ", "\n", etc.
+  // check the given code based on the question details if the logic is correct based on the question details the give me the output as public testcases passed if not tell me it failed give me only these words wheather passed or not.
+
+    setValue("Analyze the following code:"+htmlCode+cssCode+jsCode+"    questionsDetails:"+ questionDescription+"  "+ acceptanceCriteriaString+"Task1: check the given code based on the question details if the logic is correct based on the question details the give me the output as public testcases passed if not tell me it failed give me only these words wheather passed or not.This response should remain consistent across repeated evaluations, regardless of any changes in context or conversational history.")
+
+    // setValue("Analyze the following code:"+htmlCode+cssCode+jsCode+" Your task:1.Check if the code contains any syntax errors check line by line whearther the tags are correct or not there corresponding tages are there are not check striclty . 2Check if the code has runtime errors that occur during execution. 3.If there are no errors, confirm that the code is correct.Provide only one response based on your analysis:  Syntax Error: If the code contains syntax issues.    RuntimeError: If the code has execution issues.     Success: If the code is fully correct with no errors(Note:Do not give success answer even a small syntax error appear in the code check the code line by line).Do not provide any explanations or additional information just if it is syntax error or runtime error give me one line sentance why it is error, only respond with one of these:Syntax Error, Runtime Error, or Success. if it is syntax error or runtime error give me one line sentance why it is error")
+
+  //  console.log("inside api",value)
     try {
       const response = await fetch(API_URL, {
         method: "POST",
@@ -154,7 +200,7 @@ const [messages, setMessages] = useState([]);
       });
 
       const data = await response.json();
-      console.log("response",data)
+      // console.log("response",data)
       if (!response.ok) throw new Error(data.error.message);
 
       const apiResponse = data?.candidates[0]?.content.parts[0]?.text.replace(
@@ -162,9 +208,9 @@ const [messages, setMessages] = useState([]);
         "$1"
       );
 
-      console.log("ans",apiResponse)
+      // console.log("ans",apiResponse)
 
-      if(apiResponse=="Syntax Error"||apiResponse=="RuntimeError"){
+      if(apiResponse!="Passed"||apiResponse!="passed"){
         setshowOutputInterface(false)
         setShowTestResults(true);
       }
@@ -196,6 +242,8 @@ const [messages, setMessages] = useState([]);
     } finally {
       setIsResponseGenerating(false);
     }
+    setruncheck(false);
+
   };
 
 
@@ -233,6 +281,29 @@ const [messages, setMessages] = useState([]);
       setjsoutput("Error executing code. Please try again.");
     }
   };
+
+
+
+
+  // async function sendMessageToServer(message) {
+  //   try {
+  //     const response = await fetch("http://localhost:9000/chatgpt/api/chat", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ message }),
+  //     });
+  
+  //     const data = await response.json();
+  //     console.log("Response from OpenAI:", data);
+  //   } catch (error) {
+  //     console.error("Error sending message:", error);
+  //   }
+  // }
+  
+  
+
 
 
 
@@ -311,6 +382,7 @@ const [messages, setMessages] = useState([]);
         body: JSON.stringify({ html, css, js,TestCases }),
       });
       const result = await response.json();
+      console.log("validatefghjkl")
       setIsValid(result.success);
       setShowTestCases(true)
       setTestResults(false);
@@ -338,11 +410,19 @@ const [messages, setMessages] = useState([]);
   
 
   const handleSubmit = () => {
-    validateCode(htmlCode, cssCode, jsCode);
+    
+    var chackoutput="Passed"
+    // console.log(chatgptoutput.includes(chackoutput))
+     if(chatgptoutput.includes(chackoutput)){
+      validateCode(htmlCode, cssCode, jsCode);
+
+     }
     scrollToOutput();
   };
 
   const handleTextareaChange = (value) => {
+
+    setruncheck(true)
     setTextareaValue(value);
 
    
@@ -352,9 +432,13 @@ const [messages, setMessages] = useState([]);
     }
       else if (language === "css") setCssCode(value);
     else setJsCode(value);
-
-    setValue( "Analyze the following code:"+htmlCode+" "+cssCode+jsCode+"Your task:1.Check if the code contains any syntax errors. 2Check if the code has runtime errors that occur during execution. 3.If there are no errors, confirm that the code is correct.Provide only one response based on your analysis:  Syntax Error: If the code contains syntax issues.    Runtime        Error: If the code has execution issues.     Success: If the code is fully correct with no errors.Do not provide any explanations or additional information, only respond with one of these:Syntax Error, Runtime Error, or Success.")
-     console.log(value)
+     
+    const acceptanceCriteriaString = questionCriteria
+  .map(criteria => criteria.Criteria1)
+  .join(", ");
+    setValue("Analyze the following code:"+htmlCode+cssCode+jsCode+"    questionsDetails:"+ questionDescription+"  "+ acceptanceCriteriaString+"Task1: check the given code based on the question details if the logic is correct based on the question details the give me the output as public testcases passed if not tell me it failed give me only these words wheather passed or not.This response should remain consistent across repeated evaluations, regardless of any changes in context or conversational history. just give me it is passed or failed .")
+    // console.log("inside on change",value)
+     
   };
   
 
@@ -465,23 +549,21 @@ const [messages, setMessages] = useState([]);
 )}
 
 
-
-
-{showOutputInterface && (
-<div className="preview-container"
+{showOutputInterface && <div className="preview-container"
    ref={outputRef}
 >
         <iframe
           title="Live Preview"
           srcDoc={output}
-          sandbox="allow-scripts"
+          sandbox="allow-scripts allow-same-origin"
           className="output-iframe"
           style={{ border: "none" }}
           width="100%"
           height="300px"
+          
         ></iframe>
- </div>
-)}
+</div>}
+
 
 
 
@@ -533,6 +615,7 @@ const [messages, setMessages] = useState([]);
 <div className="divider"></div>
 <div className="error-section">
 <h3>RunTimeCheck::{chatgptoutput}</h3>
+<p>check the code and Try to run again if run time check fail</p>
 </div>
 
 </div>
@@ -555,7 +638,16 @@ const [messages, setMessages] = useState([]);
 WebCompiler.propTypes = {
   
   TestCases:PropTypes.array.isRequired,
-  questionId:PropTypes.string.isRequired
+  questionId:PropTypes.string.isRequired,
+  questionDescription:PropTypes.string.isRequired,
+  questionCriteria:PropTypes.array.isRequired,
+  questionRequirement:PropTypes.array.isRequired,
+
 };
 
 export default WebCompiler;
+
+
+
+
+

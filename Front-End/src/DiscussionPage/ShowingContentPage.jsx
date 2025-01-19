@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ShowingContent.css';
+import BACKEND_URL from '../config';
 
 const ShowingContent = () => {
   const { id } = useParams();
@@ -10,17 +11,22 @@ const ShowingContent = () => {
   const [displaycomments, setDisplayComments] = useState([]);
 
   const fetchQuestion = async () => {
+
     const response = await axios.get(
-      `http://localhost:9000/OneDiscussion/DiscussOnequestions/${id}`
+      `${BACKEND_URL}/OneDiscussion/DiscussOnequestions/${id}`
     );
     setQuestion(response.data[0]);
   };
 
   const handleComment = async () => {
+    const tokenauth = localStorage.getItem('authToken');
+
     await axios.post(
-      `http://localhost:9000/postcomments/question/${id}/comment`,
+      `${BACKEND_URL}/postcomments/question/${id}/comment`,
       { comment },
-      { withCredentials: true }
+      {headers: {
+        Authorization: `Bearer ${tokenauth}`, // Include the token in the Authorization header
+      }, withCredentials: true }
     );
     setComment('');
     fetchComments();
@@ -29,7 +35,7 @@ const ShowingContent = () => {
   const fetchComments = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/getPostedcomments/DiscussOnequestions/${id}/comments`
+        `${BACKEND_URL}/getPostedcomments/DiscussOnequestions/${id}/comments`
       );
       setDisplayComments(response.data);
     } catch (error) {

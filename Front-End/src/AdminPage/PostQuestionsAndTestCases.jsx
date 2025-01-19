@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import BACKEND_URL from '../config';
 
 const UploadQuestions = () => {
   // Form state to hold the values of each field
@@ -48,7 +49,7 @@ const UploadQuestions = () => {
 
     try {
       console.log(formData)
-      const response = await axios.post('http://localhost:9000/questions/api', formData); // Post the data to the backend
+      const response = await axios.post(`${BACKEND_URL}/questions/api`, formData); // Post the data to the backend
       console.log('Response:', response.data);
       alert('Question created successfully!');
     } catch (error) {

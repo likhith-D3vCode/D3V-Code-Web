@@ -3,28 +3,38 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./RedimadeNavBar.css"
+import BACKEND_URL from '../config';
+import axios from "axios";
+
 function RedimadeNavBar() {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
   const [profile, setProfile] = useState();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [imageError, setImageError] = useState(false); // Track image loading errors
+  const [Firstlatter, setFirstlatter] = useState();
 
   // Fetch user data from the API
   useEffect(() => {
     const fetchUserData = async () => {
+      const tokenauth = localStorage.getItem('authToken');
+
       try {
-        const response = await fetch(
-          "http://localhost:9000/getOneUsername/oneuser/api",
-          {
-            method: "GET",
-            credentials: "include", // To include cookies in the request
-          }
-        );
+        const response = await fetch(`${BACKEND_URL}/getOneUsername/oneuser/api`, {
+          headers: {
+            Authorization: `Bearer ${tokenauth}`, 
+          },
+          method: "GET",
+          credentials: "include", // To include cookies in the request
+        });
         const data = await response.json();
 
         if (data.msg === "User data") {
           setUserData(data.userdata);
           setProfile(data.userdata.profileImg);
+          const firstLetter =
+          data?.userdata?.username?.[0]?.toUpperCase() || ""; // Safely get the first letter of the username
+        setFirstlatter(firstLetter);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -34,25 +44,43 @@ function RedimadeNavBar() {
     fetchUserData();
   }, []);
 
-  // Logout function to clear token from the cookie and redirect to login
-  const handleLogout = async () => {
-    try {
-      const response = await fetch("http://localhost:9000/logout", {
-        method: "POST",
-        credentials: "include",
-      });
 
-      if (response.ok) {
-        navigate("/");
-      } else {
-        console.error("Error logging out");
-      }
-    } catch (error) {
-      console.error("Logout request failed", error);
-    }
+
+  const handleLogout = () => {
+    // Clear the token from localStorage
+    localStorage.removeItem("authToken");
+
+    // Optionally, clear other user-related data (e.g., profile information)
+    // Redirect the user to the login page
+    window.location.href = "/StaticLogin"; // Replace with your login route
   };
 
+  // Logout function to clear token from the cookie and redirect to login
+  // const handleLogout = async () => {
+  //   const tokenauth = localStorage.getItem('authToken');
+
+  //   try {
+  //     const response = await fetch(`${BACKEND_URL}/logout`, {
+  //       headers: {
+  //         Authorization: `Bearer ${tokenauth}`, 
+  //       },
+  //       method: "POST",
+  //       credentials: "include",
+  //     });
+
+  //     if (response.ok) {
+  //       navigate("/");
+  //     } else {
+  //       console.error("Error logging out");
+  //     }
+  //   } catch (error) {
+  //     console.error("Logout request failed", error);
+  //   }
+  // };
+
   const imageUrl = `/UserImages/${profile}`;
+  const shouldDisplayFallback = !imageUrl || imageError;
+
 
   return (
     <>
@@ -126,22 +154,39 @@ function RedimadeNavBar() {
 
               {userData ? (
                 <div className="ms-auto d-flex align-items-center position-relative profileBox-container">
-                  <img
-                    src={imageUrl}
-                    alt={`${userData.username}'s Profile`}
-                    className="rounded-circle"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => setShowDropdown((prev) => !prev)}
-                  />
-                  {showDropdown && (
+                  {shouldDisplayFallback ? (
+                    <img
+                      onClick={() => setShowDropdown((prev) => !prev)}
+                      src={imageUrl}
+                      alt={`${userData.username}'s Profile`}
+                      className="rounded-circle"
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        cursor: "pointer",
+                        objectFit: "cover",
+                      }}
+                      onError={() => setImageError(true)} // Set error state if image fails to load
+                    />
+                  ) : (
                     <div
-                      className="profileBox"
-                     
+                      onClick={() => setShowDropdown((prev) => !prev)}
+                      className="rounded-circle d-flex justify-content-center align-items-center"
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        cursor: "pointer",
+                        backgroundColor: "#ddd", // Fallback background color
+                        color: "#555", // Fallback text color
+                        fontWeight: "bold",
+                        fontSize: "16px",
+                      }}
                     >
+                      {Firstlatter}
+                    </div>
+                  )}
+                  {showDropdown && (
+                    <div className="profileBox">
                       <div
                         className="dropdown-item imageOfprofile"
                         onClick={() => {
@@ -149,20 +194,44 @@ function RedimadeNavBar() {
                           setShowDropdown(false);
                         }}
                       >
-                        <img
-                    src={imageUrl}
-                    alt={`${userData.username}'s Profile`}
-                    className="rounded-circle"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      cursor: "pointer",
-                    }}
-                  />  <strong style={{
-                     
-                      cursor: "pointer",
-                    }}  > 
-                  {userData.username}</strong>
+                        {shouldDisplayFallback ? (
+                          <img
+                            onClick={() => setShowDropdown((prev) => !prev)}
+                            src={imageUrl}
+                            alt={`${userData.username}'s Profile`}
+                            className="rounded-circle"
+                            style={{
+                              width: "40px",
+                              height: "40px",
+                              cursor: "pointer",
+                              objectFit: "cover",
+                            }}
+                            onError={() => setImageError(true)} // Set error state if image fails to load
+                          />
+                        ) : (
+                          <div
+                            onClick={() => setShowDropdown((prev) => !prev)}
+                            className="round-circle d-flex justify-content-center align-items-center"
+                            style={{
+                              width: "50px",
+                              height: "20px",
+                              cursor: "pointer",
+                              backgroundColor: "#ddd", // Fallback background color
+                              color: "#555", // Fallback text color
+                              fontWeight: "bold",
+                              fontSize: "16px",
+                            }}
+                          >
+                            {Firstlatter}
+                          </div>
+                        )}{" "}
+                        <strong
+                          style={{
+                            cursor: "pointer",
+                          }}
+                        >
+                          {userData.username}
+                        </strong>
                       </div>
                       <div
                         className="dropdown-item"
@@ -179,18 +248,18 @@ function RedimadeNavBar() {
                           handleLogout();
                           setShowDropdown(false);
                         }}
-
                         style={{
-                     
                           cursor: "pointer",
                         }}
-                      ><i className="bi bi-box-arrow-right"></i>
+                      >
+                        <i className="bi bi-box-arrow-right"></i>
                         Logout
                       </div>
                     </div>
                   )}
                 </div>
               ) : (
+                // Show login and signup buttons if user is not logged in
                 <div className="ms-auto d-flex">
                   <button
                     type="button"

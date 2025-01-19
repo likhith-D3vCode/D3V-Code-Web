@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import RedimadeNavBar from '../HomePage/RedimadeNavBar';
 import { FaSearch, FaPlus, FaPaperPlane } from 'react-icons/fa';
 import { FaEye } from 'react-icons/fa';
+import BACKEND_URL from '../config';
 
 const Discussion = () => {
   const [questions, setQuestions] = useState([]);
@@ -23,7 +24,7 @@ const Discussion = () => {
   const categories = ['All', 'Share Ideas', 'Help Center', 'Mentorship', 'Feedback Hub'];
 
   const fetchQuestions = async () => {
-    const response = await axios.get('http://localhost:9000/GetDiscussR/DiscussGetquestions', {
+    const response = await axios.get(`${BACKEND_URL}/GetDiscussR/DiscussGetquestions`, {
       params: {
         search,
         ...(selectedCategory && selectedCategory !== 'All' && { contentName: selectedCategory }),
@@ -33,17 +34,21 @@ const Discussion = () => {
   };
 
   const handlePost = async () => {
+    const tokenauth = localStorage.getItem('authToken');
+
     if (!postContent.title.trim() || !postContent.tags.trim() || !postContent.content.trim()) {
       alert("Please fill out all the fields before posting.");
       return;
     }
   
     // Post logic
-    await axios.post('http://localhost:9000/PostDiscussR/questions', {
+    await axios.post(`${BACKEND_URL}/PostDiscussR/questions`, {
       ...postContent,
       tags: postContent.tags.split(',').map((tag) => tag.trim()),
       contentName: selectedCategory,
-    }, { withCredentials: true });
+    }, { headers: {
+      Authorization: `Bearer ${tokenauth}`, 
+    }, withCredentials: true });
   
     // Reset the post content and close the form
     setPostContent({ title: '', tags: '', anonymous: false, content: '' });

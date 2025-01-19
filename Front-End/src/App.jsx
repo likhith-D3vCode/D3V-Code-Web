@@ -37,7 +37,7 @@ function App() {
     <Questions/> */} 
     {/* <PracticePage/> */}
 
-    <Router>
+    
     <Routes>
       <Route path="/" element={<NavBar/>}/>
 
@@ -59,7 +59,7 @@ function App() {
       <Route path="/questions" element={<ProtectedRoute element={<Questions />} />} />
       <Route path="/question/:id" element={<ProtectedRoute element={<PracticePage />} />} />
     </Routes>
-  </Router>
+  
 
     </>
        

@@ -7,6 +7,7 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
+import BACKEND_URL from '../config';
 
 
 function CompilerFrame() {
@@ -45,7 +46,7 @@ function CompilerFrame() {
 
 
    const getFileTree=async()=>{
-       const response=await fetch('http://localhost:9000/files')
+       const response=await fetch(`${BACKEND_URL}/files`)
        const result =await response.json();
        setFileTree(result.tree);
       
@@ -53,7 +54,7 @@ function CompilerFrame() {
 
    const getFileContents= useCallback(async () =>{
     if(!selectedFile) return;
-    const response =await fetch(`http://localhost:9000/files/content?path=${selectedFile}`);
+    const response =await fetch(`${BACKEND_URL}/files/content?path=${selectedFile}`);
     const result =await response.json();
     setSelectedFileContent(result.content);
   },[selectedFile])    

@@ -4,6 +4,7 @@ import CompilerFrame from "../Frame-Work-Compiler/CompilerFrameWork";
 import WebCompiler from "../Web_compiler/WebCompiler";
 import "./PracticePage.css";
 import axios from "axios";
+import BACKEND_URL from '../config';
 
 function PracticePage() {
   const location = useLocation(); // Get the state passed from the Link
@@ -26,7 +27,7 @@ function PracticePage() {
     async function fetchSolvedUsers() {
       try {
         const response = await axios.get(
-          "http://localhost:9000/getsolvedquestionsByuser/getapi"
+          `${BACKEND_URL}/getsolvedquestionsByuser/getapi`
         );
         console.log(response.data);
 
@@ -49,7 +50,7 @@ function PracticePage() {
   const handleLikeToggle = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:9000/Userlikes/posts/like`,
+        `${BACKEND_URL}/Userlikes/posts/like`,
         { question: _id },
         { withCredentials: true }
       );
@@ -74,10 +75,15 @@ function PracticePage() {
 
   useEffect(() => {
     async function fetchLikes() {
+      const tokenauth = localStorage.getItem('authToken');
+
       try {
         const response = await axios.get(
-          `http://localhost:9000/likesget/getTheLikes/${_id}`,
-          { withCredentials: true }
+          `${BACKEND_URL}/likesget/getTheLikes/${_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${tokenauth}`, 
+            }, withCredentials: true }
         );
         console.log("likes", response.data.ans);
         const initialLikesCount = response.data.likes[0]?.likes.length || 0;
@@ -124,7 +130,7 @@ function PracticePage() {
     try {
       console.log("dfjkghj", _id);
       const userdata = await axios.get(
-        `http://localhost:9000/getQuestionsComments/getApi/${_id}`
+        `${BACKEND_URL}/getQuestionsComments/getApi/${_id}`
       );
       const userdataArray = Array.isArray(userdata.data)
         ? userdata.data
@@ -137,14 +143,18 @@ function PracticePage() {
   };
 
   const handleSubmit = async (e) => {
+    const tokenauth = localStorage.getItem('authToken');
+
     e.preventDefault();
 
     try {
       console.log("data", usercomments);
       await axios.post(
-        `http://localhost:9000/QuestionsComments/api/${_id}`,
+        `${BACKEND_URL}/QuestionsComments/api/${_id}`,
         usercomments,
-        { withCredentials: true }
+        { headers: {
+          Authorization: `Bearer ${tokenauth}`, 
+        }, withCredentials: true }
       );
 
       setUserComments({
@@ -283,7 +293,7 @@ function PracticePage() {
           {/* Conditionally render the components based on activeComponent */}
           {activeComponent === "framework" && <CompilerFrame />}
           {activeComponent === "html/css/js" && (
-            <WebCompiler TestCases={TestCases} questionId={_id} />
+            <WebCompiler TestCases={TestCases} questionId={_id} questionDescription={description} questionCriteria={AcceptanceCriteria} questionRequirement={Requirements}/>
           )}
         </div>
       </div>
