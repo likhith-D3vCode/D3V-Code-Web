@@ -13,17 +13,7 @@ import axios from "axios"
 import { flip } from "@popperjs/core";
 ace.config.set('basePath', '/node_modules/ace-builds/src-noconflict');
 
-// import { Configuration, OpenAIApi } from "openai";
 
-// const configuration = new Configuration({
-//   apiKey: "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", // Replace with your actual API key
-// });
-
-// import OpenAI from "openai";
-
-// const openai = new OpenAI({
-//   apiKey: "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", // Replace with your actual API key
-// });
 
 const WebCompiler = ({ TestCases ,questionId,questionDescription,questionCriteria,questionRequirement}) => {
   const [language, setLanguage] = useState("html");
@@ -138,25 +128,7 @@ const [messages, setMessages] = useState([]);
 
 
 
-  // Use an async function to handle the API call
-// async function fetchCompletion() {
-//   try {
-//     const completion = await openai.createChatCompletion({
-//       model: "gpt-4",
-//       messages: [
-//         { role: "system", content: "You are a helpful assistant." },
-//         {
-//           role: "user",
-//           content: "Write a haiku about recursion in programming.",
-//         },
-//       ],
-//     });
-
-//     console.log("OpenAI Response:", completion.data.choices[0].message.content);
-//   } catch (error) {
-//     console.error("Error with OpenAI API:", error);
-//   }
-// }
+ 
 
   
 
