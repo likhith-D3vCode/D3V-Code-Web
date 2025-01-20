@@ -10,8 +10,8 @@ Join our community of aspiring developers and elevate your skills.
 Transform your web development journey with us today!
 
 To Run The Code
-1. create an .env write attributes according to the index.js code
+1. create an .env write attributes according to the index.js code (MONGO_DB,MyApiKey)
 2. Start the docker in your local system
-3. docker compose up --build  (to the applicatio)
+3. docker compose up --build  (to run the application)
 4. now open the appication according to there ports.
 
