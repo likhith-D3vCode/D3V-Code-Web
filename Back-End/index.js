@@ -26,7 +26,6 @@ const UserLikesrouter=require("./routers/UserlikesRouter")
 const coursesRouter=require("./routers/courseRouter")
 const jsvalidationChecker =require("./HtmlCssjsValidator/jsValidator")
 
-const chatgptvalidator =require("./HtmlCssjsValidator/chatgptvalidation")
 
 const DiscussRouter=require("./routers/DiscussionRouter")
 const dotenv=require("dotenv")
@@ -312,7 +311,7 @@ app.get("/api",(req,res)=>{
 })
 
 
-app.use("/chatgpt",chatgptvalidator)
+// app.use("/chatgpt",chatgptvalidator)
 //connection to the mongodb
 connectToThemongodb(process.env.MONGO_DB)
 .then(()=>console.log("mongodb is connected"))
