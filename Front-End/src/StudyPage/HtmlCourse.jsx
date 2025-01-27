@@ -46,7 +46,7 @@ const HtmlCourse = () => {
     useEffect(() => {
         const preventBackNavigation = () => {
             window.history.pushState(null, null, window.location.href);
-            alert("Back navigation is disabled on this page!");
+            alert("Back navigation is disabled on this page!, please use exit button in the page.");
         };
 
         window.history.pushState(null, null, window.location.href); // Push a new state to history
@@ -58,33 +58,14 @@ const HtmlCourse = () => {
         };
     }, []);
 
-   
     useEffect(() => {
-        const fetchProgress = async () => {
-            try {
-                const response = await axios.get(`${BACKEND_URL}/get-progress-api/progress/${id}`, { withCredentials: true });
-                const { progress } = response.data;
+        const tokenauth = localStorage.getItem('authToken');
 
-                // Convert progress percentage to time (assuming 10,000 seconds as 100%)
-                const resumedTime = Math.round((progress / 100) * 10000);
-                setTimer(resumedTime);
-                setIsTimerRunning(true); // Start the timer
-            } catch (error) {
-                console.error('Error fetching progress:', error);
-            }
-        };
-
-        if (id) {
-            fetchProgress();
-        }
-    }, [id]);
-
-
-
-    useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await axios.get(`${BACKEND_URL}/CoursesIndex/courses/index/${id}`, { withCredentials: true });
+                const response = await axios.get(`${BACKEND_URL}/CoursesIndex/courses/index/${id}`, { headers: {
+                    Authorization: `Bearer ${tokenauth}`, 
+                  },withCredentials: true });
                 const  Courses  = response.data;
 
                 //  console.log(Courses[0].courseProgress)
@@ -102,9 +83,44 @@ const HtmlCourse = () => {
         
     }, []);
 
+   
+    useEffect(() => {
+        const fetchProgress = async () => {
+            const tokenauth = localStorage.getItem('authToken');
+
+            try {
+                const response = await axios.get(`${BACKEND_URL}/get-progress-api/progress/${id}`, { headers: {
+                    Authorization: `Bearer ${tokenauth}`, 
+                  },withCredentials: true });
+                const { progress } = response.data;
+                 
+                var total=totalProgress;
+                
+                const resumedTime = Math.round((progress / 100) * (total*60));
+                // console.log('resumedfghjk',resumedTime)
+                
+                setTimer(resumedTime);
+                setIsTimerRunning(true); // Start the timer
+            } catch (error) {
+                console.error('Error fetching progress:', error);
+            }
+        };
+
+        if (id) {
+            fetchProgress();
+        }
+    }, [id,totalProgress]);
+
+
+
+   
+
+    
+
 
     useEffect(() => {
         const savedTimer = localStorage.getItem("htmlCourseTimer");
+       
         if (savedTimer) {
             setTimer(parseInt(savedTimer)); // Set the timer to the saved value
             setIsTimerRunning(true); // Start the timer if it was previously running
@@ -197,7 +213,9 @@ const HtmlCourse = () => {
 
          // Calculate timer as a percentage of 1000
     const calculatePercentage = (timer) => {
-        return(Math.min((timer / {totalProgress}) * 100, 100).toFixed(2)); // Return percentage formatted to 2 decimal places
+        
+        var total=totalProgress
+        return(Math.min((timer / (total*60)) * 100, 100).toFixed(2)); // Return percentage formatted to 2 decimal places
     };
 
 
@@ -209,8 +227,15 @@ const HtmlCourse = () => {
 
     };
 
+
     const confirmExit = async() => {
-                                                 
+                      
+
+        const tokenauth = localStorage.getItem('authToken');
+        setTimerper(calculatePercentage(timer))
+
+
+
         try {
             // Prepare the data to send to the API
             const data = {
@@ -219,21 +244,16 @@ const HtmlCourse = () => {
             };
    
             // Make an API call to update the progress
-            const response = await axios.post(`${BACKEND_URL}/progressUp/update-progress`,  data,{  withCredentials: true });
+             await axios.post(`${BACKEND_URL}/progressUp/update-progress`,  data, { headers: {
+                Authorization: `Bearer ${tokenauth}`, 
+              },withCredentials: true });
     
-            if (response.ok) {
-                // Handle successful response
-                console.log('Progress updated successfully');
-            } else {
-                // Handle errors
-                console.error('Failed to update progress');
-            }
+           
         } catch (error) {
             console.error('An error occurred while updating progress:', error);
         }
     
     
-        setTimerper(calculatePercentage(timer))
 
 
         setIsTimerRunning(false); // Stop the timer when exiting

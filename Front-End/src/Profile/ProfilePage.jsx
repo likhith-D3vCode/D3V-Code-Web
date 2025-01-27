@@ -297,6 +297,8 @@ const ProfilePage = () => {
     if (editForm.profileImg) {
       formData.append("image", editForm.profileImg);
     }
+    const tokenauth = localStorage.getItem('authToken');
+
 
     try {
       const response = await axios.put(
@@ -304,7 +306,7 @@ const ProfilePage = () => {
         formData,
         {
           withCredentials: true,
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { "Content-Type": "multipart/form-data" ,Authorization: `Bearer ${tokenauth}`, },
         }
       );
       setUserData(response.data.updatedUser);

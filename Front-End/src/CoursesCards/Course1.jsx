@@ -3,39 +3,40 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "../CourseCard.css"; // Link to CSS for styling
 import PropTypes from "prop-types";
-// import HTMLCourseImage from '../AdminPage/CourseImages/1732130508338-pexels-padrinan-1591061.jpg'; // Import the image
 import axios from "axios";
 import RedimadeNavBar from "../HomePage/RedimadeNavBar";
 import "./Course1.css";
-import BACKEND_URL from '../config';
+import BACKEND_URL from "../config";
 
 const CourseCard = () => {
   const navigate = useNavigate();
-  const [course, setcourse] = useState([]);
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState([]); // All courses
+  const [Continuecourses, setContinueCourses] = useState([]); // Filtered courses with progress > 0
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentPages, setCurrentPages] = useState(1);
+  const [continuePage, setContinuePage] = useState(1);
   const itemsPerPage = 3;
   const [isLoadingCourses, setIsLoadingCourses] = useState(true);
   const [error, setError] = useState("");
+
   // Fetch courses
   useEffect(() => {
     const fetchCourses = async () => {
-      const tokenauth = localStorage.getItem('authToken');
+      const tokenauth = localStorage.getItem("authToken");
 
       try {
         const response = await axios.get(
           `${BACKEND_URL}/allcourses/getAllcourses`,
           {
-            headers: {
-              Authorization: `Bearer ${tokenauth}`, 
-            },
+            headers: { Authorization: `Bearer ${tokenauth}` },
             withCredentials: true,
           }
         );
-        setCourses(response.data?.courses || []);
+
+        const allCourses = response.data?.courses || [];
+        setCourses(allCourses); // All courses
+        setContinueCourses(allCourses.filter((course) => course.progress > 0)); // Filtered courses
       } catch (err) {
-        setError((prev) => prev + "Failed to fetch courses: " + err.message);
+        setError("Failed to fetch courses: " + err.message);
       } finally {
         setIsLoadingCourses(false);
       }
@@ -44,36 +45,17 @@ const CourseCard = () => {
     fetchCourses();
   }, []);
 
-  const paginatedCourse = course.slice(
+  // Pagination logic for all courses
+  const paginatedCourses = courses.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  const paginatedCourses = courses.slice(
-    (currentPages - 1) * itemsPerPage,
-    currentPages * itemsPerPage
+  // Pagination logic for filtered courses
+  const paginatedContinueCourses = Continuecourses.slice(
+    (continuePage - 1) * itemsPerPage,
+    continuePage * itemsPerPage
   );
-
-  useEffect(() => {
-    const getCourse = async () => {
-      const tokenauth = localStorage.getItem('authToken');
-
-      try {
-        const response = await axios.get(
-          `${BACKEND_URL}/get-course/courses`,
-          { headers: {
-            Authorization: `Bearer ${tokenauth}`, 
-          }, withCredentials: true }
-        );
-
-        setcourse(response.data);
-      } catch (err) {
-        console.log("error in frnt-en", err);
-      }
-    };
-
-    getCourse();
-  }, []);
 
   return (
     <>
@@ -83,21 +65,66 @@ const CourseCard = () => {
         <p className="recent-h2">D3v Code Study</p>
       </div>
 
+      {/* Continue Previous Courses */}
       <div className="courses-previous">
         <p className="course-previousText">
           Continue Your Previous Viewed Courses
           <i className="bi bi-arrow-right-circle-fill"></i>
         </p>
-        {paginatedCourse.length > 0 ? (
+        {paginatedContinueCourses.length > 0 ? (
           <div className="courses-previouslist">
-            {paginatedCourse.map((course) => (
+            {paginatedContinueCourses.map((course) => (
               <CardItem key={course._id} card={course} navigate={navigate} />
             ))}
           </div>
         ) : (
-          <p>No courses available.</p>
+          <p>No courses available to continue.</p>
         )}
 
+        {/* Pagination for Continue Courses */}
+        <div className="pagination">
+          <button
+            disabled={continuePage === 1}
+            onClick={() => setContinuePage((prev) => prev - 1)}
+          >
+            Previous
+          </button>
+          {[...Array(Math.ceil(Continuecourses.length / itemsPerPage))].map(
+            (_, index) => (
+              <button
+                key={index}
+                className={continuePage === index + 1 ? "active-page" : ""}
+                onClick={() => setContinuePage(index + 1)}
+              >
+                {index + 1}
+              </button>
+            )
+          )}
+          <button
+            disabled={
+              continuePage === Math.ceil(Continuecourses.length / itemsPerPage)
+            }
+            onClick={() => setContinuePage((prev) => prev + 1)}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
+      {/* All Courses */}
+      <div className="courses-container mt-4">
+        <div className="AllCoursesText">
+          <p>Front-End</p>
+        </div>
+        <div className="courses-All">
+          {paginatedCourses.map((course) => (
+            <div className="courses-All-items" key={course._id}>
+              <CardItem card={course} navigate={navigate} />
+            </div>
+          ))}
+        </div>
+
+        {/* Pagination for All Courses */}
         <div className="pagination">
           <button
             disabled={currentPage === 1}
@@ -124,102 +151,34 @@ const CourseCard = () => {
           </button>
         </div>
       </div>
-
-      <div className="courses-container mt-4">
-      <div className="AllCoursesText">
-            <p>Front-End</p>
-          </div>
-        <div className="courses-All">
-          
-          {paginatedCourses.map((course) => (
-            <div className="courses-All-items" key={course._id}>
-              <CardItem card={course} navigate={navigate} />
-            </div>
-          ))}
-
-                  </div>
-                  <div className="pagination">
-            <button
-              disabled={currentPages === 1}
-              onClick={() => setCurrentPages((prev) => prev - 1)}
-            >
-              Previous
-            </button>
-            {[...Array(Math.ceil(courses.length / itemsPerPage))].map(
-              (_, index) => (
-                <button
-                  key={index}
-                  className={currentPages === index + 1 ? "active-page" : ""}
-                  onClick={() => setCurrentPages(index + 1)}
-                >
-                  {index + 1}
-                </button>
-              )
-            )}
-            <button
-              disabled={
-                currentPages === Math.ceil(courses.length / itemsPerPage)
-              }
-              onClick={() => setCurrentPages((prev) => prev + 1)}
-            >
-              Next
-            </button>
-          </div>
-
-        
-      </div>
     </>
   );
 };
 
+// Reusable CardItem Component
 const CardItem = ({ card, navigate }) => {
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  const imgRef = useRef(null);
-
-  const imageUrl = `/CourseImages/${card.image}`;
-
-  useEffect(() => {
-    const imgElement = imgRef.current;
-    imgElement.addEventListener("load", () => setIsLoaded(true));
-
-    return () => {
-      imgElement.removeEventListener("load", () => setIsLoaded(true));
-    };
-  }, []);
-
   const handleNavigation = () => {
-    navigate(`/CourseIndex/${card._id}`); // Pass data via state
+    navigate(`/CourseIndex/${card._id}`);
   };
 
   return (
-    <div className="card imgcard" style={{ width: "18rem", height: "350px" }}>
+    <div className="card imgcard" style={{ width: "18rem", height: "380px" }}>
       <div
         className="card-img-top clickable-image"
         onClick={handleNavigation}
         style={{
-          backgroundImage: `url(${imageUrl})`,
-          filter: isLoaded ? "none" : "blur(3px)",
-          transition: "filter 1s",
+          backgroundImage: `url(/CourseImages/${card.image})`,
           cursor: "pointer",
         }}
-      >
-        <img
-          src={imageUrl}
-          alt={card.title}
-          ref={imgRef}
-          style={{ opacity: 0, width: "100%" }}
-        />
-        <div className="play-button-wrapper">
-          <i className="bi bi-caret-right-fill play-button"></i>
-        </div>
-      </div>
+      > <div className="play-button-wrapper">
+      <i className="bi bi-caret-right-fill play-button"></i>
+    </div></div>
       <div className="card-body">
         <h5 className="course-title">{card.title}</h5>
         <div className="progress-container">
-          <div className="progress-percentage left">{card.progress}%</div>
+        <div className="progress-percentage left">{card.progress}%</div>
           <div className="progress-bar-wrapper">
-            <div className="progress" style={{ height: "8px" }}>
+          <div className="progress" style={{ height: "8px" }}>
               <div
                 className="progress-bar"
                 role="progressbar"
@@ -237,22 +196,8 @@ const CardItem = ({ card, navigate }) => {
   );
 };
 
-// const CourseCardd = ({ course }) => (
-//   <div className="course-card">
-//     <h2 className="course-title">{course.title}</h2>
-//     <p className="course-progress">Progress: {course.progress}%</p>
-//   </div>
-// );
-
 CardItem.propTypes = {
-  card: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    progress: PropTypes.number.isRequired,
-    link: PropTypes.string.isRequired,
-    indexes: PropTypes.array.isRequired,
-    _id: PropTypes.string.isRequired,
-  }).isRequired,
+  card: PropTypes.object.isRequired,
   navigate: PropTypes.func.isRequired,
 };
 

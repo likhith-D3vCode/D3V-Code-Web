@@ -51,6 +51,8 @@ router.post('/add-course', upload.single('image'), async (req, res) => {
       return res.status(400).json({ error: 'Image is required' });
     }
 
+    
+
     const parsedIndexes = JSON.parse(indexes);
     const newCourse = new Course({
       title,
@@ -135,9 +137,12 @@ router.get('/courses/index/:id', async (req, res) => {
 // Update user progress
 router.post('/update-progress', async (req, res) => {
   const userId=req.user._id;
+  console.log("hey there",userId)
   try {
 
     const { id , progress } = req.body;
+
+    console.log("hey there",id , progress )
 
     const course = await Course.findById(id);
    
@@ -182,7 +187,7 @@ router.get('/progress/:courseId', async (req, res) => {
       const userProgress = course.users.find(user => user.userId.equals(userObjectId));
 
 
-
+      console.log(userProgress)
      
       if (!userProgress) {
           return res.status(404).json({ message: 'User progress not found for this course' });

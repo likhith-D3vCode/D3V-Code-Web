@@ -15,7 +15,7 @@ function authenticationCheck(req,res,next){
             return res.json({msg:"User is not authenticated "})
         }
       } catch(error){
-        console.error("error in middleware:",error);
+        console.error("error in middleware:");
         return res.json({mag:"error in middleware"})
       }
 }
