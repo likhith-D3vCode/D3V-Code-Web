@@ -68,8 +68,14 @@ const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     const checkIfSolved = async () => {
+      const tokenauth = localStorage.getItem('authToken');
+
       try {
-        const response = await axios.get(`http://localhost:9000/getOneSolvedQn/getOneQnapi?questionId=${questionId}`, { withCredentials: true });
+        const response = await axios.get(`http://localhost:9000/getOneSolvedQn/getOneQnapi?questionId=${questionId}`, {
+          headers: {
+            Authorization: `Bearer ${tokenauth}`, 
+          },
+         withCredentials: true });
         setIsSolved(response.data.solved); // Assume API response has 'solved' as a boolean
       } catch (error) {
         console.error("Error fetching solved status:", error);
@@ -82,8 +88,13 @@ const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     const getchatgptapi = async () => {
+
+
       try {
-        const response = await axios.get('http://localhost:9000/getChatgptApi', { withCredentials: true });
+        const response = await axios.get('http://localhost:9000/getChatgptApi', { 
+         
+          
+          withCredentials: true });
                 setChatgptApi(response.data.apiUrl)
       } catch (error) {
         console.error("Error fetching solved status:", error);
@@ -383,10 +394,13 @@ const [messages, setMessages] = useState([]);
   const handleSubmit = () => {
     
     var chackoutput="Passed"
+    var chackoutput2="passed"
     // console.log(chatgptoutput.includes(chackoutput))
      if(chatgptoutput.includes(chackoutput)){
       validateCode(htmlCode, cssCode, jsCode);
 
+     }else if(chatgptoutput.includes(chackoutput2)){
+      validateCode(htmlCode, cssCode, jsCode);
      }
     scrollToOutput();
   };
@@ -408,16 +422,24 @@ const [messages, setMessages] = useState([]);
   .map(criteria => criteria.Criteria1)
   .join(", ");
     setValue("Analyze the following code:"+htmlCode+cssCode+jsCode+"    questionsDetails:"+ questionDescription+"  "+ acceptanceCriteriaString+"Task1: check the given code based on the question details if the logic is correct based on the question details the give me the output as public testcases passed if not tell me it failed give me only these words wheather passed or not.This response should remain consistent across repeated evaluations, regardless of any changes in context or conversational history. just give me it is passed or failed .")
-    // console.log("inside on change",value)
+    console.log("inside on change",value)
      
   };
   
 
   const markQuestionAsSolved = async () => {
-    try {
-      const response = await axios.post('http://localhost:9000/solvedquestionsByuser/api',{Question:questionId},{ withCredentials: true });
     
-      console.log(response); // Log message for feedback
+    const tokenauth = localStorage.getItem('authToken');
+
+
+    try {
+      await axios.post('http://localhost:9000/solvedquestionsByuser/api',{Question:questionId},{
+        headers: {
+          Authorization: `Bearer ${tokenauth}`, 
+        },
+       withCredentials: true });
+    
+      // console.log(response); // Log message for feedback
       setIsSolved(true); // Update solved status
 
     } catch (error) {

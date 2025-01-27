@@ -9,9 +9,13 @@ const Question=require('../models/questionsSchema');
 router.get("/get/api",handledisplayQuestions)
 
 router.get("/get/topicwise/:Tname",async(req,res)=>{
+     
+    let topicName = req.params.Tname;
+
+   
           
     try{
-        const questionsdata= await Question.find({ topicname: { $regex: req.params.Tname, $options: "i" } })
+        const questionsdata= await Question.find({ topicname: { $regex: topicName, $options: "i" } })
         return res.status(200).json({msg:"sucess",questionsdata});
     }catch(err){
         return res.status(401).json({msg:"backend error check the code"});

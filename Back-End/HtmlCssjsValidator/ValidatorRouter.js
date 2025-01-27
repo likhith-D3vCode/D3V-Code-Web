@@ -8,14 +8,12 @@ const babelTraverse = require("@babel/traverse").default;
 
 router.post("/validate", async (req, res) => {
   const { html, css, js, TestCases } = req.body;
-  console.log(css);
+  // console.log(css);
   let validationErrors = [];
   let warnings = [];
   const selectorMap = new Map();
   try {
     
-
-  
 
     // Parse and validate the CSS with csstree
     csstree.parse(css, {
@@ -63,7 +61,7 @@ router.post("/validate", async (req, res) => {
     });
 
     selectorMap.forEach((count, selector) => {
-      console.log(count);
+      // console.log(count);
       if (count > 1) {
         validationErrors.push(
           `Duplicate selector '${selector}' detected ${count} times.`
@@ -98,7 +96,7 @@ router.post("/validate", async (req, res) => {
     }
 
     if (validationErrors.length > 0) {
-      console.log("Validation Errors:", validationErrors);
+      // console.log("Validation Errors:", validationErrors);
       return res.json({
         success: false,
         message: "CSS contains syntax errors",
@@ -107,7 +105,7 @@ router.post("/validate", async (req, res) => {
       });
     }
 
-    console.log("CSS passed syntax validation!");
+    // console.log("CSS passed syntax validation!");
 
     // Process the CSS with postcss and safeParser
     const result = await postcss([
@@ -115,7 +113,7 @@ router.post("/validate", async (req, res) => {
     ]).process(css, { parser: safeParser, from: undefined });
 
     if (result.messages.length > 0) {
-      console.log("Warnings:", result.messages);
+      // console.log("Warnings:", result.messages);
       return res.json({
         success: false,
         message: "CSS contains warnings",
@@ -123,7 +121,7 @@ router.post("/validate", async (req, res) => {
       });
     }
 
-    console.log("CSS is valid and has no warnings!");
+    // console.log("CSS is valid and has no warnings!");
 
     // Process TestCases
     const dynamicTestCases = TestCases.map((testcase) => {
@@ -131,7 +129,7 @@ router.post("/validate", async (req, res) => {
 
       if (testcase.includestype === "html") {
         testFunction = () => html.includes(testcase.includes);
-         console.log(html)
+        //  console.log(html)
       } else if (testcase.includestype === "css") {
         testFunction = () => css.includes(testcase.includes);
        

@@ -35,8 +35,14 @@ body {
 /* Topics List Styling */
 #sidebar .nav {
     list-style: none;
-    padding: 0;
+    /* padding: 0; */
     margin: 0;
+    border: 1px solid #ccc; /* Optional: Add a border for better visibility */
+  padding: 0px; 
+    max-height: 900px;
+    overflow-y: auto; 
+    scrollbar-width: thin; /* Adjust scrollbar width for modern browsers */
+    scrollbar-color: #888 #f0f0f0;
 }
 
 #sidebar .nav li {

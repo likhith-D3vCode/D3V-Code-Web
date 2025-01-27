@@ -48,11 +48,16 @@ function PracticePage() {
   }, []);
 
   const handleLikeToggle = async () => {
+    const tokenauth = localStorage.getItem("authToken");
+
     try {
       const response = await axios.post(
         `${BACKEND_URL}/Userlikes/posts/like`,
         { question: _id },
-        { withCredentials: true }
+        { 
+          headers: {
+            Authorization: `Bearer ${tokenauth}`, // Include the token in the Authorization header
+          },withCredentials: true }
       );
       // setLikesCount(response.data.likes);
       console.log(response);

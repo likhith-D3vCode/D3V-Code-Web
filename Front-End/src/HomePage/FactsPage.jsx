@@ -16,7 +16,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import "./Factspage.css";
-import expressImage from "../images/express.webp";
+import expressImage from "../images/css.webp";
 import react from "../images/react.webp"; // Adjust the path if necessary
 import node from "../images/node.webp";
 

@@ -41,6 +41,8 @@ function CourseManager() {
 
   const handleIndexChange = (index, field, value) => {
     const updatedIndexes = [...newCourse.indexes];
+
+    
     updatedIndexes[index][field] = value;
     setNewCourse({ ...newCourse, indexes: updatedIndexes });
   };

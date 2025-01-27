@@ -68,14 +68,14 @@ solvedquestionsByUser.get("/getOneQnapi", async (req, res) => {
 // Get all solved questions by a specific user
 solvedquestionsByUser.get("/users/solved-questions", async (req, res) => {
   const userId = req.user._id; // Extract user ID from authenticated user data
-
+  console.log(userId)
   try {
     const solvedQuestions = await solved
       .find({ createdBy: userId })
       .populate("Question", "title description difficulty") // Populate question details
       .populate("createdBy", "username email") // Populate user details
       .sort({ solvedAt: -1 }); // Sort by the solved date
-    // console.log("solvedqns",solvedQuestions)
+     console.log("solvedqns",solvedQuestions)
     if (!solvedQuestions.length) {
       return res.status(404).json({ message: "No solved questions found for this user." });
     }
