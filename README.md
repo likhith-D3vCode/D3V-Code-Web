@@ -58,5 +58,6 @@ JWT (JSON Web Token): Used for secure user authentication and session management
 3. Start the redis in the docker.
 4. docker compose up --build  (to run the application in the docker).
 5. now open the appication according to there ports.  `http://localhost:5173`
-   
+
+   Demo Video:`https://youtu.be/hGxEfYivK18`
 
