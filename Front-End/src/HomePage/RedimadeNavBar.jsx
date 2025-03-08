@@ -18,8 +18,13 @@ function RedimadeNavBar() {
   useEffect(() => {
     const fetchUserData = async () => {
       const tokenauth = localStorage.getItem('authToken');
+      // console.log("redimiabeif",localStorage.getItem("authToken")==null)
+      if(localStorage.getItem("authToken")==null){
+        return;
+      }
 
       try {
+      
         const response = await fetch(`${BACKEND_URL}/getOneUsername/oneuser/api`, {
           headers: {
             Authorization: `Bearer ${tokenauth}`, 

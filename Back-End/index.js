@@ -310,6 +310,10 @@ app.get("/api",(req,res)=>{
   res.json({message:"hello there updatedagain11"})
 })
 
+// setInterval(() => {
+//   const usage = process.memoryUsage();
+//   console.log(`Memory Used: ${(usage.heapUsed / 1024 / 1024).toFixed(2)} MB`);
+// }, 5000);
 
 // app.use("/chatgpt",chatgptvalidator)
 //connection to the mongodb
