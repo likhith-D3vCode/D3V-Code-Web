@@ -10,6 +10,8 @@ function authenticationCheck(req,res,next){
           const user=validateToken(token);
         if(user){
             req.user=user;
+            console.log(`API Hit: ${req.method} ${req.url}`);
+
             return next();
         }else{
             return res.json({msg:"User is not authenticated "})
@@ -19,5 +21,7 @@ function authenticationCheck(req,res,next){
         return res.json({mag:"error in middleware"})
       }
 }
+
+
 
 module.exports={authenticationCheck}

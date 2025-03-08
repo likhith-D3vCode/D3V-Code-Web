@@ -4,8 +4,6 @@ import BACKEND_URL from "../config";
 import React from "react";
 import {
   FaUserCircle,
-  FaThumbsUp,
-  FaCommentAlt,
   FaPaperPlane,
   FaTrophy,
   FaMedal,
@@ -21,9 +19,7 @@ import react from "../images/react.webp"; // Adjust the path if necessary
 import node from "../images/node.webp";
 
 function FactsPage() {
-  // const facts = Array(4).fill({
-  //   text: "Did from mobile devices. This means it's essential to make your website responsive and mobile-friendly!",
-  // });
+ 
 
   const [Dfacts, setFacts] = useState([]);
 
@@ -32,10 +28,18 @@ function FactsPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
+  const [page,setPage]=useState(1);
+  const [total,setTotal]=useState(1)
+  const limit=10;
+  
+  const tokenauth =localStorage.getItem("authToken");
+
   useEffect(() => {
     const checkAuthStatus = async () => {
-      const tokenauth = localStorage.getItem("authToken");
-
+   if(localStorage.getItem("authToken")!=null){
+     setIsAuthenticated(true);
+     return;
+   }
       try {
         const response = await axios.get(
           `${BACKEND_URL}/check/api/check-auth`,
@@ -59,28 +63,28 @@ function FactsPage() {
   useEffect(() => {
     const fetchFacts = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/getFacts/api/get`);
-        const factsArray = Array.isArray(response.data)
-          ? response.data
-          : Object.values(response.data);
+        const response = await axios.get(`${BACKEND_URL}/getFacts/api/get?page=${page}&limit=${limit}`);
+        const factsArray = Array.isArray(response.data.data)
+          ? response.data.data
+          : Object.values(response.data.data);
         setFacts(factsArray);
-        console.log(BACKEND_URL);
+        setTotal(response.data.totalItems);
+    
+        if(page<response.data.totalPages){
+           axios.get(`${BACKEND_URL}/getFacts/api/get?page=${page + 1}&limit=5`)
+        }
+  
+
       } catch (err) {
         console.error("Error fetching facts and comments:", err);
       }
     };
     fetchFacts();
-  }, []);
+  }, [page]);
 
-  // const [commentData, setCommentData] = useState({
-  //   content: "",
-  //   likes: false,
-  // });
 
   const [getcommentData, getsetCommentData] = useState([]);
   const [showComments, setShowComments] = useState(false);
-
-  const [showCommentslength, setShowCommentslength] = useState(true);
 
   const handleCommentClick = async (id) => {
     if (showComments) {
@@ -160,13 +164,6 @@ function FactsPage() {
     return counts;
   }, [getcommentData]);
 
-  // const handleLikeClick = (index) => {
-  //   setCommentData((prev) =>
-  //     prev.map((data, idx) =>
-  //       idx === index ? { ...data, liked: !data.liked } : data
-  //     )
-  //   );
-  // };
 
   return (
     <>
@@ -190,14 +187,6 @@ function FactsPage() {
 
                     {/* Like and Comment icons */}
                     <div className="d-flex justify-content-between align-items-center mt-4">
-                      {/* <div className="like-comment">
-                        <FaThumbsUp className={`like-icon me-2 ${commentData[index].liked ? "liked" : ""}`} />
-                        <span>Like</span>
-                      </div> */}
-                      {/* <div onClick={() => handleCommentClick(index)} className="comment-icon">
-                        <FaCommentAlt className="me-2" />
-                        <span>Comment</span>
-                      </div> */}
                     </div>
 
                     {/* View Comments */}
@@ -261,18 +250,15 @@ function FactsPage() {
                         />
                       </div>
                     )}
-
-                    {/* Display Comments */}
-                    {/* {commentData[index].showComment &&
-                      commentData[index].comments.map((cmt, idx) => (
-                        <div key={idx} className="mt-2 comment">
-                          <FaUserCircle size={20} className="me-2" />
-                          <span>{cmt}</span>
-                        </div>
-                      ))} */}
                   </div>
                 </div>
               ))}
+             
+            </div>
+            <div>
+            <button disabled={page === 1} onClick={() => setPage(page - 1)}>⬅️ Prev</button>
+            <span>Pages {page} of {total}</span>
+            <button disabled={page===total} onClick={()=>setPage(page+1)}>Next ➡️</button>
             </div>
           </div>
 

@@ -4,6 +4,7 @@ const Course = require('../models/coursesSchema'); // Assuming courseSchema is i
 const multer = require('multer');
 const path = require('path');
 const mongoose = require('mongoose'); // Required for ObjectId conversion
+const client=require('../redis/client')
 
 
 
@@ -74,6 +75,12 @@ router.post('/add-course', upload.single('image'), async (req, res) => {
 // Get all courses
 router.get('/courses', async (req, res) => {
   const userId = req.user._id;
+  
+  const cachedData = await client.get("courses");
+
+  if (cachedData) {
+    return res.json(JSON.parse(cachedData));
+}
 
   try {
     const courses = await Course.find({});
@@ -88,6 +95,7 @@ router.get('/courses', async (req, res) => {
         progress: userProgress ? userProgress.progress : 0, // Default progress to 0 if not found
       };
     });
+    await client.setex("courses", 300, JSON.stringify({ filteredCourses }));
 
     res.json(filteredCourses);
   } catch (err) {
@@ -106,6 +114,11 @@ router.get('/courses', async (req, res) => {
 router.get('/courses/index/:id', async (req, res) => {
   const userId = req.user._id;
 
+  const cachedData = await client.get("coursesWithUsersSpecific");
+  if (cachedData) {
+    return res.json(JSON.parse(cachedData));
+}
+
   try {
     const courses = await Course.find({_id:req.params.id});
     const userObjectId = new mongoose.Types.ObjectId(userId);
@@ -120,7 +133,8 @@ router.get('/courses/index/:id', async (req, res) => {
         courseProgress: course.progress,
       };
     });
-   
+    await client.setex("coursesWithUsersSpecific", 300, JSON.stringify({ filteredCourses }));
+
     res.json(filteredCourses);
   } catch (err) {
     console.error('Error fetching courses:', err);
@@ -137,12 +151,14 @@ router.get('/courses/index/:id', async (req, res) => {
 // Update user progress
 router.post('/update-progress', async (req, res) => {
   const userId=req.user._id;
-  console.log("hey there",userId)
+  const cachedData = await client.get("update-progress");
+  if (cachedData) {
+    return res.json(JSON.parse(cachedData));
+}
   try {
 
     const { id , progress } = req.body;
 
-    console.log("hey there",id , progress )
 
     const course = await Course.findById(id);
    
@@ -159,6 +175,8 @@ router.post('/update-progress', async (req, res) => {
     }
 
     await course.save();
+    await client.setex("update-progress", 300, JSON.stringify({  message: 'Progress updated successfully' }));
+
     res.status(200).json({ message: 'Progress updated successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Error updating progress' });
@@ -170,6 +188,13 @@ router.post('/update-progress', async (req, res) => {
 router.get('/progress/:courseId', async (req, res) => {
   const { courseId} = req.params;
   const userId=req.user._id;
+
+
+  const cachedData = await client.get("courseID-progress");
+  if (cachedData) {
+    return res.json(JSON.parse(cachedData));
+}
+
 
   try {
       // Find the course by ID
@@ -193,6 +218,14 @@ router.get('/progress/:courseId', async (req, res) => {
           return res.status(404).json({ message: 'User progress not found for this course' });
       }
 
+
+      await client.setex("courseID-progress", 300, JSON.stringify({
+        courseId: course._id,
+        title: course.title,
+        userId: userId,
+        progress: userProgress.progress,
+    }));
+
       // Return the progress
       res.status(200).json({
           courseId: course._id,
@@ -212,7 +245,17 @@ router.get('/progress/:courseId', async (req, res) => {
 router.get("/getAllcourses", async (req, res) => {
   const userId=req.user._id;
   //  console.log(userId)
+
+  const userCoursesKey = `courses:${userId}`; // Unique cache key for each user
+
   try {
+
+    const cachedData = await client.get(userCoursesKey);
+    if (cachedData) {
+     
+      return res.status(200).json({ success: true, courses: JSON.parse(cachedData) });
+    }
+
     // Retrieve courses with progress data for the specified user
     const courses = await Course.find({
       "users.userId":new mongoose.Types.ObjectId(userId), // Filter courses where the user exists in the users array
@@ -226,6 +269,7 @@ router.get("/getAllcourses", async (req, res) => {
         (user) => user.userId.toString() === userId
       );
 
+
       return {
         _id: course._id,
         title: course.title,
@@ -235,6 +279,7 @@ router.get("/getAllcourses", async (req, res) => {
         progress: userProgress ? userProgress.progress : 0, // Include progress or 0 if not found
       };
     });
+    await client.setex(userCoursesKey, 300, JSON.stringify({ success: true, courses: result }));
 
     res.status(200).json({ success: true, courses: result });
   } catch (error) {

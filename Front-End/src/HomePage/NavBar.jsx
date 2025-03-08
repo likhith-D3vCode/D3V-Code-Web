@@ -18,6 +18,12 @@ function NavBar() {
     const fetchUserData = async () => {
       const tokenauth = localStorage.getItem("authToken");
 
+      if(localStorage.getItem("authToken")==null){
+
+        console.log("its working")
+        return;
+      }
+
       try {
         const response = await fetch(
           `${BACKEND_URL}/getOneUsername/oneuser/api`,

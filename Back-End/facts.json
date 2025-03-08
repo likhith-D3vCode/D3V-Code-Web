@@ -1,0 +1,192 @@
+[
+    {
+      "_id": { "$oid": "6727c18003209d75c3ce3401" },
+      "facts": "The first-ever website is still online. Tim Berners-Lee created it in 1991."
+    },
+    {
+      "_id": { "$oid": "6727c18003209d75c3ce3402" },
+      "facts": "Did you know? More than 90% of web traffic comes from mobile devices."
+    },
+    {
+      "_id": { "$oid": "6727c18003209d75c3ce3403" },
+      "facts": "The average webpage takes about 3 seconds to load on mobile, but 53% of users leave if it takes longer than that."
+    },
+    {
+      "_id": { "$oid": "6727c18003209d75c3ce3404" },
+      "facts": "The term 'bug' in programming was popularized by a real moth stuck in a computer in 1947."
+    },
+    {
+      "_id": { "$oid": "6727c18003209d75c3ce3405" },
+      "facts": "Over 70% of global websites use JavaScript for interactivity."
+    },
+    {
+      "_id": { "$oid": "6727c18003209d75c3ce3406" },
+      "facts": "Facebook was initially coded in PHP but later transitioned to Hack, a language developed by Facebook."
+    },
+    {
+      "_id": { "$oid": "6727c18003209d75c3ce3407" },
+      "facts": "Google processes over 8.5 billion searches per day!"
+    },
+    {
+      "_id": { "$oid": "6727c18003209d75c3ce3408" },
+      "facts": "The first email was sent in 1971 by Ray Tomlinson."
+    },
+    {
+      "_id": { "$oid": "6727c18003209d75c3ce3409" },
+      "facts": "Amazon Web Services (AWS) powers a significant portion of the internet, including Netflix and Airbnb."
+    },
+    {
+      "_id": { "$oid": "6727c18003209d75c3ce3410" },
+      "facts": "JavaScript was created in just 10 days in 1995 by Brendan Eich."
+    },
+        {
+          "facts": "Did you know? More than 90% of web traffic comes from mobile devices. This means it's essential to make your website responsive and mobile-friendly!"
+        },
+        {
+          "facts": "The first website was created by Tim Berners-Lee in 1991. It was a simple page about the World Wide Web."
+        },
+        {
+          "facts": "Google's search algorithm considers page load speed as a ranking factor. Faster websites tend to rank higher."
+        },
+        {
+          "facts": "Over 60% of users will leave a website if it takes longer than 3 seconds to load. Optimize your site speed!"
+        },
+        {
+          "facts": "More than 40% of users will interact more with a website that has an engaging and modern design."
+        },
+        {
+          "facts": "JavaScript is the most popular programming language for web development, powering nearly 98% of all websites."
+        },
+        {
+          "facts": "CSS Grid and Flexbox have revolutionized modern web layouts, making responsive design easier than ever."
+        },
+        {
+          "facts": "Dark mode has become increasingly popular, with many users preferring it for its reduced eye strain."
+        },
+        {
+          "facts": "A well-structured navigation menu improves user experience and keeps visitors on your site longer."
+        },
+        {
+          "facts": "Progressive Web Apps (PWAs) provide an app-like experience in the browser and can even work offline."
+        },
+        {
+          "facts": "Around 70% of small business websites lack a clear call to action, reducing their conversion rates."
+        },
+        {
+          "facts": "Web accessibility ensures that websites are usable by people with disabilities, improving inclusivity."
+        },
+        {
+          "facts": "Lazy loading images can significantly improve page speed and enhance user experience."
+        },
+        {
+          "facts": "The average internet user spends about 6 hours and 40 minutes online each day."
+        },
+        {
+          "facts": "The color scheme of a website affects user emotions and engagement. Blue is the most popular color in web design."
+        },
+        {
+          "facts": "Responsive web design was first introduced by Ethan Marcotte in 2010."
+        },
+        {
+          "facts": "HTTPS is now a ranking factor for Google, and sites without SSL certificates are marked as 'Not Secure.'"
+        },
+        {
+          "facts": "Over 60% of online searches come from mobile devices, making mobile optimization crucial."
+        },
+        {
+          "facts": "Favicon icons help improve brand recognition and user experience in browser tabs."
+        },
+        {
+          "facts": "SEO-friendly URLs improve search engine rankings and help users understand page content easily."
+        },
+        {
+          "facts": "WebAssembly (WASM) allows high-performance code execution in the browser, boosting web app capabilities."
+        },
+        {
+          "facts": "Content delivery networks (CDNs) speed up websites by serving content from servers closer to users."
+        },
+        {
+          "facts": "Using SVG images instead of PNG or JPG can improve website performance and maintain image quality."
+        },
+        {
+          "facts": "The first web browser was called WorldWideWeb (later renamed Nexus)."
+        },
+        {
+          "facts": "Parallax scrolling effects can enhance visual storytelling on a website."
+        },
+        {
+          "facts": "Over 90% of website visitors will leave if a page is poorly designed or difficult to navigate."
+        },
+        {
+          "facts": "Google Lighthouse is a free tool that helps analyze and improve website performance."
+        },
+        {
+          "facts": "Whitespace improves readability and makes content easier to digest."
+        },
+        {
+          "facts": "Website bounce rates increase if pages take longer than 3 seconds to load."
+        },
+        {
+          "facts": "The average lifespan of a website design is about 2-3 years before needing a refresh."
+        },
+        {
+          "facts": "Microinteractions, such as hover effects, enhance user engagement on a website."
+        },
+        {
+          "facts": "A/B testing is a powerful method for optimizing web conversions and user experience."
+        },
+        {
+          "facts": "The use of AI in web development is growing, with chatbots and automation improving user experience."
+        },
+        {
+          "facts": "A well-optimized website can significantly improve lead generation and sales conversions."
+        },
+        {
+          "facts": "More than 50% of eCommerce revenue comes from mobile shopping."
+        },
+        {
+          "facts": "Accessibility compliance (WCAG) ensures that websites are usable by individuals with disabilities."
+        },
+        {
+          "facts": "Using clear and readable fonts improves the overall user experience."
+        },
+        {
+          "facts": "Websites with videos tend to have a higher engagement rate."
+        },
+        {
+          "facts": "A strong brand identity on your website improves trust and recognition."
+        },
+        {
+          "facts": "Regularly updating website content can improve search engine rankings."
+        },
+        {
+          "facts": "Server response time should be under 200ms for optimal website performance."
+        },
+        {
+          "facts": "Over 90% of online shoppers abandon a website due to poor UX."
+        },
+        {
+          "facts": "Using schema markup can help search engines understand website content better."
+        },
+        {
+          "facts": "Websites with SSL certificates rank higher on Google."
+        },
+        {
+          "facts": "Hover effects can make web interactions more engaging and user-friendly."
+        },
+        {
+          "facts": "A compelling call to action (CTA) improves conversion rates."
+        },
+        {
+          "facts": "Well-structured HTML improves SEO and accessibility."
+        },
+        {
+          "facts": "The average attention span of a web visitor is about 8 seconds."
+        },
+        {
+          "facts": "Using web caching improves site speed and performance."
+        }
+      
+      
+  ]
+  
